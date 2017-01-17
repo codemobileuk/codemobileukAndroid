@@ -1,4 +1,4 @@
-package com.codemobile.footsqueek.codemobile.Adapters;
+package com.codemobile.footsqueek.codemobile.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.codemobile.footsqueek.codemobile.Database.Schedule;
-import com.codemobile.footsqueek.codemobile.Interfaces.ScheduleRecyclerInterface;
+import com.codemobile.footsqueek.codemobile.database.Schedule;
+import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         setClickListeners(holder, position);
 
         holder.title.setText(schedule.get(position).getTitle());
-        holder.speaker.setText(schedule.get(position).getSpeaker());
+        holder.speaker.setText(schedule.get(position).getSpeaker() +" POS: " + position);
         holder.timeStart.setText(schedule.get(position).getTimeStart().toString());
         holder.timeEnd.setText(schedule.get(position).getTimeEnd().toString());
 

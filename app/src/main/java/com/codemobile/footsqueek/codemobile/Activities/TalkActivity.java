@@ -1,4 +1,4 @@
-package com.codemobile.footsqueek.codemobile.Activities;
+package com.codemobile.footsqueek.codemobile.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
-import com.codemobile.footsqueek.codemobile.Database.Schedule;
+import com.codemobile.footsqueek.codemobile.database.Schedule;
 import com.codemobile.footsqueek.codemobile.R;
 
 import io.realm.Realm;

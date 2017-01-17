@@ -1,4 +1,4 @@
-package com.codemobile.footsqueek.codemobile.Interfaces;
+package com.codemobile.footsqueek.codemobile.interfaces;
 
 /**
  * Created by gregv on 07/01/2017.

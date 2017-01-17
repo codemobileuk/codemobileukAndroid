@@ -1,16 +1,15 @@
-package com.codemobile.footsqueek.codemobile.Activities;
+package com.codemobile.footsqueek.codemobile.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.LinearLayout;
 
-import com.codemobile.footsqueek.codemobile.Adapters.ScheduleRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
-import com.codemobile.footsqueek.codemobile.Database.Schedule;
-import com.codemobile.footsqueek.codemobile.Interfaces.ScheduleRecyclerInterface;
+import com.codemobile.footsqueek.codemobile.database.Schedule;
+import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
 import java.util.GregorianCalendar;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
 
     RecyclerView cyanRecyclerView;
     ScheduleRecyclerAdapter tealAdapter;
-    ScheduleRecyclerAdapter cyanAdapter;
+
 
 
 
@@ -38,22 +37,28 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         ButterKnife.bind(this);
         generateDummySchedule();
 
+        final List<Schedule> allTalks = getSchedule();
 
         tealRecyclerView = (RecyclerView)findViewById(R.id.tealRecycler);
-        cyanRecyclerView = (RecyclerView)findViewById(R.id.cyanRecycler);
         tealRecyclerView.setHasFixedSize(true);
-        cyanRecyclerView.setHasFixedSize(true);
-        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),1);
-        GridLayoutManager glm2 = new GridLayoutManager(getApplicationContext(),1);
-        tealRecyclerView.setLayoutManager(glm);
-        cyanRecyclerView.setLayoutManager(glm2);
+        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),2);
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(allTalks.get(position).isDoubleRow()){
+                    return 1;
+                }else{
+                    return 2;
+                }
 
-        tealAdapter = new ScheduleRecyclerAdapter(getSchedule(),this);
-        cyanAdapter = new ScheduleRecyclerAdapter(getSchedule(),this);
+            }
+        });
+
+        tealRecyclerView.setLayoutManager(glm);
+        tealAdapter = new ScheduleRecyclerAdapter(allTalks,this);
         tealRecyclerView.setAdapter(tealAdapter);
-        cyanRecyclerView.setAdapter(cyanAdapter);
         tealAdapter.notifyDataSetChanged();
-        cyanAdapter.notifyDataSetChanged();
+
 
 
     }
@@ -70,7 +75,32 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         //todo filter by room
         Realm realm = AppDelegate.getRealmInstance();
 
-        return realm.where(Schedule.class).findAllSorted("timeStart");
+        List <Schedule> allTalks = realm.where(Schedule.class).findAllSorted("timeStart");
+        Schedule tempTalk = null;
+
+        realm.beginTransaction();
+        for(Schedule talk :allTalks){
+
+        if(tempTalk !=null){
+            if(tempTalk.getTimeStart().equals(talk.getTimeStart())){
+                talk.setDoubleRow(true);
+                talk.setSpeaker("Pichachu");
+                tempTalk.setDoubleRow(true);
+
+                tempTalk.setSpeaker("Pichachu");
+            }
+
+
+        }
+            tempTalk = talk;
+            //realm.copyToRealmOrUpdate(talk);
+        }
+        realm.commitTransaction();
+       // realm.close();
+
+       // allTalks = realm.where(Schedule.class).findAllSorted("timeStart");
+
+        return allTalks;
     }
 
 
@@ -87,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         Schedule talk1 = new Schedule();
         talk1.setTimeStart(new GregorianCalendar(2017,17,4,10,30).getTime());
         talk1.setTimeEnd(new GregorianCalendar(2017,17,4,11,30).getTime());
-        talk1.setSpeaker("Gordon Freeman");
+        talk1.setSpeaker("Single Row");
         talk1.setDesc("A rendition of silence");
         talk1.setTitle("Life of a silent protagonist");
         talk1.setId(1);
@@ -95,40 +125,59 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         Schedule talk2 = new Schedule();
         talk2.setTimeStart(new GregorianCalendar(2017,17,4,11,40).getTime());
         talk2.setTimeEnd(new GregorianCalendar(2017,17,4,12,20).getTime());
-        talk2.setSpeaker("Sam Wize");
+        talk2.setSpeaker("Single row 2");
         talk2.setDesc("Frodo was a pain");
         talk2.setTitle("Life of a silent protagonist");
-        talk1.setId(2);
+        talk2.setId(2);
 
         Schedule talk3 = new Schedule();
         talk3.setTimeStart(new GregorianCalendar(2017,17,4,12,30).getTime());
         talk3.setTimeEnd(new GregorianCalendar(2017,17,4,14,0).getTime());
-        talk3.setSpeaker("Pyro");
+        talk3.setSpeaker("double row");
         talk3.setDesc("mphhhh mmmhppp");
         talk3.setTitle("Life of a silent protagonist");
-        talk1.setId(3);
+        talk3.setId(3);
 
         Schedule talk4 = new Schedule();
-        talk4.setTimeStart(new GregorianCalendar(2017,17,4,14,10).getTime());
+        talk4.setTimeStart(new GregorianCalendar(2017,17,4,15,10).getTime());
         talk4.setTimeEnd(new GregorianCalendar(2017,17,4,14,50).getTime());
-        talk4.setSpeaker("Gordon Freeman");
+        talk4.setSpeaker("double row part 2");
         talk4.setDesc("A rendition of silence");
         talk4.setTitle("Life of a silent protagonist");
-        talk1.setId(4);
+        talk4.setId(4);
 
         Schedule talk5 = new Schedule();
         talk5.setTimeStart(new GregorianCalendar(2017,17,4,15,0).getTime());
         talk5.setTimeEnd(new GregorianCalendar(2017,17,4,15,30).getTime());
-        talk5.setSpeaker("Gordon Freeman");
+        talk5.setSpeaker("single row");
         talk5.setDesc("A rendition of silence");
         talk5.setTitle("Life of a silent protagonist");
-        talk1.setId(5);
+        talk5.setId(5);
+
+        Schedule talk6 = new Schedule();
+        talk6.setTimeStart(new GregorianCalendar(2017,17,4,15,0).getTime());
+        talk6.setTimeEnd(new GregorianCalendar(2017,17,4,15,30).getTime());
+        talk6.setSpeaker("double row");
+        talk6.setDesc("A rendition of silence");
+        talk6.setTitle("Life of a silent protagonist");
+        talk6.setId(6);
+
+        Schedule talk7 = new Schedule();
+        talk7.setTimeStart(new GregorianCalendar(2017,17,4,16,0).getTime());
+        talk7.setTimeEnd(new GregorianCalendar(2017,17,4,16,30).getTime());
+        talk7.setSpeaker("double row");
+        talk7.setDesc("A rendition of silence");
+        talk7.setTitle("Life of a silent protagonist");
+        talk7.setId(7);
 
         realm.copyToRealm(talk1);
         realm.copyToRealm(talk2);
         realm.copyToRealm(talk3);
         realm.copyToRealm(talk4);
         realm.copyToRealm(talk5);
+        realm.copyToRealm(talk6);
+        realm.copyToRealm(talk7);
+
 
         realm.commitTransaction();
         realm.close();

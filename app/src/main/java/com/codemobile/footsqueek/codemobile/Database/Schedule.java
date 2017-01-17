@@ -1,4 +1,4 @@
-package com.codemobile.footsqueek.codemobile.Database;
+package com.codemobile.footsqueek.codemobile.database;
 
 import java.util.Date;
 
@@ -15,7 +15,16 @@ public class Schedule extends RealmObject {
     private String speaker;
     private String title;
     private String desc;
+    private boolean doubleRow = false;
     private int id;
+
+    public boolean isDoubleRow() {
+        return doubleRow;
+    }
+
+    public void setDoubleRow(boolean doubleRow) {
+        this.doubleRow = doubleRow;
+    }
 
     public Date getTimeStart() {
         return timeStart;
@@ -63,5 +72,32 @@ public class Schedule extends RealmObject {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void deleteAll(){
+
+    }
+
+    public void deleteRow(int id){
+
+    }
+
+    public void editRow(int id){
+
+    }
+
+    public void editMultipleRows(int[] listOfId){
+        for (int id: listOfId) {
+            editRow(id);
+        }
+
+    }
+
+    public void addNewRow(){
+
+    }
+
+    public boolean checkIfRowNeedsUpdate(Schedule newRow){
+        return false;
     }
 }
