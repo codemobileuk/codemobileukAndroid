@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         ButterKnife.bind(this);
         generateDummySchedule();
         fetchSchedule();
+
+
         final List<Session> allTalks = getSchedule();
 
         tealRecyclerView = (RecyclerView)findViewById(R.id.tealRecycler);
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
     }
 
 
-     @Override
+
     public void talkClicked(String scheduleId) {
          Intent in = new Intent(MainActivity.this, TalkActivity.class);
          in.putExtra("id",scheduleId);
@@ -164,24 +166,12 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         if(tempTalk !=null){
             if(tempTalk.getTimeStart().equals(talk.getTimeStart())){
                 talk.setDoubleRow(true);
-
                 tempTalk.setDoubleRow(true);
-
-
             }
-
-
         }
             tempTalk = talk;
-            //realm.copyToRealmOrUpdate(talk);
         }
         realm.commitTransaction();
-       // realm.close();
-
-
-
-
-       // allTalks = realm.where(Session.class).findAllSorted("timeStart");
 
         return allTalks;
     }

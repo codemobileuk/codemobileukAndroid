@@ -16,6 +16,8 @@ public class AppDelegate extends Application{
 
 
     public static RealmConfiguration realmConfiguration;
+    public static boolean twoPane = false;
+
 
     @Override
     public void onCreate() {
@@ -27,6 +29,14 @@ public class AppDelegate extends Application{
         realmConfiguration = new RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build();
+    }
+
+    public static boolean isTwoPane() {
+        return twoPane;
+    }
+
+    public static void setTwoPane(boolean twoPane) {
+        AppDelegate.twoPane = twoPane;
     }
 
     public static Realm getRealmInstance(){

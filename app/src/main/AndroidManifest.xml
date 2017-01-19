@@ -10,7 +10,7 @@
         android:name=".AppDelegate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.ScheduleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +22,16 @@
 
             >
             </activity>
+        <activity android:label="@string/app_name"
+            android:name=".activities.MainActivity"
+
+            >
+        </activity>
+        <activity android:label="@string/app_name"
+            android:name=".activities.ScheduleDetailActivity"
+
+            >
+        </activity>
     </application>
 
 </manifest>
