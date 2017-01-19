@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
-import com.codemobile.footsqueek.codemobile.database.Schedule;
+import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.R;
 
 import io.realm.Realm;
@@ -44,18 +44,17 @@ public class TalkActivity extends AppCompatActivity {
 
     private void setTextViews(){
 
-        Schedule schedule;
+        Session session;
         if(talkId == -1){
             title.setText("Error getting talk ");
         }else{
             Realm realm = AppDelegate.getRealmInstance();
-            schedule = realm.where(Schedule.class).equalTo("id",talkId).findFirst();
+            session = realm.where(Session.class).equalTo("id",talkId).findFirst();
 
-            title.setText(schedule.getTitle());
-            speaker.setText(schedule.getSpeaker());
-            timeStart.setText(schedule.getTimeStart().toString());
-            timeEnd.setText(schedule.getTimeEnd().toString());
-            desc.setText(schedule.getDesc());
+            title.setText(session.getTitle());
+            timeStart.setText(session.getTimeStart().toString());
+            timeEnd.setText(session.getTimeEnd().toString());
+            desc.setText(session.getDesc());
         }
 
 

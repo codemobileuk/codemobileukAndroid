@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.codemobile.footsqueek.codemobile.database.Schedule;
+import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
@@ -20,12 +20,12 @@ import java.util.List;
 public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecyclerAdapter.ScheduleViewHolder> {
 
 
-    private List<Schedule> schedule;
+    private List<Session> session;
     private ScheduleRecyclerInterface scheduleRecyclerInterface;
 
-    public ScheduleRecyclerAdapter(List<Schedule> schedule, ScheduleRecyclerInterface scheduleRecyclerInterface) {
+    public ScheduleRecyclerAdapter(List<Session> session, ScheduleRecyclerInterface scheduleRecyclerInterface) {
         this.scheduleRecyclerInterface = scheduleRecyclerInterface;
-        this.schedule = schedule;
+        this.session = session;
     }
 
     private void setClickListeners(final ScheduleViewHolder holder, final int position){
@@ -33,7 +33,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scheduleRecyclerInterface.talkClicked(schedule.get(position).getId());
+                scheduleRecyclerInterface.talkClicked(session.get(position).getId());
             }
         });
 
@@ -51,16 +51,16 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
         setClickListeners(holder, position);
 
-        holder.title.setText(schedule.get(position).getTitle());
-        holder.speaker.setText(schedule.get(position).getSpeaker() +" POS: " + position);
-        holder.timeStart.setText(schedule.get(position).getTimeStart().toString());
-        holder.timeEnd.setText(schedule.get(position).getTimeEnd().toString());
+        holder.title.setText(session.get(position).getTitle());
+
+        holder.timeStart.setText(session.get(position).getTimeStart().toString());
+        holder.timeEnd.setText(session.get(position).getTimeEnd().toString());
 
     }
 
     @Override
     public int getItemCount() {
-        return schedule.size();
+        return session.size();
     }
 
     public static class ScheduleViewHolder extends RecyclerView.ViewHolder{

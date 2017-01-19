@@ -6,6 +6,6 @@ package com.codemobile.footsqueek.codemobile.interfaces;
 
 public interface ScheduleRecyclerInterface {
 
-    void talkClicked(int scheduleId);
+    void talkClicked(String scheduleId);
 
 }
