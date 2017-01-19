@@ -10,6 +10,7 @@ import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
+import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,11 +36,18 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     private static final int SCHEDULE = 0;
     private static final int SPEAKER = 1;
     private static final int LOCATION = 2;
+    private String type = null;
+
+    FetcherInterface fetcherInterface;
+
+    public void setFetcherInterface(FetcherInterface fetcherInterface){
+        this.fetcherInterface = fetcherInterface;
+    }
 
     @Override
     protected String doInBackground(String... params) {
 
-
+        type = params[0];
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
@@ -214,5 +222,17 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         }
 
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
+        fetcherInterface.onComplete();
     }
 }

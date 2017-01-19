@@ -119,7 +119,7 @@ public class Session extends RealmObject {
 
         try{
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(sesswsion);
+            realm.copyToRealmOrUpdate(sesssion);
             realm.commitTransaction();
 
         } catch (Exception e) {

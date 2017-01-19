@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Adapter;
 
 import com.codemobile.footsqueek.codemobile.TimeConverter;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
+import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
@@ -39,10 +42,7 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         generateDummySchedule();
-
-        Fetcher fetcher = new Fetcher();
-        fetcher.execute("Speakers");
-
+        fetchSchedule();
         final List<Session> allTalks = getSchedule();
 
         tealRecyclerView = (RecyclerView)findViewById(R.id.tealRecycler);
@@ -68,6 +68,80 @@ public class MainActivity extends AppCompatActivity implements ScheduleRecyclerI
 
 
     }
+//not sure weather it is necessary to let the first task finish before starting the next. Theoretically it would help lower end
+    // devices but will take slightly longer to get all the data.
+    public void fetchSchedule(){
+
+        final Fetcher fetcher= new Fetcher();
+        fetcher.setFetcherInterface(new FetcherInterface() {
+
+            @Override
+            public void onComplete() {
+                fetchSpeakers();
+                tealAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onProgress() {
+
+            }
+        });
+        fetcher.execute("Schedule");
+
+    }
+    public void fetchSpeakers(){
+
+        final Fetcher fetcher= new Fetcher();
+        fetcher.setFetcherInterface(new FetcherInterface() {
+
+            @Override
+            public void onComplete() {
+                fetchLocations();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onProgress() {
+
+            }
+        });
+        fetcher.execute("Speakers");
+
+    }
+    public void fetchLocations(){
+
+        final Fetcher fetcher= new Fetcher();
+        fetcher.setFetcherInterface(new FetcherInterface() {
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onProgress() {
+
+            }
+        });
+        fetcher.execute("Locations");
+
+    }
+
+
      @Override
     public void talkClicked(String scheduleId) {
          Intent in = new Intent(MainActivity.this, TalkActivity.class);
