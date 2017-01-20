@@ -13,23 +13,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
-import com.codemobile.footsqueek.codemobile.activities.MainActivity;
 import com.codemobile.footsqueek.codemobile.activities.ScheduleActivity;
 import com.codemobile.footsqueek.codemobile.activities.ScheduleDetailActivity;
-import com.codemobile.footsqueek.codemobile.activities.TalkActivity;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by greg on 19/01/2017.
@@ -39,7 +40,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
     RecyclerView tealRecyclerView;
     ScheduleRecyclerAdapter tealAdapter;
-    Boolean isTwoPane = false;
     ScheduleDetailFragment scheduleDetailFragment;
     FragmentActivity myContext;
 
@@ -127,6 +127,23 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         realm.commitTransaction();
 
         return allTalks;
+    }
+
+    public void insertHeadersIntoList(List<Session> sessions){
+
+        List<?> list = new ArrayList<>();
+        List<Object> object = new ArrayList<Object>();
+
+
+        for (int i = 0; i < sessions.size(); i++) {
+
+            if(sessions.get(i).isDoubleRow()){
+                object.add("d");
+                object.add(sessions.get(i));
+            }
+
+        }
+
     }
 
     public void fetchSchedule(){

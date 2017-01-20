@@ -3,7 +3,6 @@ package com.codemobile.footsqueek.codemobile.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -23,6 +22,8 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         determinePaneLayout();
+
+
 
 
     }

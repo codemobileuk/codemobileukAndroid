@@ -10,7 +10,7 @@
         android:name=".AppDelegate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ScheduleActivity">
+        <activity android:name=".activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,17 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:label="@string/app_name"
-            android:name=".activities.TalkActivity"
-
-            >
-            </activity>
-        <activity android:label="@string/app_name"
-            android:name=".activities.MainActivity"
+            android:name=".activities.ScheduleDetailActivity"
 
             >
         </activity>
         <activity android:label="@string/app_name"
-            android:name=".activities.ScheduleDetailActivity"
+            android:name=".activities.ScheduleActivity"
 
             >
         </activity>
