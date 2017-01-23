@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.zip.Inflater;
 
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        context = getApplicationContext();
         speakerOneTv = (TextView)findViewById(R.id.nameTv1);
         speakerTwoTv = (TextView)findViewById(R.id.nameTv2);
         buildingOneTv = (TextView)findViewById(R.id.buildingTv1);
@@ -49,10 +50,17 @@ public class HomeActivity extends AppCompatActivity {
 
 
         setOnClickListeners();
+        loadImages();
+
 
     }
 
+    public void loadImages(){
+        Picasso.with(context).setLoggingEnabled(true);
+        Picasso.with(context).load("http://i.imgur.com/o6VMNBW.png").fit().centerCrop().into(speakerOneImage);
+        Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").fit().centerCrop().into(speakerTwoImage);
 
+    }
     public void setOnClickListeners(){
 
         scheduleButton.setOnClickListener(new View.OnClickListener() {
