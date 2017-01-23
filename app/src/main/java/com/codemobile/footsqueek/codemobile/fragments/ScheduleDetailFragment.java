@@ -52,7 +52,7 @@ public class ScheduleDetailFragment extends Fragment {
                 Realm realm = AppDelegate.getRealmInstance();
                 session = realm.where(Session.class).equalTo("id", talkId).findFirst();
 
-               session = realm.where(Session.class).findFirst();
+
 
                 title.setText(session.getTitle());
                 timeStart.setText(session.getTimeStart().toString());

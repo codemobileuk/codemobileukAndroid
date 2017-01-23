@@ -154,6 +154,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             @Override
             public void onComplete() {
                 fetchSpeakers();
+                getSchedule();
                 tealAdapter.notifyDataSetChanged();
             }
 
