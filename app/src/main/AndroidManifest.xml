@@ -27,6 +27,16 @@
 
             >
         </activity>
+        <activity android:label="@string/app_name"
+            android:name=".activities.SpeakerActivity"
+
+            >
+        </activity>
+        <activity android:label="@string/app_name"
+            android:name=".activities.SpeakerDetailActivity"
+
+            >
+        </activity>
     </application>
 
 </manifest>

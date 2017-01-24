@@ -92,6 +92,30 @@ public class Session extends RealmObject {
         this.id = id;
     }
 
+    public String getSpeakerId() {
+        return speakerId;
+    }
+
+    public void setSpeakerId(String speakerId) {
+        this.speakerId = speakerId;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getLocationDesc() {
+        return locationDesc;
+    }
+
+    public void setLocationDesc(String locationDesc) {
+        this.locationDesc = locationDesc;
+    }
+
     public void deleteAll(){
 
     }

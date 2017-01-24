@@ -13,7 +13,7 @@
         android:name="com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         tools:layout="@layout/fragment_recycler_schedule" />
 
     <View android:background="#000000"
@@ -25,6 +25,6 @@
         android:id="@+id/ScheduleDetailContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_weight="5" />
 
 </LinearLayout>

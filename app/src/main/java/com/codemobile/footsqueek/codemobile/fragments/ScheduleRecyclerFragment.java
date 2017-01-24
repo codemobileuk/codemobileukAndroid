@@ -108,7 +108,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
 
     public List<Session> getSchedule(){
-
+        //returns all the speakers filtered on date then updates the data to allow for a concept
+        //of double rows.
         //todo filter by room
         Realm realm = AppDelegate.getRealmInstance();
 

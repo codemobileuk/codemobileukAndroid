@@ -74,7 +74,8 @@ public class HomeActivity extends AppCompatActivity {
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
+                startActivity(in);
             }
         });
 

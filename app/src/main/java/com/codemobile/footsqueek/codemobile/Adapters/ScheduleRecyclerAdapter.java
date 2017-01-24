@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.codemobile.footsqueek.codemobile.AppDelegate;
+import com.codemobile.footsqueek.codemobile.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by gregv on 07/01/2017.
@@ -55,11 +64,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
     @Override
     public void onBindViewHolder(ScheduleViewHolder holder, int position) {
-
         setClickListeners(holder, position);
+        Realm realm = AppDelegate.getRealmInstance();
+        Speaker speaker = realm.where(Speaker.class).equalTo("id",session.get(position).getSpeakerId()).findFirst();
+
 
         holder.title.setText(session.get(position).getTitle());
-        holder.timeStart.setText(session.get(position).getTimeStart().toString());
+        holder.timeStart.setText(TimeConverter.trimTimeFromDate(session.get(position).getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.get(position).getTimeEnd()));
+        holder.speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
+
 
 
         //if doublerow and if even

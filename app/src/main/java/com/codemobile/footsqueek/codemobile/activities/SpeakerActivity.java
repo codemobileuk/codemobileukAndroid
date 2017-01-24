@@ -9,25 +9,22 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 
 /**
- * Created by greg on 19/01/2017.
+ * Created by greg on 23/01/2017.
  */
 
-public class ScheduleActivity extends AppCompatActivity {
-
-
+public class SpeakerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
-
+        setContentView(R.layout.activity_speaker);
         determinePaneLayout();
 
 
     }
 
     public void determinePaneLayout() {
-        FrameLayout fragmentScheduleDetail = (FrameLayout) findViewById(R.id.ScheduleDetailContainer);
+        FrameLayout fragmentScheduleDetail = (FrameLayout) findViewById(R.id.SpeakerDetailContainer);
         if (fragmentScheduleDetail != null) {
             AppDelegate.setTwoPane(true);
         }else{

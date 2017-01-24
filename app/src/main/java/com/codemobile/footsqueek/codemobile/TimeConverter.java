@@ -31,4 +31,13 @@ public class TimeConverter {
         return null;
     }
 
+    public static String trimTimeFromDate(Date date){
+        //todo check date format
+        String dateString = date.toString();
+        String[] split  = dateString.split(" ");
+
+        return split[3].substring(0,split[3].length()-3);
+
+    }
+
 }
