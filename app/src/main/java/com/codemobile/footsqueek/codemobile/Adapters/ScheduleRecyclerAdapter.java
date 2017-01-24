@@ -1,10 +1,14 @@
 package com.codemobile.footsqueek.codemobile.adapters;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.database.Session;
@@ -22,15 +26,18 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
     private List<Session> session;
     private ScheduleRecyclerInterface scheduleRecyclerInterface;
+    private Context context;
+    private int actualRowCount =-1;
 
-    public ScheduleRecyclerAdapter(List<Session> session, ScheduleRecyclerInterface scheduleRecyclerInterface) {
+    public ScheduleRecyclerAdapter(List<Session> session, ScheduleRecyclerInterface scheduleRecyclerInterface, Context context) {
+        this.context = context;
         this.scheduleRecyclerInterface = scheduleRecyclerInterface;
         this.session = session;
     }
 
     private void setClickListeners(final ScheduleViewHolder holder, final int position){
 
-        holder.card.setOnClickListener(new View.OnClickListener() {
+        holder.row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scheduleRecyclerInterface.talkClicked(session.get(position).getId());
@@ -52,11 +59,28 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         setClickListeners(holder, position);
 
         holder.title.setText(session.get(position).getTitle());
-
         holder.timeStart.setText(session.get(position).getTimeStart().toString());
-        holder.timeEnd.setText(session.get(position).getTimeEnd().toString());
+
+
+        //if doublerow and if even
+        if(session.get(position).isDoubleRow() && session.get(position+1).isDoubleRow()){
+            actualRowCount ++;
+            holder.line.setVisibility(View.VISIBLE);
+        }else if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
+            holder.line.setVisibility(View.INVISIBLE);
+        }else {
+            actualRowCount++;
+            holder.line.setVisibility(View.INVISIBLE);
+        }
+
+        if(actualRowCount % 2 ==0){
+            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonWhite));
+        }else {
+            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+        }
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -68,8 +92,10 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         TextView title;
         TextView speaker;
         TextView timeStart;
-        TextView timeEnd;
-        CardView card;
+        View line;
+
+        LinearLayout row;
+
 
         public ScheduleViewHolder(View itemView){
             super(itemView);
@@ -77,8 +103,9 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             title = (TextView)itemView.findViewById(R.id.title);
             speaker = (TextView)itemView.findViewById(R.id.speaker);
             timeStart = (TextView)itemView.findViewById(R.id.timeStart);
-            timeEnd = (TextView)itemView.findViewById(R.id.timeEnd);
-            card = (CardView) itemView.findViewById(R.id.card);
+            row = (LinearLayout)itemView.findViewById(R.id.row);
+            line = (View)itemView.findViewById(R.id.line);
+
 
         }
 

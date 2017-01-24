@@ -4,6 +4,7 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.database.Session;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,18 +16,18 @@ import io.realm.Realm;
 
 public class GenericMap {
 
-    Map<String, Integer> map = new HashMap<String, Integer>();
+    LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
 
-    public Map<String, Integer> getMap() {
+    public LinkedHashMap<String, Integer> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, Integer> map) {
+    public void setMap(LinkedHashMap<String, Integer> map) {
 
         this.map = map;
     }
 
-    public void createMap(List<Session> allSessions){
+    public  LinkedHashMap<String, Integer> createMap(List<Session> allSessions){
 
         //todo filter by room
        // Realm realm = AppDelegate.getRealmInstance();
@@ -34,12 +35,10 @@ public class GenericMap {
     //    List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
     //    Session tempTalk = null;
 
+     //   Realm realm = AppDelegate.getRealmInstance();
 
-
-        Realm realm = AppDelegate.getRealmInstance();
-
-        List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
-        Session tempTalk = null;
+      //  List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
+      //  Session tempTalk = null;
 
         for (int i = 0; i < allSessions.size(); i++) {
             if(allSessions.get(i).isDoubleRow()){
@@ -52,5 +51,6 @@ public class GenericMap {
             }
         }
 
+        return map;
     }
 }

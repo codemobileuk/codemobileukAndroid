@@ -21,11 +21,14 @@ import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
+import com.codemobile.footsqueek.codemobile.interfaces.GenericMap;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import io.realm.Realm;
@@ -41,11 +44,11 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     RecyclerView tealRecyclerView;
     ScheduleRecyclerAdapter tealAdapter;
     ScheduleDetailFragment scheduleDetailFragment;
-    FragmentActivity myContext;
+    FragmentActivity mContext;
 
     @Override
     public void onAttach(Context context) {
-        myContext=(ScheduleActivity)context;
+        mContext=(ScheduleActivity)context;
         super.onAttach(context);
     }
 
@@ -58,6 +61,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
 
         final List<Session> allTalks = getSchedule();
+
 
         tealRecyclerView = (RecyclerView)view.findViewById(R.id.tealRecycler);
         tealRecyclerView.setHasFixedSize(true);
@@ -75,12 +79,11 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         });
 
         tealRecyclerView.setLayoutManager(glm);
-        tealAdapter = new ScheduleRecyclerAdapter(allTalks,this);
+        tealAdapter = new ScheduleRecyclerAdapter(allTalks,this,mContext);
         tealRecyclerView.setAdapter(tealAdapter);
         tealAdapter.notifyDataSetChanged();
         return view;
     }
-
 
 
     public void talkClicked(String scheduleId) {
@@ -91,7 +94,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         if(AppDelegate.isTwoPane()){
             scheduleDetailFragment = new ScheduleDetailFragment();
             scheduleDetailFragment.setArguments(data);
-            FragmentManager fragmentManager = myContext.getSupportFragmentManager();
+            FragmentManager fragmentManager = mContext.getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.ScheduleDetailContainer, scheduleDetailFragment);
             ft.commit();
@@ -100,7 +103,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             in.putExtra("id",scheduleId);
             startActivity(in);
         }
-
 
     }
 
@@ -129,22 +131,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         return allTalks;
     }
 
-    public void insertHeadersIntoList(List<Session> sessions){
 
-        List<?> list = new ArrayList<>();
-        List<Object> object = new ArrayList<Object>();
-
-
-        for (int i = 0; i < sessions.size(); i++) {
-
-            if(sessions.get(i).isDoubleRow()){
-                object.add("d");
-                object.add(sessions.get(i));
-            }
-
-        }
-
-    }
 
     public void fetchSchedule(){
 
