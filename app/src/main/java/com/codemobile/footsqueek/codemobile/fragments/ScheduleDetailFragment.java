@@ -20,7 +20,7 @@ import io.realm.Realm;
 
 public class ScheduleDetailFragment extends Fragment {
 
-    TextView title, speaker, timeStart, timeEnd, desc;
+    TextView title, speaker, timeStart;
     String talkId ="-1";
 
     @Nullable
@@ -35,8 +35,6 @@ public class ScheduleDetailFragment extends Fragment {
         title = (TextView)view.findViewById(R.id.title);
         speaker = (TextView)view.findViewById(R.id.speaker);
         timeStart = (TextView)view.findViewById(R.id.timeStart);
-        timeEnd = (TextView)view.findViewById(R.id.timeEnd);
-        desc = (TextView)view.findViewById(R.id.desc);
 
 
         setTextViews();
@@ -56,8 +54,6 @@ public class ScheduleDetailFragment extends Fragment {
 
                 title.setText(session.getTitle());
                 timeStart.setText(session.getTimeStart().toString());
-                timeEnd.setText(session.getTimeEnd().toString());
-                desc.setText(session.getDesc());
             }
         }
 
