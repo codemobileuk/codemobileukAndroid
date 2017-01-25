@@ -21,7 +21,6 @@ import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
-import com.codemobile.footsqueek.codemobile.interfaces.GenericMap;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 
 import java.sql.Statement;
