@@ -71,7 +71,7 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
         recyclerView.setHasFixedSize(true);
         GridLayoutManager glm = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(glm);
-        speakerRecyclerAdapter = new SpeakerRecyclerAdapter(allSpeakers,this);
+        speakerRecyclerAdapter = new SpeakerRecyclerAdapter(allSpeakers,this,mContext);
         recyclerView.setAdapter(speakerRecyclerAdapter);
         speakerRecyclerAdapter.notifyDataSetChanged();
 
