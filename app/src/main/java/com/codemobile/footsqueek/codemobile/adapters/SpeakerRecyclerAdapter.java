@@ -25,6 +25,7 @@ import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.SpeakerRecyclerInterface;
+import com.codemobile.footsqueek.codemobile.tools.CircleCroppedBitmap;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -66,11 +67,9 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
                 .into(holder.imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        Bitmap imageBitmap = createCircleImage(((BitmapDrawable) holder.imageView.getDrawable()).getBitmap());
-                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
-                        imageDrawable.setCircular(true);
-                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getHeight(), imageBitmap.getWidth()) / 2.0f);
-                        holder.imageView.setImageDrawable(imageDrawable);
+                        Bitmap imageBitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
+                        CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, context);
+                        circleCroppedBitmap.setToImageViewView(holder.imageView);
                     }
 
                     @Override
@@ -94,36 +93,6 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
         });
 
     }
-
-    private Bitmap createCircleImage(Bitmap srcBmp){
-    Bitmap dstBmp;
-        if (srcBmp.getWidth() >= srcBmp.getHeight()){
-
-            dstBmp = Bitmap.createBitmap(
-                    srcBmp,
-                    srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
-                    0,
-                    srcBmp.getHeight(),
-                    srcBmp.getHeight()
-            );
-
-        }else{
-
-            dstBmp = Bitmap.createBitmap(
-                    srcBmp,
-                    0,
-                    srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
-                    srcBmp.getWidth(),
-                    srcBmp.getWidth()
-            );
-        }
-
-    return dstBmp;
-
-    }
-
-
-
 
 
 
@@ -155,7 +124,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
             speakerTalk = (TextView)itemView.findViewById(R.id.speakerTalk);
             speakerBio = (TextView)itemView.findViewById(R.id.speakerBio);
             row = (LinearLayout)itemView.findViewById(R.id.row);
-            imageView = (ImageView) itemView.findViewById(R.id.image);
+            imageView = (ImageView) itemView.findViewById(R.id.speakerImage);
         }
     }
 

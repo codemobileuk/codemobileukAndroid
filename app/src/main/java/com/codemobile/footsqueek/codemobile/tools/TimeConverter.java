@@ -1,4 +1,4 @@
-package com.codemobile.footsqueek.codemobile;
+package com.codemobile.footsqueek.codemobile.tools;
 
 import android.util.Log;
 

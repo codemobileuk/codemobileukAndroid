@@ -4,8 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.codemobile.footsqueek.codemobile.AppDelegate;
-import com.codemobile.footsqueek.codemobile.TimeConverter;
+import com.codemobile.footsqueek.codemobile.tools.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
@@ -22,9 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.Buffer;
-
-import io.realm.Realm;
 
 /**
  * Created by greg on 17/01/2017.
