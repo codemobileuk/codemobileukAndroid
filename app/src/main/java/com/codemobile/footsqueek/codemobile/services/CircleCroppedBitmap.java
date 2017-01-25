@@ -1,11 +1,9 @@
-package com.codemobile.footsqueek.codemobile.tools;
+package com.codemobile.footsqueek.codemobile.services;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.view.View;
 import android.widget.ImageView;
 
 /**

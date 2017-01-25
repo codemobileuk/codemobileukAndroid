@@ -8,5 +8,9 @@
     <color name="commonLightGrey">#eeeeee</color>
     <color name="commonDarkGrey">#8e8e8e</color>
 
+    <color name="textDarkGrey">#434343</color>
+    <color name="textLightGrey">#95989A</color>
+    <color name="textRed">#E81212</color>
+
     <color name="transparent">#7ba14b4b</color>
 </resources>

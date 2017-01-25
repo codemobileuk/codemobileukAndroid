@@ -15,11 +15,9 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
-import com.codemobile.footsqueek.codemobile.activities.SpeakerActivity;
-import com.codemobile.footsqueek.codemobile.activities.SpeakerDetailActivity;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
-import com.codemobile.footsqueek.codemobile.tools.CircleCroppedBitmap;
+import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

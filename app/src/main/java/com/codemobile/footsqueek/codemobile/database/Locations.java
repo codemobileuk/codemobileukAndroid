@@ -6,19 +6,19 @@ import io.realm.RealmObject;
  * Created by greg on 19/01/2017.
  */
 
-public class Location extends RealmObject {
+public class Locations extends RealmObject {
 
     private String locationName;
     private double longitude;
     private double latitude;
     private String description;
 
-    public Location(){
+    public Locations(){
 
     }
 
 
-    public Location(String locationName, double longitude, double latitude, String description) {
+    public Locations(String locationName, double longitude, double latitude, String description) {
         this.locationName = locationName;
         this.longitude = longitude;
         this.latitude = latitude;

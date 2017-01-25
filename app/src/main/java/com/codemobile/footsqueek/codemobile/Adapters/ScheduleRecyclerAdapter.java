@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
-import com.codemobile.footsqueek.codemobile.tools.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;

@@ -33,12 +33,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/speakerName"
+        android:textColor="@color/textDarkGrey"
         android:textSize="18sp"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
+        android:textColor="@color/textLightGrey"
         android:id="@+id/speakerTalk"
         />
 

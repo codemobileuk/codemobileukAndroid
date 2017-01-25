@@ -24,12 +24,14 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textSize="22sp"
+            android:textColor="@color/textDarkGrey"
             android:id="@+id/timeStart"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/textDarkGrey"
             android:id="@+id/title"/>
         <LinearLayout
             android:orientation="horizontal"
@@ -39,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/commonDarkGrey"
+                android:textColor="@color/textLightGrey"
                 android:id="@+id/speaker"/>
             <ImageView
                 android:layout_width="wrap_content"
