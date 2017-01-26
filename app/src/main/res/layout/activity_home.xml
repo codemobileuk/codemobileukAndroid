@@ -154,7 +154,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_local_library_black_24dp"
+            app:srcCompat="@drawable/ic_schedule_white"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="16dp"
@@ -193,7 +193,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_date_range"
+                app:srcCompat="@drawable/ic_place_black_24dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginTop="16dp"
