@@ -37,6 +37,11 @@
 
             >
         </activity>
+
+        <service android:name=".services.AlarmService"
+            android:enabled="true" />
+
+        <receiver android:name=".services.CurrentSessionChecker"/>
     </application>
 
 </manifest>

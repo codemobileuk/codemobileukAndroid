@@ -56,8 +56,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_schedule,container,false);
 
-        fetchSchedule();
-
 
         final List<Session> allTalks = getSchedule();
 
@@ -112,98 +110,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         //todo filter by room
         Realm realm = AppDelegate.getRealmInstance();
 
-        List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
-        Session tempTalk = null;
-
-        realm.beginTransaction();
-        for(Session talk :allTalks){
-
-            if(tempTalk !=null){
-                if(tempTalk.getTimeStart().equals(talk.getTimeStart())){
-                    talk.setDoubleRow(true);
-                    tempTalk.setDoubleRow(true);
-                }
-            }
-            tempTalk = talk;
-        }
-        realm.commitTransaction();
-
-        return allTalks;
+        return realm.where(Session.class).findAllSorted("timeStart");
     }
 
-
-
-    public void fetchSchedule(){
-
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-                fetchSpeakers();
-                getSchedule();
-                tealAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Schedule");
-
-    }
-    public void fetchSpeakers(){
-
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-                fetchLocations();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Speakers");
-
-    }
-
-    public void fetchLocations(){
-
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Locations");
-
-    }
 
 }

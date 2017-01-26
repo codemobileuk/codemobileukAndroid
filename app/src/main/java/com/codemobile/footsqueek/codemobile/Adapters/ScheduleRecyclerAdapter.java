@@ -3,6 +3,7 @@ package com.codemobile.footsqueek.codemobile.adapters;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,24 +68,32 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         holder.timeStart.setText(TimeConverter.trimTimeFromDate(session.get(position).getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.get(position).getTimeEnd()));
         holder.speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
 
+        session.get(position).isDoubleRow();
 
 
+        Log.d("sadtimes", session.get(position).isDoubleRow()+" is double");
         //if doublerow and if even
-        if(session.get(position).isDoubleRow() && session.get(position+1).isDoubleRow()){
-            actualRowCount ++;
-            holder.line.setVisibility(View.VISIBLE);
-        }else if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
-            holder.line.setVisibility(View.INVISIBLE);
-        }else {
-            actualRowCount++;
-            holder.line.setVisibility(View.INVISIBLE);
-        }
 
-        if(actualRowCount % 2 ==0){
-            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonWhite));
-        }else {
-            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
-        }
+            if(session.get(position).isDoubleRow()){
+//todo improve this, maybe remove double row and actually compare the times
+                        actualRowCount ++;
+                        holder.line.setVisibility(View.VISIBLE);
+
+
+            }else if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
+                holder.line.setVisibility(View.INVISIBLE);
+            }else {
+                actualRowCount++;
+                holder.line.setVisibility(View.INVISIBLE);
+            }
+
+            if(actualRowCount % 2 ==0){
+                holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonWhite));
+            }else {
+                holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+            }
+
+
 
     }
 

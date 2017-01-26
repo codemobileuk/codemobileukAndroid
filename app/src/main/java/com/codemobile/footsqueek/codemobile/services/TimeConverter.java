@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by greg on 18/01/2017.
@@ -18,10 +19,11 @@ public class TimeConverter {
 
         Date date;//"2017-04-17T09:45:00"
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
 
         try{
             date = sdf.parse(dateString);
-            Log.d("parsingdate",date+"");
+            Log.d("parsingdate",date+"" +"\n" +dateString);
             return date;
 
         }catch (ParseException e){
