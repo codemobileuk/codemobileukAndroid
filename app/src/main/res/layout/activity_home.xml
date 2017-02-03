@@ -50,21 +50,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/speakerImageView1"
+
                 />
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/colorAccent"
-                android:padding="16dp"
+                android:background="@drawable/gradient_color"
+                android:padding="4dp"
+
 
                 >
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="18sp"
                     android:id="@+id/nameTv1"
                     android:text="placeholder1"
                     />
@@ -73,7 +79,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nameTv1"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="14sp"
                     android:id="@+id/buildingTv1"
                     android:text="placeholder2"
                     />
@@ -99,12 +108,18 @@
             android:layout_toRightOf="@id/view2"
             android:layout_alignParentRight="true"
             >
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/speakerImageView2"
+                />
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
                 android:layout_gravity="bottom"
-                android:padding="16dp"
+                android:background="@drawable/gradient_color"
+                android:padding="4dp"
 
                 >
 
@@ -113,6 +128,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="18sp"
                     android:id="@+id/nameTv2"
                     android:text="placeholder1"
                     />
@@ -121,6 +139,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/nameTv2"
                     android:id="@+id/buildingTv2"
                     android:text="placeholder2"
@@ -128,11 +149,7 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/speakerImageView2"
-                />
+
 
         </FrameLayout>
 
