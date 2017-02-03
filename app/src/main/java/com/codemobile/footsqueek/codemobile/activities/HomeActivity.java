@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
@@ -43,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
     ConstraintLayout scheduleButton, locationButton;
     Context context;
     LinearLayout ll;
+    RecyclerView recyclerView;
+    ScheduleHorizontalRecyclerAdapter adapter;
 
     private PendingIntent pendingIntent;
 
@@ -62,9 +67,12 @@ public class HomeActivity extends AppCompatActivity {
         scheduleButton = (ConstraintLayout)findViewById(R.id.button_schedule);
         ll = (LinearLayout)findViewById(R.id.ll1);
         animTv = (TextView)findViewById(R.id.anim_tv);
+        recyclerView = (RecyclerView)findViewById(R.id.recycler);
+
 
         fetchSchedule();
 
+        setUpRecycler();
         setOnClickListeners();
         loadImages();
 
@@ -73,6 +81,24 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+    public void setUpRecycler(){
+
+      //  recyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(lm);
+
+        Realm realm = AppDelegate.getRealmInstance();
+        List<Session> sessions = realm.where(Session.class).findAllSorted("timeStart");
+
+
+        adapter = new ScheduleHorizontalRecyclerAdapter(sessions);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+    }
+
+
 
     public void setUpScheduledNotifications(){
         Calendar calendar = Calendar.getInstance();

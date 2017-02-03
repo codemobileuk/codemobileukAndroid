@@ -13,4 +13,5 @@
     <color name="textRed">#E81212</color>
 
     <color name="transparent">#7ba14b4b</color>
+    <color name="cardViewGrey">#eeeeee</color>
 </resources>

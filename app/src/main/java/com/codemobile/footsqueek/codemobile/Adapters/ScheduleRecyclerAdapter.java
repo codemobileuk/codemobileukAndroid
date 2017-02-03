@@ -76,9 +76,8 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
             if(session.get(position).isDoubleRow()){
 //todo improve this, maybe remove double row and actually compare the times
-                        actualRowCount ++;
-                        holder.line.setVisibility(View.VISIBLE);
-
+                actualRowCount ++;
+                holder.line.setVisibility(View.VISIBLE);
 
             }else if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
                 holder.line.setVisibility(View.INVISIBLE);
@@ -97,6 +96,25 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
     }
 
+    public boolean nextRowDouble(int position){
+        if(position == 0){
+            if(session.get(position).isDoubleRow() && session.get(position+1).isDoubleRow()){
+                //rows 0+1 are a double row
+            }
+        }else if(position == session.size()){
+            if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
+                //last row is double row
+            }
+        }else {
+            if (session.get(position).isDoubleRow() && session.get(position + 1).isDoubleRow()) {
+                //rows 1-second from last (frist double)
+            } else if (session.get(position).isDoubleRow() && session.get(position - 1).isDoubleRow()) {
+                //rows 1-second from last (second double)
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -109,7 +127,6 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         TextView speaker;
         TextView timeStart;
         View line;
-
         LinearLayout row;
 
 
@@ -121,8 +138,6 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             timeStart = (TextView)itemView.findViewById(R.id.timeStart);
             row = (LinearLayout)itemView.findViewById(R.id.row);
             line = (View)itemView.findViewById(R.id.line);
-
-
         }
 
     }

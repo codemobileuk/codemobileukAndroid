@@ -4,8 +4,11 @@ import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Created by greg on 19/01/2017.
@@ -29,6 +32,7 @@ public class RealmUtility {
         }
 
     }
+
 
 
 }
