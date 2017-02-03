@@ -87,7 +87,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             }
 
             if(actualRowCount % 2 ==0){
-                holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonWhite));
+                holder.row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
             }else {
                 holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
             }

@@ -1,5 +1,6 @@
 package com.codemobile.footsqueek.codemobile.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,12 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     public void onAttach(Context context) {
         mContext=(ScheduleActivity)context;
         super.onAttach(context);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        mContext=(ScheduleActivity)activity;
+        super.onAttach(activity);
     }
 
     @Nullable
