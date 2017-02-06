@@ -2,6 +2,7 @@ package com.codemobile.footsqueek.codemobile.adapters;
 
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,10 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     List<Locations> location;
 
 
+    public LocationRecyclerAdapter(List<Locations> location) {
+        this.location = location;
+    }
+
     @Override
     public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new LocationViewHolder(
@@ -36,6 +41,9 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     @Override
     public void onBindViewHolder(LocationViewHolder holder, int position) {
+
+        holder.locationName.setText(location.get(position).getLocationName());
+        Log.d("locatiosn","==== " + location.get(position).getLocationName());
         setOnClickListener();
     }
 
@@ -51,7 +59,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         public LocationViewHolder(View itemView) {
             super(itemView);
 
-
+            directionsButton = (Button)itemView.findViewById(R.id.navigate_button);
+            locationName = (TextView)itemView.findViewById(R.id.location_name);
 
         }
     }

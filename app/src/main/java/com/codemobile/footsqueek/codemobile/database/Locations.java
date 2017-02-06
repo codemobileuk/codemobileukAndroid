@@ -1,6 +1,7 @@
 package com.codemobile.footsqueek.codemobile.database;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by greg on 19/01/2017.
@@ -8,7 +9,7 @@ import io.realm.RealmObject;
 
 public class Locations extends RealmObject {
 
-    private String locationName;
+    @PrimaryKey private String locationName;
     private double longitude;
     private double latitude;
     private String description;

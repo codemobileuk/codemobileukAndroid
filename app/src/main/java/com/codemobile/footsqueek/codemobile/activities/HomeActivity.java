@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -49,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView speakerTwoImage;
     ImageView speakerOneImage;
     ImageView speakerOneImage2;
-    ConstraintLayout scheduleButton, locationButton;
+    ConstraintLayout scheduleButton, locationButton, speakersButton;
     Context context;
     LinearLayout ll;
     RelativeLayout rl1, rl2;
@@ -75,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
         speakerOneImage2 = (ImageView) findViewById(R.id.speakerImageView3);
         locationButton = (ConstraintLayout)findViewById(R.id.button_location);
         scheduleButton = (ConstraintLayout)findViewById(R.id.button_schedule);
+        speakersButton = (ConstraintLayout)findViewById(R.id.button_speaker);
         startTimeOneTv = (TextView)findViewById(R.id.timeStartTv1);
         startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
         startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
@@ -88,10 +90,10 @@ public class HomeActivity extends AppCompatActivity {
 
         fetchSchedule();
 
-        setUpRecycler();
+
         setOnClickListeners();
 
-        setUpSessionViews();
+
         setUpScheduledNotifications();
         getCurrentTalk();
     }
@@ -226,6 +228,14 @@ public class HomeActivity extends AppCompatActivity {
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(),LocationsActivity.class);
+                startActivity(in);
+            }
+        });
+
+        speakersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
                 startActivity(in);
             }
@@ -289,7 +299,8 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
-
+                setUpRecycler();
+                setUpSessionViews();
             }
 
             @Override
