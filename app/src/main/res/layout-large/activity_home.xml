@@ -81,10 +81,11 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <ImageView
+            <com.codemobile.footsqueek.codemobile.customUi.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/speakerImageView1"
+                android:scaleType="centerCrop"
                 />
         </FrameLayout>
 

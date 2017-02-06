@@ -1,37 +1,41 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
-import com.codemobile.footsqueek.codemobile.services.NotificationScheduler;
+import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
+import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 
@@ -41,11 +45,14 @@ import io.realm.Realm;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv,animTv,animTv2;
-    ImageView speakerOneImage, speakerTwoImage;
+    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2;
+    ImageView speakerTwoImage;
+    ImageView speakerOneImage;
+    ImageView speakerOneImage2;
     ConstraintLayout scheduleButton, locationButton;
     Context context;
     LinearLayout ll;
+    RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
 
@@ -59,14 +66,23 @@ public class HomeActivity extends AppCompatActivity {
         context = getApplicationContext();
         speakerOneTv = (TextView)findViewById(R.id.nameTv1);
         speakerTwoTv = (TextView)findViewById(R.id.nameTv2);
+        speakerOneTv2 = (TextView)findViewById(R.id.nameTv3);
         buildingOneTv = (TextView)findViewById(R.id.buildingTv1);
         buildingTwoTv = (TextView)findViewById(R.id.buildingTv2);
-        speakerOneImage = (ImageView)findViewById(R.id.speakerImageView1);
+        buildingOneTv2 = (TextView)findViewById(R.id.buildingTv3);
+        speakerOneImage = (ImageView) findViewById(R.id.speakerImageView1);
         speakerTwoImage = (ImageView)findViewById(R.id.speakerImageView2);
+        speakerOneImage2 = (ImageView) findViewById(R.id.speakerImageView3);
         locationButton = (ConstraintLayout)findViewById(R.id.button_location);
         scheduleButton = (ConstraintLayout)findViewById(R.id.button_schedule);
+        startTimeOneTv = (TextView)findViewById(R.id.timeStartTv1);
+        startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
+        startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
         ll = (LinearLayout)findViewById(R.id.ll1);
-        animTv = (TextView)findViewById(R.id.anim_tv);
+
+        rl1 = (RelativeLayout)findViewById(R.id.rl1);
+        rl2 = (RelativeLayout)findViewById(R.id.rl2);
+
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
 
@@ -74,12 +90,10 @@ public class HomeActivity extends AppCompatActivity {
 
         setUpRecycler();
         setOnClickListeners();
-        loadImages();
 
-
+        setUpSessionViews();
         setUpScheduledNotifications();
-
-
+        getCurrentTalk();
     }
 
     public void setUpRecycler(){
@@ -98,9 +112,73 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public List<Session> getCurrentTalk(){
+
+        Date date = new Date();
+        date.getTime();
+
+        Realm realm = AppDelegate.getRealmInstance();
+       // Session session = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart").first();
+        List<Session> all = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
+        List<Session> currentSession = new ArrayList<>();
+        String prevSessionDate = "";
+        for (int i = 0; i < all.size(); i++) {
+
+            if (all.size() > 0){
+                //not empty
+                if(i == 0 ){
+                    currentSession.add(all.get(i));
+                }else if(i == 1 && all.get(i).getTimeStart().toString().equals(prevSessionDate) ) {
+                    currentSession.add(all.get(i));
+                    break;
+                }else{
+                    break;
+                }
+                    
+                prevSessionDate = all.get(i).getTimeStart().toString();
+                
+            }
+           
+            }
+        return currentSession;
+        
+    }
+
+    public void setUpSessionViews(){
+
+        Realm realm = AppDelegate.getRealmInstance();
+        List<Session> currentTalks = getCurrentTalk();
+        Speaker speaker1 = realm.where(Speaker.class).equalTo("id", currentTalks.get(0).getSpeakerId()).findFirst();
+
+        if(getCurrentTalk().size() ==2){
+            Speaker speaker2 = realm.where(Speaker.class).equalTo("id", currentTalks.get(1).getSpeakerId()).findFirst();
+            //2
+            rl1.setVisibility(View.GONE);
+            rl2.setVisibility(View.VISIBLE);
+            loadImages(currentTalks.get(0),speakerOneImage);
+            loadImages(currentTalks.get(1),speakerTwoImage);
+            speakerOneTv.setText(currentTalks.get(0).getTitle());
+            speakerTwoTv.setText(currentTalks.get(1).getTitle());
+            buildingOneTv.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
+            buildingTwoTv.setText(speaker2.getFirstname()+ " " +speaker2.getSurname());
+
+            startTimeOneTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+            startTimeTwoTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+        }else{
+            //1
+
+            rl1.setVisibility(View.VISIBLE);
+            rl2.setVisibility(View.GONE);
+            loadImages(currentTalks.get(0),speakerOneImage2);
+            speakerOneTv2.setText(currentTalks.get(0).getTitle());
+            buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
+            startTimeOneTv2.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+        }
 
 
-    public void setUpScheduledNotifications(){
+    }
+
+        public void setUpScheduledNotifications(){
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.MONTH, 0);
@@ -121,10 +199,18 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void loadImages(){
-        Picasso.with(context).setLoggingEnabled(true);
-        Picasso.with(context).load("http://i.imgur.com/o6VMNBW.png").fit().centerCrop().into(speakerOneImage);
-        Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").fit().centerCrop().into(speakerTwoImage);
+    public void loadImages(Session currentTalk, ImageView view){
+
+        Realm realm = AppDelegate.getRealmInstance();
+
+        Speaker speaker1 = realm.where(Speaker.class).equalTo("id", currentTalk.getSpeakerId()).findFirst();
+
+            Picasso.with(HomeActivity.this)
+                    .load(speaker1.getPhotoUrl())
+                    .fit()
+                    .centerCrop()
+                    .transform(new RoundedCornersTransform())
+                    .into(view);
 
     }
     public void setOnClickListeners(){

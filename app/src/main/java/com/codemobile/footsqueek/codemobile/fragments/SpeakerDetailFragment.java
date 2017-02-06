@@ -88,7 +88,7 @@ public class SpeakerDetailFragment extends Fragment {
                     public void onSuccess() {
                         Bitmap imageBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                         CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
-                        circleCroppedBitmap.setToImageViewView(imageView);
+                        circleCroppedBitmap.createRoundImage(imageView);
                     }
 
                     @Override

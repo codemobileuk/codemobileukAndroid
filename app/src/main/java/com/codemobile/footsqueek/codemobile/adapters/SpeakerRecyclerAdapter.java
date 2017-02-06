@@ -57,7 +57,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
                     public void onSuccess() {
                         Bitmap imageBitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
                         CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, context);
-                        circleCroppedBitmap.setToImageViewView(holder.imageView);
+                        circleCroppedBitmap.createRoundImage(holder.imageView);
                     }
 
                     @Override

@@ -2,6 +2,12 @@ package com.codemobile.footsqueek.codemobile.services;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
@@ -13,22 +19,28 @@ import android.widget.ImageView;
 public class CircleCroppedBitmap {
 
     RoundedBitmapDrawable imageDrawable;
+    Context context;
+    Bitmap bitmap;
 
     public CircleCroppedBitmap(Bitmap bitmap, Context context) {
+        this.context = context;
+        this.bitmap = bitmap;
 
-        Bitmap croppedBitmap = createCircleImage(bitmap);
+    }
+    public void createCircleImage(){
+        Bitmap croppedBitmap = cropBitmap(bitmap);
         imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), croppedBitmap);
         imageDrawable.setCircular(true);
         imageDrawable.setCornerRadius(Math.max(bitmap.getHeight(), bitmap.getWidth()) / 2.0f);
-
-
     }
 
-    public void setToImageViewView(ImageView view){
+    public void createRoundImage(ImageView view){
+        createCircleImage();
         view.setImageDrawable(imageDrawable);
     }
 
-    private Bitmap createCircleImage(Bitmap srcBmp){
+
+    private Bitmap cropBitmap(Bitmap srcBmp){
         Bitmap dstBmp;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
 
