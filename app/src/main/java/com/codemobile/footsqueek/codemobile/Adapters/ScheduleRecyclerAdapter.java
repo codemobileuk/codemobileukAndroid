@@ -74,8 +74,10 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         Log.d("sadtimes", session.get(position).isDoubleRow()+" is double");
         //if doublerow and if even
 
-            if(session.get(position).isDoubleRow()){
-//todo improve this, maybe remove double row and actually compare the times
+
+
+         /*   if(session.get(position).isDoubleRow()){
+
                 actualRowCount ++;
                 holder.line.setVisibility(View.VISIBLE);
 
@@ -90,7 +92,48 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
                 holder.row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
             }else {
                 holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+            }*/
+
+        if(position == 0){
+            if(session.get(position).getTimeStart().equals(session.get(position+1).getTimeStart())){
+                //rows 0+1 are a double row
+                holder.line.setVisibility(View.VISIBLE);
+                holder.speaker.setText("XXXX");
+                actualRowCount ++;
             }
+
+
+        }else if(position == session.size()-1){
+            if(session.get(position).getTimeStart().equals(session.get(position-1).getTimeStart())){
+                //last row is double row
+                holder.line.setVisibility(View.INVISIBLE);
+                holder.speaker.setText("YYYY");
+            }else{
+                holder.line.setVisibility(View.INVISIBLE);
+                actualRowCount++;
+            }
+        }else {
+            if (session.get(position).getTimeStart().equals(session.get(position+1).getTimeStart())) {
+                //rows 1-second from last (frist double)
+                holder.line.setVisibility(View.VISIBLE);
+                holder.speaker.setText("TTTT");
+                actualRowCount ++;
+            } else if (session.get(position).getTimeStart().equals(session.get(position-1).getTimeStart())) {
+                //rows 1-second from last (second double)
+                holder.line.setVisibility(View.INVISIBLE);
+                holder.speaker.setText("GGG");
+            }else{
+                holder.line.setVisibility(View.INVISIBLE);
+                holder.speaker.setText("BBBB");
+                actualRowCount++;
+            }
+        }
+
+        if(actualRowCount % 2 ==0){
+            holder.row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
+        }else {
+            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+        }
 
 
 
@@ -100,19 +143,23 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         if(position == 0){
             if(session.get(position).isDoubleRow() && session.get(position+1).isDoubleRow()){
                 //rows 0+1 are a double row
+                return true;
             }
-        }else if(position == session.size()){
+        }else if(position == session.size()-1){
             if(session.get(position).isDoubleRow() && session.get(position-1).isDoubleRow()){
                 //last row is double row
+                return true;
             }
         }else {
             if (session.get(position).isDoubleRow() && session.get(position + 1).isDoubleRow()) {
                 //rows 1-second from last (frist double)
+                return true;
             } else if (session.get(position).isDoubleRow() && session.get(position - 1).isDoubleRow()) {
                 //rows 1-second from last (second double)
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
