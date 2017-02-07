@@ -323,12 +323,15 @@ public class HomeActivity extends AppCompatActivity {
 
         List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
         Session tempTalk = null;
+        Session nextTalk = null;
 
         realm.beginTransaction();
         for(Session talk :allTalks){
 
             if(tempTalk !=null){
+
                 if(tempTalk.getTimeStart().equals(talk.getTimeStart())){
+
                     talk.setDoubleRow(true);
                     tempTalk.setDoubleRow(true);
                 }else{

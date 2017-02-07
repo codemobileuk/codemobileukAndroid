@@ -33,7 +33,7 @@ public class NotificationScheduler {
 
         List<Session> sessions = realm.where(Session.class).findAllSorted("timeStart");
         Log.d("dateeeee", sessions.size() +"   size");
-        if(sessions.get(0) !=null){
+        if(sessions.size() !=0){
             for (Session s: sessions) {
                 if(milliBetweenTwoDates(currentDate,s.getTimeStart()) < 900000 && milliBetweenTwoDates(currentDate,s.getTimeStart()) >60000 ){
 

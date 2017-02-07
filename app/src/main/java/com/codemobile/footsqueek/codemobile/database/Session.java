@@ -20,6 +20,7 @@ public class Session extends RealmObject {
     private String title;
     private String desc;
     private String speakerId;
+    private String sessionType;
     private Date timeStart;
     private Date timeEnd;
     private String locationName;
@@ -30,16 +31,25 @@ public class Session extends RealmObject {
 
     }
 
-    public Session(String id, String title, String desc, String speakerId, Date timeStart, Date timeEnd, String locationName, String locationDesc, boolean doubleRow) {
+    public Session(String id, String title, String desc, String sessionType, String speakerId, Date timeStart, Date timeEnd, String locationName, String locationDesc, boolean doubleRow) {
         this.id = id;
         this.title = title;
         this.desc = desc;
+        this.sessionType = sessionType;
         this.speakerId = speakerId;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.locationName = locationName;
         this.locationDesc = locationDesc;
         this.doubleRow = doubleRow;
+    }
+
+    public String getSessionType() {
+        return sessionType;
+    }
+
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
     }
 
     public boolean isDoubleRow() {

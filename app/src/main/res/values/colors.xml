@@ -7,6 +7,8 @@
     <color name="commonWhite">#fdfdfe</color>
     <color name="commonLightGrey">#eeeeee</color>
     <color name="commonDarkGrey">#8e8e8e</color>
+    <color name="commonVeryDarkGrey">#2e2f2f</color>
+
 
     <color name="textDarkGrey">#434343</color>
     <color name="textLightGrey">#95989A</color>

@@ -182,8 +182,9 @@ public class Fetcher extends AsyncTask<String,Void,String>{
         final String ID = "SessionId";
         final String TITLE = "SessionTitle";
         final String DESCRIPTION = "SessionDescription";
+        final String SESSION_TYPE = "SessionType";
         final String SPEAKER = "Speaker";
-        final String SPEAKER_ID = "speakerId";
+        final String SPEAKER_ID = "SpeakerId";
         final String START_TIME = "SessionStartDateTime";
         final String END_TIME = "SessionEndDateTime";
         final String SESSION_LOCATION = "SessionLocation";
@@ -205,6 +206,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 sessionJSON.getString(ID),
                 sessionJSON.getString(TITLE),
                 sessionJSON.getString(DESCRIPTION),
+                sessionJSON.getString(SESSION_TYPE),
                 speakerJSON.getString(SPEAKER_ID),
                 timeConverter.convertStringToDate(sessionJSON.getString(START_TIME)),
                 timeConverter.convertStringToDate(sessionJSON.getString(END_TIME)),
@@ -212,10 +214,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 locationJSON.getString(LOCATION_DESCRIPTION),
                 false
             );
-
             Session.addNewRow(session);
-
-
         }
 
     }
