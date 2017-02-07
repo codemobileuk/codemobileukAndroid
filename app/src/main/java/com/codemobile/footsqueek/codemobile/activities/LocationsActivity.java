@@ -32,10 +32,10 @@ public class LocationsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),1);
+        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(glm);
 
-        adapter = new LocationRecyclerAdapter(getLocations());
+        adapter = new LocationRecyclerAdapter(getLocations(),getApplicationContext());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

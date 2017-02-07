@@ -1,16 +1,21 @@
 package com.codemobile.footsqueek.codemobile.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.database.Locations;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,9 +26,10 @@ import java.util.List;
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.LocationViewHolder> {
 
     List<Locations> location;
+    Context context;
 
-
-    public LocationRecyclerAdapter(List<Locations> location) {
+    public LocationRecyclerAdapter(List<Locations> location, Context context) {
+        this.context = context;
         this.location = location;
     }
 
@@ -44,24 +50,44 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
         holder.locationName.setText(location.get(position).getLocationName());
         Log.d("locatiosn","==== " + location.get(position).getLocationName());
-        setOnClickListener();
+        setOnClickListener(holder,position);
+
+        Picasso.with(context).load("http://i.imgur.com/OlrKj5t.jpg").fit().centerCrop().into(holder.imageView);
     }
 
-    private void setOnClickListener(){
+    private void setOnClickListener(LocationViewHolder holder, final int pos){
+
+
+
+        holder.locationName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String lon = location.get(pos).getLongitude()+"";
+                String lat = location.get(pos).getLatitude()+"";
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr=" + lat +"," +lon +""));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
 
     }
 
     public static class LocationViewHolder extends RecyclerView.ViewHolder{
 
-        Button directionsButton;
-        TextView locationName;
+      //  Button directionsButton;
+        TextView locationName, distanceTv;
+        ImageView imageView;
 
         public LocationViewHolder(View itemView) {
             super(itemView);
 
-            directionsButton = (Button)itemView.findViewById(R.id.navigate_button);
+           // directionsButton = (Button)itemView.findViewById(R.id.navigate_button);
             locationName = (TextView)itemView.findViewById(R.id.location_name);
-
+            distanceTv = (TextView)itemView.findViewById(R.id.distance_tv);
+            imageView = (ImageView)itemView.findViewById(R.id.placeImageView);
         }
     }
 

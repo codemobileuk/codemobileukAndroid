@@ -81,12 +81,10 @@ public class HomeActivity extends AppCompatActivity {
         startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
         startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
         ll = (LinearLayout)findViewById(R.id.ll1);
-
         rl1 = (RelativeLayout)findViewById(R.id.rl1);
         rl2 = (RelativeLayout)findViewById(R.id.rl2);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
-
 
         fetchSchedule();
 

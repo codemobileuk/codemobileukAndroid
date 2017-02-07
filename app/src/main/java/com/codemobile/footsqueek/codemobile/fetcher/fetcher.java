@@ -142,7 +142,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
     private void parseSpeakersJson(String json)throws JSONException{
 
-        final String ID = "speakerId";
+        final String ID = "SpeakerId";
         final String FIRSTNAME = "Firstname";
         final String SURNAME = "Surname";
         final String TWITTER = "Twitter";
