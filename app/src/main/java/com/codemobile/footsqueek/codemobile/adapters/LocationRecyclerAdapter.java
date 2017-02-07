@@ -59,7 +59,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
 
 
-        holder.locationName.setOnClickListener(new View.OnClickListener() {
+        holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String lon = location.get(pos).getLongitude()+"";
@@ -79,7 +79,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
       //  Button directionsButton;
         TextView locationName, distanceTv;
-        ImageView imageView;
+        ImageView imageView, button;
 
         public LocationViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +88,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             locationName = (TextView)itemView.findViewById(R.id.location_name);
             distanceTv = (TextView)itemView.findViewById(R.id.distance_tv);
             imageView = (ImageView)itemView.findViewById(R.id.placeImageView);
+            button = (ImageView)itemView.findViewById(R.id.button);
         }
     }
 
