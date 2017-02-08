@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.realm.Realm;
+import io.realm.Sort;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -115,7 +116,9 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     public List<SessionFullData> createScheduleWithHeaders(){
         Realm realm = AppDelegate.getRealmInstance();
 
-        List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
+
+        List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
+
 
         for (int i = 0; i < allTalks.size(); i++) {
             if(i != allTalks.size()-1 && i !=0){//i isnt the last or first instance
