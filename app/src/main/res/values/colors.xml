@@ -8,6 +8,7 @@
     <color name="commonLightGrey">#eeeeee</color>
     <color name="commonDarkGrey">#8e8e8e</color>
     <color name="commonVeryDarkGrey">#2e2f2f</color>
+    <color name="commonLightGreyLine">#dadada</color>
 
 
     <color name="textDarkGrey">#434343</color>

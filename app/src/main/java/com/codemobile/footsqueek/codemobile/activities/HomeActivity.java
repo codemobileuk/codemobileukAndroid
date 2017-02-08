@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -21,7 +20,9 @@ import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.SessionFullData;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
@@ -30,13 +31,10 @@ import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import io.realm.Realm;
 
@@ -56,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
+
 
     private PendingIntent pendingIntent;
 
@@ -249,7 +248,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 fetchSpeakers();
-                setDoubleRows();
 
             }
 
@@ -315,32 +313,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void setDoubleRows(){
-        //returns all the speakers filtered on date then updates the data to allow for a concept
-        //of double rows.
-        //todo filter by room
-        Realm realm = AppDelegate.getRealmInstance();
-
-        List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart");
-        Session tempTalk = null;
-        Session nextTalk = null;
-
-        realm.beginTransaction();
-        for(Session talk :allTalks){
-
-            if(tempTalk !=null){
-
-                if(tempTalk.getTimeStart().equals(talk.getTimeStart())){
-
-                    talk.setDoubleRow(true);
-                    tempTalk.setDoubleRow(true);
-                }else{
-                    talk.setDoubleRow(false);
-                }
-            }
-            tempTalk = talk;
-        }
-        realm.commitTransaction();
-
-    }
 }
+
+
+

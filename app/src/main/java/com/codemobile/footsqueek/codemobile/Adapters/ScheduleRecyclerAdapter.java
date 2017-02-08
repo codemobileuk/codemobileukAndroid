@@ -1,21 +1,28 @@
 package com.codemobile.footsqueek.codemobile.adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
+import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
+import com.codemobile.footsqueek.codemobile.database.SessionFullData;
+import com.codemobile.footsqueek.codemobile.database.SessionType;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,91 +32,135 @@ import io.realm.Realm;
  * Created by gregv on 07/01/2017.
  */
 
-public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecyclerAdapter.ScheduleViewHolder> {
+public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private List<Session> session;
+ //   private List<Session> session;
+    private List<SessionFullData> sessionWithHeaders;
     private ScheduleRecyclerInterface scheduleRecyclerInterface;
     private Context context;
     private int actualRowCount =-1;
 
-    public ScheduleRecyclerAdapter(List<Session> session, ScheduleRecyclerInterface scheduleRecyclerInterface, Context context) {
+    private static int TYPE_BREAK = 1;
+    private static int TYPE_SESSION = 0;
+    private static int TYPE_HEADER = 2;
+
+    public ScheduleRecyclerAdapter(List<SessionFullData> sessionWithHeaders, ScheduleRecyclerInterface scheduleRecyclerInterface, Context context) {
         this.context = context;
         this.scheduleRecyclerInterface = scheduleRecyclerInterface;
-        this.session = session;
+        this.sessionWithHeaders = sessionWithHeaders;
     }
 
-    private void setClickListeners(final ScheduleViewHolder holder, final int position){
+    private void setClickListeners(final RecyclerView.ViewHolder holder, final Session session){
 
-        holder.row.setOnClickListener(new View.OnClickListener() {
+        ((ScheduleViewHolder)holder).row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scheduleRecyclerInterface.talkClicked(session.get(position).getId());
+                scheduleRecyclerInterface.talkClicked(session.getId());
             }
         });
 
     }
 
     @Override
-    public ScheduleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ScheduleViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_item_layout,parent,false)
-        );
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v;
+        if(viewType == TYPE_SESSION){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_item_layout,parent,false);
+            return new ScheduleViewHolder(v);
+        }else if(viewType == TYPE_BREAK) {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_break_item_layout,parent,false);
+            return new BreakHolder(v);
+        }else if(viewType == TYPE_HEADER){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_header_item_layout,parent,false);
+            return new HeaderHolder(v);
+        }else {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_break_item_layout,parent,false);
+            return new ScheduleViewHolder(v);//TODO CHANGE
+        }
+
+
     }
 
     @Override
-    public void onBindViewHolder(ScheduleViewHolder holder, int position) {
-        setClickListeners(holder, position);
-        Realm realm = AppDelegate.getRealmInstance();
-        Speaker speaker = realm.where(Speaker.class).equalTo("id",session.get(position).getSpeakerId()).findFirst();
+    public int getItemViewType(int position) {
 
 
-        holder.title.setText(session.get(position).getTitle());
-        holder.timeStart.setText(TimeConverter.trimTimeFromDate(session.get(position).getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.get(position).getTimeEnd()));
-        holder.speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
+        Session session = sessionWithHeaders.get(position).getSession();
 
-        session.get(position).isDoubleRow();
-
-        if(position == 0){
-            if(session.get(position).getTimeStart().equals(session.get(position+1).getTimeStart())){
-                //rows 0+1 are a double row
-                holder.line.setVisibility(View.VISIBLE);
-                actualRowCount ++;
+        if(session != null){
+            if(session.getSessionType().equals(SessionType.BREAK)){
+                return TYPE_BREAK;
+            }else {
+                return TYPE_SESSION;
             }
-        }else if(position == session.size()-1){
-            if(session.get(position).getTimeStart().equals(session.get(position-1).getTimeStart())){
-                //last row is double row
-                holder.line.setVisibility(View.INVISIBLE);
-            }else{
-                holder.line.setVisibility(View.INVISIBLE);
-                actualRowCount++;
-            }
-        }else {
-            if (session.get(position).getTimeStart().equals(session.get(position+1).getTimeStart())) {
-                //rows 1-second from last (frist double)
-                holder.line.setVisibility(View.VISIBLE);
-                actualRowCount ++;
-            } else if (session.get(position).getTimeStart().equals(session.get(position-1).getTimeStart())) {
-                //rows 1-second from last (second double)
-                holder.line.setVisibility(View.INVISIBLE);
-            }else{
-                holder.line.setVisibility(View.INVISIBLE);
-                actualRowCount++;
-            }
+        }else{
+            return TYPE_HEADER;
         }
 
-        if(actualRowCount % 2 ==0){
-            holder.row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
-        }else {
-            holder.row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
-        }
 
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        Session session = sessionWithHeaders.get(position).getSession();
+
+        if(holder instanceof ScheduleViewHolder){
+            setClickListeners(holder, session);
+            Realm realm = AppDelegate.getRealmInstance();
+            Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
+
+            ((ScheduleViewHolder)holder).title.setText(session.getTitle());
+            ((ScheduleViewHolder)holder).speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+            if(session.getLocationName().equals("Molloy")){
+                ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_molloy));
+            }else{
+                ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_beswick));
+            }
+
+                if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT)
+                {
+                    ((ScheduleViewHolder)holder).line.setVisibility(View.VISIBLE);
+                    ((ScheduleViewHolder) holder).timeStart.setVisibility(View.GONE);
+
+                }
+                if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT){
+                    ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
+                    ((ScheduleViewHolder) holder).timeStart.setVisibility(View.GONE);
+                }else if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.NORMAL){
+                    ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
+                    ((ScheduleViewHolder)holder).timeStart.setText(TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+                    actualRowCount++;
+                }
+
+            if(actualRowCount % 2 ==0){
+                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
+            }else {
+                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+            }
+
+        }else if(holder instanceof BreakHolder){
+            //actualRowCount++;
+            ((BreakHolder) holder).time.setText(TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+            ((BreakHolder) holder).name.setText(sessionWithHeaders.get(position).getSession().getSessionType());
+
+        }else if(holder instanceof HeaderHolder){
+            actualRowCount ++;
+            ((HeaderHolder) holder).time.setText(sessionWithHeaders.get(position).getTime());
+            if(actualRowCount % 2 ==0){
+                ((HeaderHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
+            }else {
+                ((HeaderHolder)holder).row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+            }
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return session.size();
+        return sessionWithHeaders.size();
     }
 
     public static class ScheduleViewHolder extends RecyclerView.ViewHolder{
@@ -117,6 +168,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         TextView title;
         TextView speaker;
         TextView timeStart;
+        ImageView buildingIcon;
         View line;
         LinearLayout row;
 
@@ -129,8 +181,37 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             timeStart = (TextView)itemView.findViewById(R.id.timeStart);
             row = (LinearLayout)itemView.findViewById(R.id.row);
             line = (View)itemView.findViewById(R.id.line);
+            buildingIcon = (ImageView)itemView.findViewById(R.id.buildingIcon);
         }
 
+    }
+
+    public static class BreakHolder extends RecyclerView.ViewHolder{
+
+        TextView time;
+        TextView name;
+
+        public BreakHolder(View itemView) {
+            super(itemView);
+
+            time = (TextView)itemView.findViewById(R.id.timeStart);
+            name = (TextView)itemView.findViewById(R.id.name);
+        }
+    }
+
+    public static class HeaderHolder extends RecyclerView.ViewHolder{
+
+        TextView time;
+        LinearLayout row;
+      //  TextView name;
+
+        public HeaderHolder(View itemView) {
+            super(itemView);
+
+            time = (TextView)itemView.findViewById(R.id.timeStart);
+            //name = (TextView)itemView.findViewById(R.id.name);
+            row = (LinearLayout)itemView.findViewById(R.id.row);
+        }
     }
 
 }
