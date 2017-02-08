@@ -48,7 +48,12 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
         Session session = realm.where(Session.class).equalTo("speakerId",speakers.get(position).getId()).findFirst();
 
         holder.speakerName.setText(speakers.get(position).getFirstname() +" " +speakers.get(position).getSurname() );
-        holder.speakerTalk.setText(session.getTitle());
+        if(session != null){
+            holder.speakerTalk.setText(session.getTitle());
+        }else{
+            holder.speakerTalk.setText("A speaker with no talks :O");
+        }
+
         Picasso.with(context)
                 .load(speakers.get(position)
                 .getPhotoUrl()).fit().centerCrop()

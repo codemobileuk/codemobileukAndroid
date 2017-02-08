@@ -67,12 +67,17 @@ public class SpeakerDetailFragment extends Fragment {
         } else {
             Realm realm = AppDelegate.getRealmInstance();
             speaker = realm.where(Speaker.class).equalTo("id", speakerId).findFirst();
-                        Session session = realm.where(Session.class).equalTo("speakerId",speakerId).findFirst();
+            Session session = realm.where(Session.class).equalTo("speakerId",speakerId).findFirst();
 
             setImage(speaker);
 
             nameTv.setText(speaker.getFirstname());
-            talkTv.setText(session.getTitle());
+            if(session != null){
+                talkTv.setText(session.getTitle());
+            }else{
+                talkTv.setText("No talk");
+            }
+
             bioTv.setText(speaker.getProfile()+ "Antony was a supporter of Julius Caesar, and served as one of his generals during the conquest of Gaul and the Civil War. Antony was appointed administrator of Italy while Caesar eliminated political opponents in Greece, North Africa, and Spain. After Caesar's death in 44 BC, Antony joined forces with Marcus Aemilius Lepidus, another of Caesar's generals, and Octavian, Caesar's nephew and adopted son, forming a three-man dictatorship known to historians as the Second Triumvirate. The Triumvirs defeated Caesar's murderers, the Liberatores, at the Battle of Philippi in 42 BC, and divided the government of the Republic between themselves. Antony was assigned Rome's eastern provinces, including the client kingdom of Egypt, then ruled by Cleopatra VII Philopator, and was given the command in Rome's war against Parthia.");
         }
 
