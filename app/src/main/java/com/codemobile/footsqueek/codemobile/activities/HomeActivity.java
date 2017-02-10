@@ -5,30 +5,37 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
-import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
 import com.codemobile.footsqueek.codemobile.database.Session;
-import com.codemobile.footsqueek.codemobile.database.SessionFullData;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import android.support.design.widget.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,7 +49,7 @@ import io.realm.Realm;
  * Created by greg on 20/01/2017.
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2;
     ImageView speakerTwoImage;
@@ -54,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
     RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
+    private String[] mTest;
+    private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
 
 
     private PendingIntent pendingIntent;
@@ -62,6 +72,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+      //  ActionBar ab = getSupportActionBar();
+    //    ab.setTitle("Code Mobile");
+     //   ab.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
 
         context = getApplicationContext();
         speakerOneTv = (TextView)findViewById(R.id.nameTv1);
@@ -85,14 +99,45 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
+
+        mTest = new String[5];
+        mTest[0] = "one";
+        mTest[1] = "two";
+        mTest[2] = "three";
+        mTest[3] = "four";
+        mTest[4] = "six";
+
+     //   mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+    //    mDrawerList = (ListView) findViewById(R.id.left_drawer);
+    //    mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+    //            R.layout.list_item, mTest));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         fetchSchedule();
-
-
         setOnClickListeners();
-
-
         setUpScheduledNotifications();
         getCurrentTalk();
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void setUpRecycler(){
@@ -141,6 +186,48 @@ public class HomeActivity extends AppCompatActivity {
             }
         return currentSession;
         
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.nav_schedule) {
+
+        } else if (id == R.id.nav_speakers) {
+
+        } else if (id == R.id.nav_map) {
+
+        } else if (id == R.id.nav_website) {
+
+        } else if (id == R.id.nav_sponsors) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public void setUpSessionViews(){
