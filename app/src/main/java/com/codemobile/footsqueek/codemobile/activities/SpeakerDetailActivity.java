@@ -35,7 +35,7 @@ public class SpeakerDetailActivity extends AppCompatActivity {
         data.putString("id",speakerId);
 
         if (savedInstanceState == null) {
-            // Insert detail fragment based on the item passed
+            // Insert detail fragment based on the navigationViewItemPosition passed
             speakerDetailFragment = new SpeakerDetailFragment();
             speakerDetailFragment.setArguments(data);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

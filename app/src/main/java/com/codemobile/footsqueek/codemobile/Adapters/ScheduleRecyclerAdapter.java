@@ -138,7 +138,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(actualRowCount % 2 ==0){
                 ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
             }else {
-                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonLightGrey));
             }
 
         }else if(holder instanceof BreakHolder){

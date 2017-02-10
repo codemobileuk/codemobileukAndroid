@@ -1,20 +1,19 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.codemobile.footsqueek.codemobile.R;
 
@@ -24,10 +23,42 @@ import com.codemobile.footsqueek.codemobile.R;
 
 public class LaunchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
+    int[][] states;
+    int[] colors;
+    ColorStateList myList;
+    int navigationViewItemPosition = 0;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+        setColours();
+        setupActionBar();
+
+    }
+
+    public void setColours(){
+       states = new int[][] {
+                //    new int[] { android.R.attr.state_enabled}, // enabled
+                new int[] {-android.R.attr.state_enabled}, // disabled
+                new int[] {-android.R.attr.state_checked}, // unchecked
+                new int[] { android.R.attr.state_checked}
+        };
+
+        colors = new int[] {
+                //   Color.MAGENTA,
+                Color.BLACK,
+                ContextCompat.getColor(this.getApplicationContext(), R.color.commonDarkGrey),
+                ContextCompat.getColor(this.getApplicationContext(), R.color.textRed)
+
+        };
+    }
+
+
+
+    public void setupActionBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,8 +71,15 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        myList = new ColorStateList(states, colors);
+        navigationView.setItemTextColor(myList);
+        navigationView.setItemIconTintList(myList);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
+
 
     }
+
 
 
     @Override
@@ -63,7 +101,7 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
+        // Handle action bar navigationViewItemPosition clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
@@ -79,17 +117,21 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view navigationViewItemPosition clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            Intent in = new Intent(getApplicationContext(),HomeActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_schedule) {
-
+            Intent in = new Intent(getApplicationContext(),ScheduleActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_speakers) {
-
+            Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_map) {
-
+            Intent in = new Intent(getApplicationContext(),LocationsActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_website) {
 
         } else if (id == R.id.nav_sponsors) {
@@ -99,5 +141,12 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
     }
 }

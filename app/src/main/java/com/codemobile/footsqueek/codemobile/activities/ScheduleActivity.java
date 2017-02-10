@@ -12,7 +12,7 @@ import com.codemobile.footsqueek.codemobile.R;
  * Created by greg on 19/01/2017.
  */
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends LaunchActivity {
 
 
 
@@ -22,7 +22,8 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         determinePaneLayout();
-
+        setupActionBar();
+        navigationViewItemPosition = 1;
 
     }
 
@@ -34,5 +35,9 @@ public class ScheduleActivity extends AppCompatActivity {
             AppDelegate.setTwoPane(false);
         }
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationViewItemPosition = 1;
+    }
 }

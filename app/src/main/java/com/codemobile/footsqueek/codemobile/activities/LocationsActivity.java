@@ -19,7 +19,7 @@ import io.realm.Realm;
  * Created by greg on 06/02/2017.
  */
 
-public class LocationsActivity extends AppCompatActivity {
+public class LocationsActivity extends LaunchActivity {
 
     LocationRecyclerAdapter adapter;
     RecyclerView recyclerView;
@@ -38,11 +38,19 @@ public class LocationsActivity extends AppCompatActivity {
         adapter = new LocationRecyclerAdapter(getLocations(),getApplicationContext());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        setupActionBar();
+        navigationViewItemPosition = 3;
 
     }
 
     public List<Locations> getLocations(){
         Realm realm = AppDelegate.getRealmInstance();
         return realm.where(Locations.class).findAll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationViewItemPosition = 3;
     }
 }

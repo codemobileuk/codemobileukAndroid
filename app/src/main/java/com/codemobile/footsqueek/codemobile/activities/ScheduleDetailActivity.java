@@ -33,7 +33,7 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         data.putString("id",talkId);
 
         if (savedInstanceState == null) {
-            // Insert detail fragment based on the item passed
+            // Insert detail fragment based on the navigationViewItemPosition passed
             scheduleDetailFragment = new ScheduleDetailFragment();
             scheduleDetailFragment.setArguments(data);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

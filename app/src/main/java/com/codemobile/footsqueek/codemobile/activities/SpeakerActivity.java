@@ -12,7 +12,7 @@ import com.codemobile.footsqueek.codemobile.R;
  * Created by greg on 23/01/2017.
  */
 
-public class SpeakerActivity extends AppCompatActivity {
+public class SpeakerActivity extends LaunchActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,6 +21,16 @@ public class SpeakerActivity extends AppCompatActivity {
         determinePaneLayout();
 
 
+        setupActionBar();
+        navigationViewItemPosition = 2;
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationViewItemPosition = 2;
     }
 
     public void determinePaneLayout() {
