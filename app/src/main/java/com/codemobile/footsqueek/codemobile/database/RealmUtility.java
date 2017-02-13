@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -33,6 +34,14 @@ public class RealmUtility {
 
     }
 
+    public static List<Session> getFutureSessions(){
+
+        Date date = new Date();
+        date.getTime();
+        Realm realm = AppDelegate.getRealmInstance();
+
+        return realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
+    }
 
 
 }

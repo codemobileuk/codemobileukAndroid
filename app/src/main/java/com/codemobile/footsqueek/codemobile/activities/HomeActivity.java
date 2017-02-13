@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
@@ -52,10 +53,6 @@ public class HomeActivity extends LaunchActivity{
     RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
-    NavigationView navigationView;
-    private ListView mDrawerList;
-    private DrawerLayout mDrawerLayout;
-
 
     private PendingIntent pendingIntent;
 
@@ -106,12 +103,15 @@ public class HomeActivity extends LaunchActivity{
 
     public void setUpRecycler(){
 
+        Date date = new Date();
+        date.getTime();
       //  recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(lm);
 
         Realm realm = AppDelegate.getRealmInstance();
-        List<Session> sessions = realm.where(Session.class).findAllSorted("timeStart");
+        List<Session> all = RealmUtility.getFutureSessions();
+        List<Session> sessions = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
 
 
         adapter = new ScheduleHorizontalRecyclerAdapter(sessions);
@@ -120,14 +120,11 @@ public class HomeActivity extends LaunchActivity{
 
     }
 
+
     public List<Session> getCurrentTalk(){
 
-        Date date = new Date();
-        date.getTime();
 
-        Realm realm = AppDelegate.getRealmInstance();
-       // Session session = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart").first();
-        List<Session> all = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
+        List<Session> all = RealmUtility.getFutureSessions();
         List<Session> currentSession = new ArrayList<>();
         String prevSessionDate = "";
         for (int i = 0; i < all.size(); i++) {
