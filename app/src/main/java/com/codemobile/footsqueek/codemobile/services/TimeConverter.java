@@ -19,7 +19,7 @@ public class TimeConverter {
 
         Date date;//"2017-04-17T09:45:00"
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+      //  sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         try{
             date = sdf.parse(dateString);
