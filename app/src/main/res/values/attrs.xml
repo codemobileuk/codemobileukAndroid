@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LineButton">
+        <attr name="Text" format="string"/>
+        <attr name="flabb" format="integer"/>
+    </declare-styleable>
+
+</resources>

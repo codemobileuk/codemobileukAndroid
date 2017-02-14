@@ -10,8 +10,12 @@ import android.widget.ImageButton;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.customUi.LineButton;
 import com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by greg on 19/01/2017.
@@ -19,7 +23,7 @@ import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterfa
 
 public class ScheduleActivity extends LaunchActivity {
 
-    Button dayOneBtn, dayTwoBtn, dayThreeBtn;
+    LineButton dayOneBtn, dayTwoBtn, dayThreeBtn;
 
     ScheduleDayChooserInterface scheduleDayChooserInterface;
 
@@ -33,9 +37,9 @@ public class ScheduleActivity extends LaunchActivity {
         setContentView(R.layout.activity_schedule);
 
 
-        dayOneBtn = (Button)findViewById(R.id.dayOneButton);
-        dayTwoBtn = (Button)findViewById(R.id.dayTwoButton);
-        dayThreeBtn = (Button)findViewById(R.id.dayThreeButton);
+        dayOneBtn = (LineButton)findViewById(R.id.dayOneButton);
+        dayTwoBtn = (LineButton)findViewById(R.id.dayTwoButton);
+        dayThreeBtn = (LineButton)findViewById(R.id.dayThreeButton);
 
         determinePaneLayout();
         setupActionBar();
@@ -64,24 +68,36 @@ public class ScheduleActivity extends LaunchActivity {
 
     public void setupButtonListeners(){
 
+        List<LineButton> buttons = new ArrayList<>();
+        buttons.add(dayOneBtn);
+        buttons.add(dayTwoBtn);
+        buttons.add(dayThreeBtn);
 
+        dayOneBtn.setTogglePartners(buttons,true);
+        dayTwoBtn.setTogglePartners(buttons,false);
+        dayThreeBtn.setTogglePartners(buttons, false);
+
+        dayOneBtn.isClickable();
 
         dayOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scheduleDayChooserInterface.dayOne();
+                dayOneBtn.customClick();
             }
         });
         dayTwoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scheduleDayChooserInterface.dayTwo();
+                dayTwoBtn.customClick();
             }
         });
         dayThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scheduleDayChooserInterface.dayThree();
+                dayThreeBtn.customClick();
             }
         });
     }
