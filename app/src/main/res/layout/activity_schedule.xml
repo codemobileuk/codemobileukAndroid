@@ -28,6 +28,41 @@
                 android:background="@color/cardview_dark_background"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="0dp"
+                android:background="@color/cardview_dark_background"
+                >
+
+                <Button
+                    android:padding="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dayOneButton"
+                    android:text="18th"
+                    android:background="@color/cardview_dark_background"/>
+                <Button
+                    android:padding="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="19th"
+                    android:background="@color/cardview_dark_background"
+                    android:id="@+id/dayTwoButton"/>
+                <Button
+                    android:padding="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dayThreeButton"
+                    android:text="20th"
+                    android:background="@color/cardview_dark_background"/>
+            </LinearLayout>
 
 
         </android.support.design.widget.AppBarLayout>
@@ -67,7 +102,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:itemTextColor="@color/colorAccent"
         app:menu="@menu/drawer_menu" />
 
 </android.support.v4.widget.DrawerLayout>
