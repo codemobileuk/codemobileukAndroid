@@ -91,11 +91,7 @@ public class LineButton extends LinearLayout {
                 togglePartners.get(i).hasClickFocus = false;
                 togglePartners.get(i).updateViews();
             }
-
         }
-
-
-
     }
 
     public void updateViews(){

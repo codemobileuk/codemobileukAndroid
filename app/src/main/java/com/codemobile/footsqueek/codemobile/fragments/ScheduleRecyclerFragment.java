@@ -80,26 +80,33 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         mListener = new ScheduleDayChooserInterface() {
             @Override
             public void dayOne() {
-                Log.d("terete", "day one!!!!!!!!!!!!!");
                 setupRecycler(createScheduleWithHeaders(18));
-                talkClicked(getFirstRowSessionId());
+                if(AppDelegate.isTwoPane()){
+                    talkClicked(getFirstRowSessionId());
+                }
+
             }
 
             @Override
             public void dayTwo() {
                 setupRecycler(createScheduleWithHeaders(19));
-                talkClicked(getFirstRowSessionId());
-                Log.d("terete", "day 222!!!!!!!!!!!!!");
+                if(AppDelegate.isTwoPane()){
+                    talkClicked(getFirstRowSessionId());
+                }
             }
 
             @Override
             public void dayThree() {
                 setupRecycler(createScheduleWithHeaders(20));
-                talkClicked(getFirstRowSessionId());
+                if(AppDelegate.isTwoPane()){
+                    talkClicked(getFirstRowSessionId());
+                }
             }
         };
         setupRecycler(createScheduleWithHeaders(18));
-        talkClicked(getFirstRowSessionId());
+        if(AppDelegate.isTwoPane()){
+            talkClicked(getFirstRowSessionId());
+        }
 
         return view;
     }
