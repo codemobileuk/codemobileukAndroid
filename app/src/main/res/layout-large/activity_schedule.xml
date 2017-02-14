@@ -45,6 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="true"
+                        app:Text="18th"
                         android:id="@+id/dayOneButton">
 
                     </com.codemobile.footsqueek.codemobile.customUi.LineButton>
@@ -60,7 +61,7 @@
                    <com.codemobile.footsqueek.codemobile.customUi.LineButton
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       app:Text="jasdasdasdasd"
+                       app:Text="19th"
                        app:flabb="12"
                        android:id="@+id/dayTwoButton">
 
@@ -77,8 +78,7 @@
                     <com.codemobile.footsqueek.codemobile.customUi.LineButton
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:Text="adadad"
-
+                        app:Text="20th"
                         android:id="@+id/dayThreeButton">
 
                     </com.codemobile.footsqueek.codemobile.customUi.LineButton>

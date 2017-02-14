@@ -66,41 +66,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
     private List <SessionFullData> sfd = new ArrayList<>();
 
-
-    @Override
-    public void onAttach(Context context) {
-        mContext=(ScheduleActivity)context;
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        mContext=(ScheduleActivity)activity;
-        super.onAttach(activity);
-    }
-
-    public void setupRecycler(final List<SessionFullData>sessionsAndHeaders){
-        GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
-
-        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if(sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT || sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT ){
-                    return 1;
-                }else{
-                    return 2;
-                }
-
-            }
-        });
-
-        tealRecyclerView.setLayoutManager(glm);
-        tealAdapter = new ScheduleRecyclerAdapter(sessionsAndHeaders,this,mContext);
-        tealRecyclerView.setAdapter(tealAdapter);
-        tealAdapter.notifyDataSetChanged();
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -138,6 +103,41 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
         return view;
     }
+    @Override
+    public void onAttach(Context context) {
+        mContext=(ScheduleActivity)context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        mContext=(ScheduleActivity)activity;
+        super.onAttach(activity);
+    }
+
+    public void setupRecycler(final List<SessionFullData>sessionsAndHeaders){
+        GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
+
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT || sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT ){
+                    return 1;
+                }else{
+                    return 2;
+                }
+
+            }
+        });
+
+        tealRecyclerView.setLayoutManager(glm);
+        tealAdapter = new ScheduleRecyclerAdapter(sessionsAndHeaders,this,mContext);
+        tealRecyclerView.setAdapter(tealAdapter);
+        tealAdapter.notifyDataSetChanged();
+
+    }
+
+
 
     private String getFirstRowSessionId(){
         for (int i = 0; i < sfd.size(); i++) {

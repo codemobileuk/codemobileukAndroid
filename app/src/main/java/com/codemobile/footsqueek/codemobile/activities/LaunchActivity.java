@@ -2,6 +2,7 @@ package com.codemobile.footsqueek.codemobile.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 
 /**
@@ -36,6 +40,7 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
 
         setColours();
         setupActionBar();
+        determineTwoPane();
 
     }
 
@@ -80,6 +85,30 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
 
     }
 
+    private void determineTwoPane(){
+
+        View view = (View)findViewById(R.id.largelayout);
+        if(view != null){
+            AppDelegate.setTwoPane(true);
+        }else{
+            AppDelegate.setTwoPane(false);
+        }
+
+
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            Toast.makeText(this, "Large screen", Toast.LENGTH_LONG).show();
+        }
+        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL) {
+            Toast.makeText(this, "Normal sized screen", Toast.LENGTH_LONG).show();
+        }
+        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {
+            Toast.makeText(this, "Small sized screen", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this, "Screen size is neither large, normal or small", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
     @Override
