@@ -17,6 +17,7 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
 import com.codemobile.footsqueek.codemobile.database.SessionFullData;
 import com.codemobile.footsqueek.codemobile.database.SessionType;
+import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
@@ -120,6 +121,23 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_beswick));
             }
 
+            List<Tag> tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
+
+               // tagsString = tagsString +" "+ tags.get(i).getTag();
+                if(tags.size() == 2){
+                    Log.d("uhhhhh", session.getId() +"  " + tags.get(0).getTag() +" == " + tags.get(1).getTag());
+                    ((ScheduleViewHolder) holder).tag1.setText(tags.get(1).getTag());
+                    ((ScheduleViewHolder) holder).tag2.setText(tags.get(0).getTag());
+                }else if(tags.size() ==1){
+                    Log.d("uhhhhh", session.getId() +"  " + tags.get(0).getTag());
+                    ((ScheduleViewHolder) holder).tag1.setText(tags.get(0).getTag());
+                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+                }else{
+                    Log.d("uhhhhh", session.getId());
+                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+                }
+
                 if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT)
                 {
                     ((ScheduleViewHolder)holder).line.setVisibility(View.VISIBLE);
@@ -158,6 +176,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
+
     @Override
     public int getItemCount() {
         return sessionWithHeaders.size();
@@ -168,9 +187,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView title;
         TextView speaker;
         TextView timeStart;
+        TextView tag1, tag2;
         ImageView buildingIcon;
         View line;
         LinearLayout row;
+
 
 
         public ScheduleViewHolder(View itemView){
@@ -182,6 +203,9 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             row = (LinearLayout)itemView.findViewById(R.id.row);
             line = (View)itemView.findViewById(R.id.line);
             buildingIcon = (ImageView)itemView.findViewById(R.id.buildingIcon);
+            tag1 = (TextView)itemView.findViewById(R.id.tag1);
+            tag2 = (TextView)itemView.findViewById(R.id.tag2);
+
         }
 
     }

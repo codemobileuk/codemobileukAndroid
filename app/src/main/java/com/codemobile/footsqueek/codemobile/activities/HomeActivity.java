@@ -302,8 +302,8 @@ public class HomeActivity extends LaunchActivity{
 
             @Override
             public void onComplete() {
-                setUpRecycler();
-                setUpSessionViews();
+                fetchTags();
+
             }
 
             @Override
@@ -318,6 +318,29 @@ public class HomeActivity extends LaunchActivity{
         });
         fetcher.execute("Locations");
 
+    }
+
+    public void fetchTags(){
+
+        final Fetcher fetcher = new Fetcher();
+        fetcher.setFetcherInterface(new FetcherInterface() {
+            @Override
+            public void onComplete() {
+                setUpRecycler();
+                setUpSessionViews();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onProgress() {
+
+            }
+        });
+        fetcher.execute("Tags");
     }
 
 }

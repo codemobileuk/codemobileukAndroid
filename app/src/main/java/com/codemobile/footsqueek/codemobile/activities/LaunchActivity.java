@@ -87,7 +87,7 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
 
     private void determineTwoPane(){
 
-        View view = (View)findViewById(R.id.largelayout);
+        View view = findViewById(R.id.largelayout);
         if(view != null){
             AppDelegate.setTwoPane(true);
         }else{

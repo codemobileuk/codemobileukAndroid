@@ -1,83 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:id="@+id/row"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="20"
-    >
+   >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_weight="19"
-        android:padding="8dp"
-        >
-
-
-        <TextView
-            android:padding="4dp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:textSize="18sp"
-            android:textColor="@color/textDarkGrey"
-            android:id="@+id/timeStart"/>
+            android:padding="8dp"
+            android:id="@+id/mainholder"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:padding="4dp"
-            android:textColor="@color/textDarkGrey"
-            android:id="@+id/title"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            >
+
+            <TextView
+                android:padding="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:textColor="@color/textDarkGrey"
+                android:id="@+id/timeStart"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:padding="4dp"
-                android:layout_alignParentLeft="true"
-                android:textColor="@color/textLightGrey"
-                android:id="@+id/speaker"/>
-            <ImageView
-                android:layout_alignParentRight="true"
+                android:textColor="@color/textDarkGrey"
+                android:id="@+id/title"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:padding="4dp"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/textLightGrey"
+                    android:id="@+id/speaker"/>
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+
+
+                    android:id="@+id/buildingIcon"
+                    />
+            </RelativeLayout>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-
-
-                android:id="@+id/buildingIcon"
+                android:padding="10dp"
+                android:text="asd"
+                android:visibility="invisible"
                 />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="right"
-        android:gravity="right"
-        >
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+            <TextView
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_margin="4dp"
+                android:textColor="@color/textLightGrey"
+                android:background="@drawable/rounded_text_box"
+                android:layout_gravity="start"
+                android:gravity="bottom"
+                android:text="flippent"
+                android:id="@+id/tag1"/>
+            <TextView
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_margin="4dp"
+                android:layout_gravity="start"
+                android:gravity="bottom"
+                android:background="@drawable/rounded_text_box"
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/commonLightGreyLine"
-            android:layout_gravity="right"
-            android:layout_marginBottom="8dp"
-            android:id="@+id/line">
+                android:id="@+id/tag2"
+                />
 
-        </View>
-    </LinearLayout>
+        </LinearLayout>
 
+            <View
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/commonLightGreyLine"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/line">
+
+            </View>
+
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

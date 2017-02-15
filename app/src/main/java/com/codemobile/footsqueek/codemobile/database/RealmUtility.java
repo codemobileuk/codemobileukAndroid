@@ -44,4 +44,9 @@ public class RealmUtility {
     }
 
 
+    public static String generatePrimaryKey(String feild1, String feild2){
+        return feild1 + feild2;
+
+    }
+
 }

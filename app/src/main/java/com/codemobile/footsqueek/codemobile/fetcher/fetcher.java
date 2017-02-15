@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.database.Locations;
+import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
@@ -85,7 +86,10 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 parseSpeakersJson(json);
             }else if(params[0].equals("Locations")){
                 parseLocationJson(json);
-            }else{
+            }else if(params[0].equals("Tags")){
+                parseTagsJson(json);
+            }
+            else{
                 Log.e("fetcher","No valid Json parser");
             }
 
@@ -172,6 +176,29 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         }
 
+    }
+
+    private void parseTagsJson(String json)throws JSONException{
+
+        final String ID = "TagId";
+        final String TAG = "Tag";
+        final String SessionId = "SessionId";
+
+        JSONArray tagArray = new JSONArray(json);
+        for (int i = 0; i < tagArray.length(); i++) {
+
+            JSONObject tagJSON = tagArray.getJSONObject(i);
+
+            Tag tag = new Tag(
+                    RealmUtility.generatePrimaryKey(tagJSON.getString(SessionId),tagJSON.getString(ID)),
+                    tagJSON.getString(ID),
+                    tagJSON.getString(TAG),
+                    tagJSON.getString(SessionId)
+            );
+
+            RealmUtility.addNewRow(tag);
+
+        }
     }
 
     private void parseSessionJson(String json)throws JSONException{
