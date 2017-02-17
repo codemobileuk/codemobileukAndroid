@@ -26,6 +26,7 @@ public class Session extends RealmObject {
     private String locationName;
     private String locationDesc;
     private boolean doubleRow = false;
+    private boolean isFiltered = true;
 
     public Session(){
 
@@ -42,6 +43,14 @@ public class Session extends RealmObject {
         this.locationName = locationName;
         this.locationDesc = locationDesc;
         this.doubleRow = doubleRow;
+    }
+
+    public boolean isFiltered() {
+        return isFiltered;
+    }
+
+    public void setFiltered(boolean filtered) {
+        isFiltered = filtered;
     }
 
     public String getSessionType() {

@@ -125,15 +125,12 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                // tagsString = tagsString +" "+ tags.get(i).getTag();
                 if(tags.size() == 2){
-                    Log.d("uhhhhh", session.getId() +"  " + tags.get(0).getTag() +" == " + tags.get(1).getTag());
                     ((ScheduleViewHolder) holder).tag1.setText(tags.get(1).getTag());
                     ((ScheduleViewHolder) holder).tag2.setText(tags.get(0).getTag());
                 }else if(tags.size() ==1){
-                    Log.d("uhhhhh", session.getId() +"  " + tags.get(0).getTag());
                     ((ScheduleViewHolder) holder).tag1.setText(tags.get(0).getTag());
                     ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
                 }else{
-                    Log.d("uhhhhh", session.getId());
                     ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
                     ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
                 }

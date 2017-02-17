@@ -1,19 +1,22 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.customUi.LineButton;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
+import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterface;
-
+import com.codemobile.footsqueek.codemobile.interfaces.ScheduleFilterInterface;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +29,22 @@ public class ScheduleActivity extends LaunchActivity {
     LineButton dayOneBtn, dayTwoBtn, dayThreeBtn;
 
     ScheduleDayChooserInterface scheduleDayChooserInterface;
+    ScheduleFilterInterface filterInterface;
 
-
-
-
+    List<Tag> uniqueTags;
+    List<String> filteredTagNames = new ArrayList<>();
+    Activity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-
+        activity = this;
+        List<Tag> tags = RealmUtility.getUniqueTags();
+        for (int i = 0; i < tags.size(); i++) {
+            filteredTagNames.add(tags.get(i).getTag());
+        }
+        uniqueTags = RealmUtility.getUniqueTags();
 
         dayOneBtn = (LineButton)findViewById(R.id.dayOneButton);
         dayTwoBtn = (LineButton)findViewById(R.id.dayTwoButton);
@@ -100,5 +109,70 @@ public class ScheduleActivity extends LaunchActivity {
                 dayThreeBtn.customClick();
             }
         });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        for (int i = 0; i < uniqueTags.size(); i++) {
+            menu.add(uniqueTags.get(i).getTag());
+            menu.getItem(i).setCheckable(true);
+            menu.getItem(i).setChecked(true);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void sendFilterToFragment(){
+        final ScheduleRecyclerFragment frag = (ScheduleRecyclerFragment)getFragmentManager().findFragmentById(R.id.fragmentItemsList);
+
+        filterInterface = frag.getFilterInterface();
+        filterInterface.onItemsFiltered(filteredTagNames);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.isCheckable()){
+            if(item.isChecked()){
+                item.setChecked(false);
+                forceMenuToReopen();
+
+                for (int i = 0; i < filteredTagNames.size(); i++) {
+                    if(filteredTagNames.get(i).equals(item.getTitleCondensed()+"")){
+                        filteredTagNames.remove(i);
+
+                    }
+                }
+            }else{
+                item.setChecked(true);
+                int count = 0;
+                for (int i = 0; i < filteredTagNames.size(); i++) {
+                    if (filteredTagNames.get(i).equals(item.getTitleCondensed() + "")) {
+                        count++;
+                    }
+                }
+                if (count == 0){
+                    filteredTagNames.add(item.getTitleCondensed() + "");
+                }
+                forceMenuToReopen();
+            }
+            sendFilterToFragment();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void forceMenuToReopen(){
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+                toolbar.showOverflowMenu();
+            }
+        }, 0);
     }
 }

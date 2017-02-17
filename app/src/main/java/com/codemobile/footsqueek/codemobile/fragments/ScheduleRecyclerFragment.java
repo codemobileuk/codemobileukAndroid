@@ -15,35 +15,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.activities.ScheduleActivity;
 import com.codemobile.footsqueek.codemobile.activities.ScheduleDetailActivity;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.SessionFullData;
-import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
-import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
+import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterface;
+import com.codemobile.footsqueek.codemobile.interfaces.ScheduleFilterInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
-
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import io.realm.Realm;
 import io.realm.Sort;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by greg on 19/01/2017.
@@ -54,9 +45,17 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     RecyclerView tealRecyclerView;
     ScheduleRecyclerAdapter tealAdapter;
     ScheduleDetailFragment scheduleDetailFragment;
+    ScheduleFilterInterface filterInterface;
     FragmentActivity mContext;
 
+    final static int DAY_ONE = 0;
+    final static int DAY_TWO = 1;
+    final static int DAY_THREE = 2;
 
+    private int selectedDay= DAY_ONE;
+
+    private List<String> filterTagNames = new ArrayList<>();
+    private List <SessionFullData> sfd = new ArrayList<>();
 
     ScheduleDayChooserInterface mListener;
 
@@ -64,7 +63,11 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         return mListener;
     }
 
-    private List <SessionFullData> sfd = new ArrayList<>();
+    public ScheduleFilterInterface getFilterInterface(){
+        return filterInterface;
+    }
+
+
 
     @Nullable
     @Override
@@ -72,14 +75,24 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         View view = inflater.inflate(R.layout.fragment_recycler_schedule,container,false);
 
         tealRecyclerView = (RecyclerView)view.findViewById(R.id.tealRecycler);
-
         tealRecyclerView.setHasFixedSize(true);
+
+        initFilter();
         setupRecycler(createScheduleWithHeaders(18));
+        daySelectorListener();
 
+        if(AppDelegate.isTwoPane()){
+            talkClicked(getFirstRowSessionId());
+        }
 
+        return view;
+    }
+
+    public void daySelectorListener(){
         mListener = new ScheduleDayChooserInterface() {
             @Override
             public void dayOne() {
+                selectedDay = DAY_ONE;
                 setupRecycler(createScheduleWithHeaders(18));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
@@ -89,6 +102,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
             @Override
             public void dayTwo() {
+                selectedDay = DAY_TWO;
                 setupRecycler(createScheduleWithHeaders(19));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
@@ -97,19 +111,39 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
             @Override
             public void dayThree() {
+                selectedDay = DAY_THREE;
                 setupRecycler(createScheduleWithHeaders(20));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
                 }
             }
         };
-        setupRecycler(createScheduleWithHeaders(18));
-        if(AppDelegate.isTwoPane()){
-            talkClicked(getFirstRowSessionId());
+    }
+    public void initFilter(){
+        filterTagNames.clear();
+        List<Tag> tags = RealmUtility.getUniqueTags();
+        for (int i = 0; i < tags.size(); i++) {
+            filterTagNames.add(tags.get(i).getTag());
         }
 
-        return view;
+        filterInterface = new ScheduleFilterInterface() {
+            @Override
+            public void onItemsFiltered(List<String> tagNames) {
+                filterTagNames = tagNames;
+                if(selectedDay == DAY_ONE){
+                    setupRecycler(createScheduleWithHeaders(18));
+                }else if(selectedDay == DAY_TWO){
+                    setupRecycler(createScheduleWithHeaders(19));
+                }else if(selectedDay == DAY_THREE){
+                    setupRecycler(createScheduleWithHeaders(20));
+                }
+                if(AppDelegate.isTwoPane()){
+                    talkClicked(getFirstRowSessionId());
+                }
+            }
+        };
     }
+
     @Override
     public void onAttach(Context context) {
         mContext=(ScheduleActivity)context;
@@ -144,8 +178,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
     }
 
-
-
     private String getFirstRowSessionId(){
         for (int i = 0; i < sfd.size(); i++) {
             if(sfd.get(i).getRowType() != ScheduleRowType.DOUBLE_TIME_HEADER){
@@ -156,23 +188,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         return "";
     }
 
-    public void firstTimeSetUp(){
-
-        Session session =sfd.get(0).getSession();
-
-
-        if(sfd != null){
-            Bundle data= new Bundle();
-            data.putString("id",session.getId());
-            scheduleDetailFragment = new ScheduleDetailFragment();
-            scheduleDetailFragment.setArguments(data);
-            FragmentManager fragmentManager = mContext.getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.ScheduleDetailContainer, scheduleDetailFragment);
-            ft.commit();
-        }
-
-    }
 
     public void talkClicked(String scheduleId) {
         Bundle data= new Bundle();
@@ -194,9 +209,26 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
     }
 
+
+    private String[] getFilteredSessionIds(){
+        Realm realm = AppDelegate.getRealmInstance();
+        List<String> sessionsIds = new ArrayList<>();
+
+        List<Tag> tags = new ArrayList<>();
+        for (int i = 0; i < filterTagNames.size(); i++) {
+            tags = realm.where(Tag.class).equalTo("tag",filterTagNames.get(i)).findAll();
+            for (int t = 0; t < tags.size(); t++) {
+                sessionsIds.add(tags.get(t).getSessionId());
+
+            }
+        }
+        String [] filteredSessionIds = new String[sessionsIds.size()];
+
+        return filteredSessionIds = sessionsIds.toArray(filteredSessionIds);
+    }
+
     public List<SessionFullData> createScheduleWithHeaders(int day){
         Realm realm = AppDelegate.getRealmInstance();
-
 
         Calendar cal = Calendar.getInstance();
         cal.set(2017,3,day,0,0,0);
@@ -204,20 +236,18 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         cal.set(2017,3,day,23,59,59);
         Date endOfDay = cal.getTime();
 
-       // Log.d("cresinath", date+ "  =========================" + date2);
-
         sfd.clear();
-      //  List <Session> allTalks = realm.where(Session.class).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
-        List <Session> allTalks = realm.where(Session.class).between("timeStart", startOfDay, endOfDay).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
+        if(getFilteredSessionIds().length !=0){
+            List <Session> allTalks = realm.where(Session.class).between("timeStart", startOfDay, endOfDay).in("id",getFilteredSessionIds()).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
 
         for (int i = 0; i < allTalks.size(); i++) {
-            if(i != allTalks.size()-1 && i !=0){//i isnt the last or first instance
-                if(allTalks.get(i).getTimeStart().equals(allTalks.get(i+1).getTimeStart())){
+            if(i != allTalks.size()-1 && i !=0){//All cases where i isnt the last of first
+                if(allTalks.get(i).getTimeStart().equals(allTalks.get(i+1).getTimeStart())){//left bound item
                     //add header and one talk
                     scheduleHeader(allTalks.get(i));
                     scheduleLeftCol(allTalks.get(i));
 
-                }else if(allTalks.get(i).getTimeStart().equals(allTalks.get(i-1).getTimeStart())) {
+                }else if(allTalks.get(i).getTimeStart().equals(allTalks.get(i-1).getTimeStart())) {//right bound item
                     scheduleRightCol(allTalks.get(i));
                 }else{
                     scheduleNormal(allTalks.get(i));
@@ -240,7 +270,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             }
         }
 
-
+        }
         return sfd;
 
     }
