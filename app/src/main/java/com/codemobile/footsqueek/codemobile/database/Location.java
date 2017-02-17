@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by greg on 19/01/2017.
  */
 
-public class Locations extends RealmObject {
+public class Location extends RealmObject {
 
     @PrimaryKey private String locationName;
     private double longitude;
@@ -17,12 +17,12 @@ public class Locations extends RealmObject {
     private String type;
 
 
-    public Locations(){
+    public Location(){
 
     }
 
 
-    public Locations(String locationName, double longitude, double latitude, String description, String image_url, String type) {
+    public Location(String locationName, double longitude, double latitude, String description, String image_url, String type) {
         this.locationName = locationName;
         this.longitude = longitude;
         this.latitude = latitude;

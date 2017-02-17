@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.codemobile.footsqueek.codemobile.database.Locations;
+import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
@@ -134,7 +134,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
             JSONObject locationObject = locationsArray.getJSONObject(i);
 
-            Locations location = new Locations(
+            Location location = new Location(
                 locationObject.getString(NAME),
                 locationObject.getDouble(LON),
                 locationObject.getDouble(LAT),

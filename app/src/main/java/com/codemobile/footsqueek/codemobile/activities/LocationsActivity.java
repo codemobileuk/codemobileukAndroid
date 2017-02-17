@@ -2,15 +2,18 @@ package com.codemobile.footsqueek.codemobile.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.LocationRecyclerAdapter;
-import com.codemobile.footsqueek.codemobile.database.Locations;
+import com.codemobile.footsqueek.codemobile.database.Location;
+import com.codemobile.footsqueek.codemobile.database.LocationRowType;
+import com.codemobile.footsqueek.codemobile.database.LocationWithHeaders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -23,6 +26,7 @@ public class LocationsActivity extends LaunchActivity {
 
     LocationRecyclerAdapter adapter;
     RecyclerView recyclerView;
+    List<LocationWithHeaders> locationsWithHeaders = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,10 +36,22 @@ public class LocationsActivity extends LaunchActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),2);
-        recyclerView.setLayoutManager(glm);
 
-        adapter = new LocationRecyclerAdapter(getLocations(),getApplicationContext());
+        addHeaders();
+        GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),2);
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(locationsWithHeaders.get(position).getRowType() == LocationRowType.HEADER){
+                    return 2;
+                }else{
+                    return 1;
+                }
+
+            }
+        });
+        recyclerView.setLayoutManager(glm);
+        adapter = new LocationRecyclerAdapter(locationsWithHeaders,getApplicationContext());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         setupActionBar();
@@ -43,9 +59,63 @@ public class LocationsActivity extends LaunchActivity {
 
     }
 
-    public List<Locations> getLocations(){
+    public void addHeaders(){
+
+        List<Location> locations = getLocations();
+
+        String lastType = "";
+
+        for (int i = 0; i < locations.size(); i++) {
+
+            if(i == 0){
+                lastType = locations.get(i).getType();
+                LocationWithHeaders header = new LocationWithHeaders(
+                        null,
+                        LocationRowType.HEADER,
+                        locations.get(i).getType()
+                );
+                LocationWithHeaders row = new LocationWithHeaders(
+                        locations.get(i),
+                        LocationRowType.ROW,
+                        null
+                );
+                locationsWithHeaders.add(header);
+                locationsWithHeaders.add(row);
+            }else if(locations.get(i).getType().equals(lastType)){
+                LocationWithHeaders row = new LocationWithHeaders(
+                        locations.get(i),
+                        LocationRowType.ROW,
+                        null
+                );
+                locationsWithHeaders.add(row);
+            }else if(!locations.get(i).getType().equals(lastType)){
+                LocationWithHeaders header = new LocationWithHeaders(
+                        null,
+                        LocationRowType.HEADER,
+                        locations.get(i).getType()
+                );
+                LocationWithHeaders row = new LocationWithHeaders(
+                        locations.get(i),
+                        LocationRowType.ROW,
+                        null
+                );
+                locationsWithHeaders.add(header);
+                locationsWithHeaders.add(row);
+            }
+
+
+        }
+
+    }
+
+    public List<Location> getLocations(){
         Realm realm = AppDelegate.getRealmInstance();
-        return realm.where(Locations.class).findAll();
+        List<Location> d= realm.where(Location.class).findAll();
+        for (int i = 0; i < d.size(); i++) {
+            Log.d("teste", d.get(i).getType()+" *(*(*(*(*");
+        }
+
+        return realm.where(Location.class).findAllSorted("type");
     }
 
     @Override
