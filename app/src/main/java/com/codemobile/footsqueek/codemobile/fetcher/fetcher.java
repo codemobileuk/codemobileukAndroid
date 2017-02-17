@@ -125,6 +125,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
         final String LON = "Longitude";
         final String LAT = "Latitude";
         final String DESC = "Description";
+        final String TYPE = "Type";
+        final String IMAGE = "Image";
 
         JSONArray locationsArray = new JSONArray(json);
 
@@ -136,7 +138,9 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 locationObject.getString(NAME),
                 locationObject.getDouble(LON),
                 locationObject.getDouble(LAT),
-                locationObject.getString(DESC)
+                locationObject.getString(DESC),
+                locationObject.getString(IMAGE),
+                locationObject.getString(TYPE)
             );
 
             RealmUtility.addNewRow(location);

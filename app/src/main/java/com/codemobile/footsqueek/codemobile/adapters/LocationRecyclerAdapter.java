@@ -49,10 +49,10 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     public void onBindViewHolder(LocationViewHolder holder, int position) {
 
         holder.locationName.setText(location.get(position).getLocationName());
-        Log.d("locatiosn","==== " + location.get(position).getLocationName());
         setOnClickListener(holder,position);
 
-        Picasso.with(context).load("http://i.imgur.com/OlrKj5t.jpg").fit().centerCrop().into(holder.imageView);
+        Picasso.with(context).load(location.get(position).getImage_url()).fit().centerCrop().into(holder.imageView);
+
     }
 
     private void setOnClickListener(LocationViewHolder holder, final int pos){
