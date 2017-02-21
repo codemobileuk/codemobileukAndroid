@@ -121,6 +121,9 @@ public class ScheduleActivity extends LaunchActivity {
             menu.getItem(i).setCheckable(true);
             menu.getItem(i).setChecked(true);
         }
+      //  menu.add(uniqueTags.get(i).getTag());
+       // menu.getItem(uniqueTags.size()+1).setCheckable(true);
+      //  menu.getItem(uniqueTags.size()+1).setChecked(true);
         return super.onCreateOptionsMenu(menu);
     }
 

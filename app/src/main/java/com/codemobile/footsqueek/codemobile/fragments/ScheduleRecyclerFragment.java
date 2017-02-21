@@ -216,11 +216,13 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
         List<Tag> tags = new ArrayList<>();
         for (int i = 0; i < filterTagNames.size(); i++) {
+
             tags = realm.where(Tag.class).equalTo("tag",filterTagNames.get(i)).findAll();
             for (int t = 0; t < tags.size(); t++) {
                 sessionsIds.add(tags.get(t).getSessionId());
 
             }
+
         }
         String [] filteredSessionIds = new String[sessionsIds.size()];
 
@@ -235,11 +237,12 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         Date startOfDay = cal.getTime();
         cal.set(2017,3,day,23,59,59);
         Date endOfDay = cal.getTime();
-
+        List <Session> allTalks = new ArrayList<>();
         sfd.clear();
         if(getFilteredSessionIds().length !=0){
-            List <Session> allTalks = realm.where(Session.class).between("timeStart", startOfDay, endOfDay).in("id",getFilteredSessionIds()).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
+            allTalks = realm.where(Session.class).between("timeStart", startOfDay, endOfDay).in("id",getFilteredSessionIds()).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
 
+        }
         for (int i = 0; i < allTalks.size(); i++) {
             if(i != allTalks.size()-1 && i !=0){//All cases where i isnt the last of first
                 if(allTalks.get(i).getTimeStart().equals(allTalks.get(i+1).getTimeStart())){//left bound item
@@ -268,8 +271,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             }else{
                 scheduleNormal(allTalks.get(i));
             }
-        }
-
         }
         return sfd;
 
