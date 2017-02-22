@@ -1,16 +1,35 @@
 package com.codemobile.footsqueek.codemobile.fragments;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.customUi.LineButton;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.Speaker;
+import com.codemobile.footsqueek.codemobile.database.Tag;
+import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
+import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -20,40 +39,149 @@ import io.realm.Realm;
 
 public class ScheduleDetailFragment extends Fragment {
 
-    TextView title, speaker, timeStart;
+    TextView title, speakerTv, timeStart, speakerOrg, talkDesc, buildingName, speakerDesc;
+    ImageView speakerImg, buildingIcon;
     String talkId ="-1";
+    Session session;
+    Speaker speaker;
+    Context mContext;
+    LineButton btnProfile, btnTalk;
+    List<Tag> tags;
+    LinearLayout tagLL, talksLL;
+
+    @Override
+    public void onAttach(Context context) {
+        mContext = context;
+        super.onAttach(context);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.schedule_item_layout,container,false);
+        View view = inflater.inflate(R.layout.fragment_schedule_detail,container,false);
         Bundle extras = getArguments();
         talkId = extras.getString("id");
 
+        Realm realm = AppDelegate.getRealmInstance();
+
+        session = realm.where(Session.class).equalTo("id", talkId).findFirst();
+        speaker = realm.where(Speaker.class).equalTo("id", session.getSpeakerId()).findFirst();
+        tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
+
 
         title = (TextView)view.findViewById(R.id.title);
-        speaker = (TextView)view.findViewById(R.id.speaker);
+        speakerTv = (TextView)view.findViewById(R.id.speaker);
         timeStart = (TextView)view.findViewById(R.id.timeStart);
-
-
+        speakerImg = (ImageView)view.findViewById(R.id.speakerImg);
+        buildingIcon = (ImageView)view.findViewById(R.id.buildingIcon);
+        buildingName = (TextView)view.findViewById(R.id.buildingName);
+        speakerOrg = (TextView)view.findViewById(R.id.organisation);
+        talkDesc = (TextView)view.findViewById(R.id.talk_desc);
+        speakerDesc = (TextView)view.findViewById(R.id.speaker_desc);
+        tagLL = (LinearLayout)view.findViewById(R.id.tagsLL);
+        talksLL = (LinearLayout)view.findViewById(R.id.talksLL);
+        btnProfile = (LineButton)view.findViewById(R.id.btn_profile);
+        btnTalk = (LineButton)view.findViewById(R.id.btn_talk);
+        addTags();
+        setImage();
         setTextViews();
+        setOnClickListeners();
+
+        List<LineButton> buttons = new ArrayList<>();
+        buttons.add(btnProfile);
+        buttons.add(btnTalk);
+
+        btnProfile.setTogglePartners(buttons, true);
+        btnTalk.setTogglePartners(buttons, false);
         return view;
+    }
+
+    private void setOnClickListeners(){
+        btnTalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speakerDesc.setVisibility(View.VISIBLE);
+                talksLL.setVisibility(View.GONE);
+                btnTalk.customClick();
+            }
+        });
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speakerDesc.setVisibility(View.GONE);
+                talksLL.setVisibility(View.VISIBLE);
+                btnProfile.customClick();
+            }
+        });
+    }
+
+    private void setImage(){
+
+        Log.d ("forum",speaker.getPhotoUrl()+" ====");
+
+        Picasso.with(mContext)
+                .load(speaker.getPhotoUrl()).fit().centerCrop()
+                .into(speakerImg, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Bitmap imageBitmap = ((BitmapDrawable) speakerImg.getDrawable()).getBitmap();
+                        CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
+                        circleCroppedBitmap.createRoundImage(speakerImg);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        Log.d ("forum",speaker.getPhotoUrl()+" ===_+_+_=");
+                    }
+                });
+
+
+        if(session.getLocationName().equals("Molloy")){
+            buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_molloy));
+
+        }else{
+            buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_beswick));
+        }
+        buildingName.setText(session.getLocationName());
+    }
+
+    private void addTags(){
+
+
+
+        for (int i = 0; i < tags.size(); i++) {
+            final TextView tagTextView = new TextView(mContext);
+            tagTextView.setText(tags.get(i).getTag());
+            tagTextView.setBackgroundResource(R.drawable.rounded_text_box);
+            tagTextView.setPadding(12,12,12,12);
+            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            llp.setMargins(4,4,4,4);
+            tagTextView.setLayoutParams(llp);
+
+            tagLL.addView(tagTextView);
+
+        }
+
     }
 
     private void setTextViews() {
 
-            Session session;
+
             if (talkId.equals("-1")) {
                 title.setText("Error getting talk ");
             } else {
-                Realm realm = AppDelegate.getRealmInstance();
-                session = realm.where(Session.class).equalTo("id", talkId).findFirst();
+
 
 
                 if(session != null){
+                    speakerTv.setText(speaker.getFirstname() +" " +speaker.getSurname());
+                    speakerOrg.setText(speaker.getOrganisation());
                     title.setText(session.getTitle());
-                    timeStart.setText(session.getTimeStart().toString());
+                    talkDesc.setText(session.getDesc());
+                    timeStart.setText(TimeConverter.trimTimeFromDate(session.getTimeStart()) +" - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+                    speakerDesc.setText(speaker.getProfile());
                 }
 
             }

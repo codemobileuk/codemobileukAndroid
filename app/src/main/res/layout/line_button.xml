@@ -12,6 +12,7 @@
             android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/commonWhite"
             android:id="@+id/button"
             android:clickable="false"
             android:background="@color/cardview_dark_background"/>
