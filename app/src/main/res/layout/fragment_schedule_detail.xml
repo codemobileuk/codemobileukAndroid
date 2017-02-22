@@ -74,7 +74,7 @@
             android:layout_height="50dp"
             android:id="@+id/btn_profile"
             app:Text="Profile"
-android:layout_margin="5dp"
+            android:layout_margin="4dp"
             />
 
         <com.codemobile.footsqueek.codemobile.customUi.LineButton
@@ -82,7 +82,7 @@ android:layout_margin="5dp"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/btn_talk"
-            android:layout_margin="5dp"
+            android:layout_margin="4dp"
             app:Text="Talks"/>
     </LinearLayout>
 
@@ -101,6 +101,7 @@ android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="parent"
                 android:id="@+id/titleLL"
                 tools:layout_editor_absoluteX="16dp">

@@ -1,8 +1,10 @@
 package com.codemobile.footsqueek.codemobile.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,7 +42,7 @@ import io.realm.Realm;
 public class ScheduleDetailFragment extends Fragment {
 
     TextView title, speakerTv, timeStart, speakerOrg, talkDesc, buildingName, speakerDesc;
-    ImageView speakerImg, buildingIcon;
+    ImageView speakerImg, buildingIcon, twitter, facebook;
     String talkId ="-1";
     Session session;
     Speaker speaker;
@@ -83,6 +85,8 @@ public class ScheduleDetailFragment extends Fragment {
         talksLL = (LinearLayout)view.findViewById(R.id.talksLL);
         btnProfile = (LineButton)view.findViewById(R.id.btn_profile);
         btnTalk = (LineButton)view.findViewById(R.id.btn_talk);
+        twitter = (ImageView)view.findViewById(R.id.twitter);
+        facebook = (ImageView)view.findViewById(R.id.facebook);
         addTags();
         setImage();
         setTextViews();
@@ -95,6 +99,14 @@ public class ScheduleDetailFragment extends Fragment {
         btnProfile.setTogglePartners(buttons, true);
         btnTalk.setTogglePartners(buttons, false);
         return view;
+    }
+
+    public void openWebPage(String url){
+
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+
     }
 
     private void setOnClickListeners(){
@@ -114,11 +126,24 @@ public class ScheduleDetailFragment extends Fragment {
                 btnProfile.customClick();
             }
         });
+
+        twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openWebPage(speaker.getTwitter());
+            }
+        });
     }
 
     private void setImage(){
 
-        Log.d ("forum",speaker.getPhotoUrl()+" ====");
 
         Picasso.with(mContext)
                 .load(speaker.getPhotoUrl()).fit().centerCrop()
