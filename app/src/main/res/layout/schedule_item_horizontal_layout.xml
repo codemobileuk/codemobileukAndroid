@@ -63,6 +63,7 @@
                     android:textSize="14sp"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:padding="2dp"
 
                     android:id="@+id/desc"
                     android:text="placeholder2"

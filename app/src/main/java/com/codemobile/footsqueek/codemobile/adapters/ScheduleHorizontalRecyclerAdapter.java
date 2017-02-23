@@ -55,7 +55,6 @@ public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<Sche
                 .load(speaker.getPhotoUrl())
                 .fit()
                 .centerCrop()
-                .transform(new RoundedCornersTransform())
                 .into(holder.speakerImage);
     }
 
