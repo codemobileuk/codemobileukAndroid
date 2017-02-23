@@ -115,7 +115,7 @@ public class HomeActivity extends LaunchActivity{
         recyclerView.setLayoutManager(lm);
 
 
-        adapter = new ScheduleHorizontalRecyclerAdapter(upComingSessions);
+        adapter = new ScheduleHorizontalRecyclerAdapter(upComingSessions,context);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

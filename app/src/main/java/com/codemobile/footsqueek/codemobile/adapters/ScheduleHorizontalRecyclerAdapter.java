@@ -1,16 +1,21 @@
 package com.codemobile.footsqueek.codemobile.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.activities.HomeActivity;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
+import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,8 +28,10 @@ import io.realm.Realm;
 public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<ScheduleHorizontalRecyclerAdapter.ScheduleViewHolder>{
 
     private List<Session> sessions;
+    Context mContext;
 
-    public ScheduleHorizontalRecyclerAdapter(List<Session> sessions) {
+    public ScheduleHorizontalRecyclerAdapter(List<Session> sessions, Context context) {
+        this.mContext = context;
         this.sessions = sessions;
     }
 
@@ -40,9 +47,16 @@ public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<Sche
         Speaker speaker = realm.where(Speaker.class).equalTo("id",sessions.get(position).getSpeakerId()).findFirst();
 
         holder.desc.setEllipsize(TextUtils.TruncateAt.END);
-        holder.desc.setMaxLines(3);
+        holder.desc.setMaxLines(1);
         holder.desc.setText(sessions.get(position).getDesc());
         holder.speaker.setText(speaker.getFirstname() +" " + speaker.getSurname());
+
+        Picasso.with(mContext)
+                .load(speaker.getPhotoUrl())
+                .fit()
+                .centerCrop()
+                .transform(new RoundedCornersTransform())
+                .into(holder.speakerImage);
     }
 
     @Override
@@ -55,11 +69,14 @@ public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<Sche
     public static class ScheduleViewHolder extends RecyclerView.ViewHolder{
 
         TextView desc, speaker;
+        ImageView speakerImage;
+
     public ScheduleViewHolder(View itemView) {
         super(itemView);
 
         desc = (TextView)itemView.findViewById(R.id.desc);
         speaker = (TextView)itemView.findViewById(R.id.speaker);
+        speakerImage = (ImageView)itemView.findViewById(R.id.speakerImageView);
     }
 }
 

@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:visibility="gone"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:id="@+id/rl1"
                 android:layout_margin="16dp"
                 >
@@ -145,7 +145,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:id="@+id/rl2"
                 android:layout_margin="16dp"
                 >
@@ -323,7 +323,7 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="50dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"

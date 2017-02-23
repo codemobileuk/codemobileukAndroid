@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="200dp"
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,36 +9,71 @@
     app:cardBackgroundColor="@color/cardViewGrey"
   >
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="150dp"
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="8dp"
-      >
+        android:id="@+id/rl1"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textDarkGrey"
-            android:gravity="left"
-            android:id="@id/desc"
-            android:textSize="12sp"
-            app:layout_constraintTop_toTopOf="parent"
+        >
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+
+            >
 
 
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@id/speaker"
-            android:textColor="@color/textLightGrey"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/speakerImageView"
 
-    </android.support.constraint.ConstraintLayout>
+                />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient_transparent_shape"
+                >
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="18sp"
+                    android:id="@+id/speaker"
+                    android:text="placeholder1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/speaker"
+                    android:textColor="@color/commonWhite"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+
+                    android:id="@+id/desc"
+                    android:text="placeholder2"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </FrameLayout>
+
+    </RelativeLayout>
 
 
 </android.support.v7.widget.CardView>
