@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -27,7 +25,6 @@ import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
-import android.support.design.widget.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +51,12 @@ public class HomeActivity extends LaunchActivity{
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
 
+    List<Session> upComingSessions;
+    List<Session> allSessions;
+    Date currentDate;
+
+    //TODO reduce lines by removing the extra views that get hidden and instead resizing the original views
+
     private PendingIntent pendingIntent;
 
     @Override
@@ -61,7 +64,8 @@ public class HomeActivity extends LaunchActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        currentDate = new Date();
+        currentDate.getTime();
         context = getApplicationContext();
         speakerOneTv = (TextView)findViewById(R.id.nameTv1);
         speakerTwoTv = (TextView)findViewById(R.id.nameTv2);
@@ -84,11 +88,14 @@ public class HomeActivity extends LaunchActivity{
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
+        Realm realm = AppDelegate.getRealmInstance();
+        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
+        allSessions = realm.where(Session.class).findAllSorted("timeStart");
 
         fetchSchedule();
         setOnClickListeners();
         setUpScheduledNotifications();
-        getCurrentTalk();
+      //  getCurrentTalk();
         setupActionBar();
         navigationViewItemPosition = 0;
     }
@@ -103,23 +110,47 @@ public class HomeActivity extends LaunchActivity{
 
     public void setUpRecycler(){
 
-        Date date = new Date();
-        date.getTime();
       //  recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(lm);
 
-        Realm realm = AppDelegate.getRealmInstance();
-        List<Session> all = RealmUtility.getFutureSessions();
-        List<Session> sessions = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
 
-
-        adapter = new ScheduleHorizontalRecyclerAdapter(sessions);
+        adapter = new ScheduleHorizontalRecyclerAdapter(upComingSessions);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
     }
 
+    public boolean eventOn(){
+
+        Date firstSession = allSessions.get(0).getTimeStart();
+        Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
+
+        if(currentDate.after(firstSession) && currentDate.before(lastSession)){
+            return true;
+        }
+
+        return false;
+    }
+    public boolean eventOver(){
+
+
+        Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
+        if(currentDate.after(lastSession)){
+            return true;
+        }
+        return false;
+    }
+    public boolean eventUpcoming(){
+
+
+
+        Date firstSession = allSessions.get(0).getTimeStart();
+        if(currentDate.before(firstSession)){
+            return true;
+        }
+        return false;
+    }
 
     public List<Session> getCurrentTalk(){
 
@@ -149,37 +180,91 @@ public class HomeActivity extends LaunchActivity{
         
     }
 
+    public void refreshList(){
+        Realm realm = AppDelegate.getRealmInstance();
+        currentDate = new Date();
+        currentDate.getTime();
+        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
+        allSessions = realm.where(Session.class).findAllSorted("timeStart");
+        setUpPreviewViews();
+        if(adapter != null){
+            adapter.notifyDataSetChanged();
+        }
+    }
 
-    public void setUpSessionViews(){
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        refreshList();
+
+
+    }
+
+    public void setUpPreviewViews(){
 
         Realm realm = AppDelegate.getRealmInstance();
         List<Session> currentTalks = getCurrentTalk();
-        Speaker speaker1 = realm.where(Speaker.class).equalTo("id", currentTalks.get(0).getSpeakerId()).findFirst();
-
-        if(getCurrentTalk().size() ==2){
-            Speaker speaker2 = realm.where(Speaker.class).equalTo("id", currentTalks.get(1).getSpeakerId()).findFirst();
-            //2
-            rl1.setVisibility(View.GONE);
-            rl2.setVisibility(View.VISIBLE);
-            loadImages(currentTalks.get(0),speakerOneImage);
-            loadImages(currentTalks.get(1),speakerTwoImage);
-            speakerOneTv.setText(currentTalks.get(0).getTitle());
-            speakerTwoTv.setText(currentTalks.get(1).getTitle());
-            buildingOneTv.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
-            buildingTwoTv.setText(speaker2.getFirstname()+ " " +speaker2.getSurname());
-
-            startTimeOneTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
-            startTimeTwoTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
-        }else{
-            //1
-
-            rl1.setVisibility(View.VISIBLE);
-            rl2.setVisibility(View.GONE);
-            loadImages(currentTalks.get(0),speakerOneImage2);
-            speakerOneTv2.setText(currentTalks.get(0).getTitle());
-            buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
-            startTimeOneTv2.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+        Speaker speaker1 = null;
+        if(currentTalks.size()>0){
+           speaker1 = realm.where(Speaker.class).equalTo("id", currentTalks.get(0).getSpeakerId()).findFirst();
         }
+
+
+        if(eventUpcoming()){
+            //single view coming soon
+            rl2.setVisibility(View.GONE);
+            rl1.setVisibility(View.VISIBLE);
+            startTimeOneTv2.setVisibility(View.GONE);
+
+            Picasso.with(HomeActivity.this)
+                    .load("http://i.imgur.com/kFDeShI.jpg")
+                    .fit()
+                    .centerCrop()
+                    .transform(new RoundedCornersTransform())
+                    .into(speakerOneImage2);
+            speakerOneTv2.setText("Code Mobile");
+            buildingOneTv2.setText("Coming soon");
+
+
+        }else if(eventOn()){
+            if(getCurrentTalk().size() ==2){
+                Speaker speaker2 = realm.where(Speaker.class).equalTo("id", currentTalks.get(1).getSpeakerId()).findFirst();
+                //2
+                rl1.setVisibility(View.GONE);
+                rl2.setVisibility(View.VISIBLE);
+                loadImages(currentTalks.get(0),speakerOneImage);
+                loadImages(currentTalks.get(1),speakerTwoImage);
+                speakerOneTv.setText(currentTalks.get(0).getTitle());
+                speakerTwoTv.setText(currentTalks.get(1).getTitle());
+                buildingOneTv.setText(speaker1.getFirstname()+ " " +speaker1.getSurname());
+                buildingTwoTv.setText(speaker2.getFirstname()+ " " +speaker2.getSurname());
+
+                startTimeOneTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+                startTimeTwoTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+            }else{
+                //1
+                rl1.setVisibility(View.VISIBLE);
+                rl2.setVisibility(View.GONE);
+                loadImages(currentTalks.get(0),speakerOneImage2);
+                speakerOneTv2.setText(currentTalks.get(0).getTitle());
+                buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
+                startTimeOneTv2.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+            }
+        }else if(eventOver()){
+            rl2.setVisibility(View.GONE);
+            rl1.setVisibility(View.VISIBLE);
+            speakerOneImage2.setBackgroundResource(R.drawable.codemob_logo);
+            speakerOneTv2.setText("Code Mobile is now over");
+            buildingOneTv2.setText("See you next year!!");
+            Picasso.with(HomeActivity.this)
+                    .load("http://i.imgur.com/kFDeShI.jpg")
+                    .fit()
+                    .centerCrop()
+                    .transform(new RoundedCornersTransform())
+                    .into(speakerOneImage2);
+        }
+
+
 
 
     }
@@ -327,7 +412,7 @@ public class HomeActivity extends LaunchActivity{
             @Override
             public void onComplete() {
                 setUpRecycler();
-                setUpSessionViews();
+                setUpPreviewViews();
             }
 
             @Override
