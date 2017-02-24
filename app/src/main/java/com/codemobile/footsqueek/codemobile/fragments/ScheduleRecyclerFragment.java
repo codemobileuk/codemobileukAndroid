@@ -145,6 +145,18 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if(bundle !=null){
+            String id = bundle.getString("id", "-1");
+            if(!id.equals("-1")){
+                talkClicked(id);
+            }
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         mContext=(ScheduleActivity)context;
         super.onAttach(context);

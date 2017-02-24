@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
+import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
@@ -54,6 +56,7 @@ public class HomeActivity extends LaunchActivity{
     List<Session> upComingSessions;
     List<Session> allSessions;
     Date currentDate;
+    HorizontalScheduleRecyclerInterface horizontalScheduleRecyclerInterface;
 
     //TODO reduce lines by removing the extra views that get hidden and instead resizing the original views
 
@@ -98,6 +101,8 @@ public class HomeActivity extends LaunchActivity{
       //  getCurrentTalk();
         setupActionBar();
         navigationViewItemPosition = 0;
+
+
     }
 
 
@@ -116,6 +121,17 @@ public class HomeActivity extends LaunchActivity{
 
 
         adapter = new ScheduleHorizontalRecyclerAdapter(upComingSessions,context);
+
+        horizontalScheduleRecyclerInterface = new HorizontalScheduleRecyclerInterface() {
+            @Override
+            public void clicked(String sessionId) {
+                Intent in = new Intent(getApplicationContext(),ScheduleActivity.class);
+                in.putExtra("id",sessionId);
+                startActivity(in);
+            }
+        };
+        adapter.setHorizontalScheduleRecyclerInterface(horizontalScheduleRecyclerInterface);
+
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

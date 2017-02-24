@@ -1,6 +1,9 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -34,12 +37,32 @@ public class ScheduleActivity extends LaunchActivity {
     List<Tag> uniqueTags;
     List<String> filteredTagNames = new ArrayList<>();
     Activity activity;
+    String id;
+    FrameLayout fragmentLayout;
+    ScheduleRecyclerFragment newFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         activity = this;
+
+        fragmentLayout = (FrameLayout)findViewById(R.id.fragmentFrame);
+        fragmentLayout.setId(R.id.fragmentId);
+        newFragment = new ScheduleRecyclerFragment();
+
+        Intent intent =  getIntent();
+        id = intent.getStringExtra("id");
+
+        if (savedInstanceState == null) {
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.fragmentId, newFragment).commit();
+            Bundle bundle = new Bundle();
+            bundle.putString("id",id);
+            newFragment.setArguments(bundle);
+        }
+
         List<Tag> tags = RealmUtility.getUniqueTags();
         for (int i = 0; i < tags.size(); i++) {
             filteredTagNames.add(tags.get(i).getTag());
@@ -54,11 +77,14 @@ public class ScheduleActivity extends LaunchActivity {
         setupActionBar();
         navigationViewItemPosition = 1;
 
-        final ScheduleRecyclerFragment frag = (ScheduleRecyclerFragment)getFragmentManager().findFragmentById(R.id.fragmentItemsList);
-
-        scheduleDayChooserInterface = frag.getScheduleDayChooserInterface();
         setupButtonListeners();
 
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        scheduleDayChooserInterface = newFragment.getScheduleDayChooserInterface();
     }
 
     public void determinePaneLayout() {
@@ -128,9 +154,13 @@ public class ScheduleActivity extends LaunchActivity {
     }
 
     private void sendFilterToFragment(){
-        final ScheduleRecyclerFragment frag = (ScheduleRecyclerFragment)getFragmentManager().findFragmentById(R.id.fragmentItemsList);
+        //final ScheduleRecyclerFragment frag = (ScheduleRecyclerFragment)getFragmentManager().findFragmentById(R.id.fragmentItemsList);
 
-        filterInterface = frag.getFilterInterface();
+        //TODO id send here
+
+
+
+        filterInterface = newFragment.getFilterInterface();
         filterInterface.onItemsFiltered(filteredTagNames);
     }
 

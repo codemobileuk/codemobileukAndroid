@@ -79,13 +79,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <fragment
+        <!--    <fragment
                 android:id="@+id/fragmentItemsList"
                 android:name="com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                tools:layout="@layout/fragment_recycler_schedule" />
+                tools:layout="@layout/fragment_recycler_schedule" />-->
+
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:id="@+id/fragmentFrame"
+
+                >
+
+
+            </FrameLayout>
 
             <View android:background="#000000"
                 android:layout_width="1dp"

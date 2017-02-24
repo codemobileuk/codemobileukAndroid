@@ -82,7 +82,7 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             tools:context=".activities.ScheduleActivity" >
 
-            <fragment
+           <!-- <fragment
                 android:id="@+id/fragmentItemsList"
                 android:name="com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment"
                 android:layout_width="wrap_content"
@@ -91,7 +91,18 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                tools:layout="@layout/fragment_recycler_schedule" />
+
+                tools:layout="@layout/fragment_recycler_schedule" /> -->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragmentFrame"
+
+                >
+
+
+            </FrameLayout>
 
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
