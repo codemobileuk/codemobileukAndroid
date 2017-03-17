@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -46,7 +47,9 @@ public class ScheduleActivity extends LaunchActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         activity = this;
-
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         fragmentLayout = (FrameLayout)findViewById(R.id.fragmentFrame);
         fragmentLayout.setId(R.id.fragmentId);
         newFragment = new ScheduleRecyclerFragment();

@@ -1,5 +1,6 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,9 @@ public class LocationsActivity extends LaunchActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locations);
 
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         recyclerView.setHasFixedSize(true);

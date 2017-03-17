@@ -1,6 +1,7 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +27,9 @@ public class SpeakerDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speaker_detail);
 
-
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         Intent intent = getIntent();
         if(intent != null){

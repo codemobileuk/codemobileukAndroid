@@ -1,6 +1,7 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -37,6 +38,10 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         setColours();
         setupActionBar();

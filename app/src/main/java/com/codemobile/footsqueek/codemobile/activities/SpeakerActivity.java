@@ -1,5 +1,6 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,9 @@ public class SpeakerActivity extends LaunchActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speaker);
         determinePaneLayout();
-
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         setupActionBar();
         navigationViewItemPosition = 2;

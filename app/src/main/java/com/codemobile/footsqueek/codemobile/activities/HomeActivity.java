@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,6 +70,9 @@ public class HomeActivity extends LaunchActivity{
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         super.onCreate(savedInstanceState);
