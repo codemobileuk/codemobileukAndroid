@@ -49,4 +49,12 @@ public class SpeakerDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(speakerDetailFragment !=null){
+            speakerDetailFragment.exitAnimation();
+        }
+
+    }
 }
