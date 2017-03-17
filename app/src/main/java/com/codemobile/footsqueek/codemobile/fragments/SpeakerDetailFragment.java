@@ -10,6 +10,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +59,19 @@ public class SpeakerDetailFragment extends Fragment {
         imageView = (ImageView)view.findViewById(R.id.speakerImage);
 
         setViews();
+
+        TranslateAnimation translateAnimation = new TranslateAnimation(0f,0f,2000f,0f);
+        translateAnimation.setDuration(1000);
+        translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        Animation move = AnimationUtils.loadAnimation(mContext, R.anim.move_left_to_position);
+        move.setInterpolator(new AccelerateDecelerateInterpolator());
+        imageView.startAnimation(move);
+
+
+      //  Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.move_to_fade);
+      //  rotation.setInterpolator(new AccelerateDecelerateInterpolator());
+        bioTv.setAnimation(translateAnimation);
 
         return view;
     }

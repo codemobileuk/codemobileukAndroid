@@ -26,6 +26,8 @@ public class SpeakerDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speaker_detail);
 
+
+
         Intent intent = getIntent();
         if(intent != null){
             speakerId =  intent.getStringExtra("id");//-1?

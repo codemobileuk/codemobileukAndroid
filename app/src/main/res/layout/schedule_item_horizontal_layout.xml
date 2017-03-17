@@ -58,7 +58,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/speaker"
+                    app:layout_constraintTop_toBottomOf="@+id/speaker"
                     android:textColor="@color/commonWhite"
                     android:textSize="14sp"
                     android:maxLines="1"

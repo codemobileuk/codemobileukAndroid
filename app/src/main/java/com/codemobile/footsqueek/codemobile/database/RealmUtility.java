@@ -36,6 +36,8 @@ public class RealmUtility {
 
     }
 
+
+
     public static List<Session> getFutureSessions(){
 
         Date date = new Date();

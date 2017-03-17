@@ -7,5 +7,6 @@ package com.codemobile.footsqueek.codemobile.interfaces;
 public interface SpeakerRecyclerInterface {
 
     void speakerClicked(String speakerId);
+    void notifyDataSetChanged(int pos);
 
 }

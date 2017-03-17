@@ -32,11 +32,14 @@ public class CircleCroppedBitmap {
         imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), croppedBitmap);
         imageDrawable.setCircular(true);
         imageDrawable.setCornerRadius(Math.max(bitmap.getHeight(), bitmap.getWidth()) / 2.0f);
+
     }
 
     public void createRoundImage(ImageView view){
         createCircleImage();
         view.setImageDrawable(imageDrawable);
+
+
     }
 
 

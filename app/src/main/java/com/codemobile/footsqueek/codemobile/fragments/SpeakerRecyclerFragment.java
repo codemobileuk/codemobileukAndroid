@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +38,14 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
     SpeakerRecyclerAdapter speakerRecyclerAdapter;
     SpeakerDetailFragment speakerDetailFragment;
     FragmentActivity mContext;
-
+    List<Speaker> allSpeakers;
+    int lastClickedPos =-1;
     @Override
     public void speakerClicked(String speakerId) {
 
         Bundle data= new Bundle();
         data.putString("id",speakerId);
-
+      //  speakerRecyclerAdapter.notifyDataSetChanged();
 
         if(AppDelegate.isTwoPane()){
             speakerDetailFragment = new SpeakerDetailFragment();
@@ -54,32 +56,50 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
             ft.commit();
         }else{
             Intent in = new Intent(getActivity(), SpeakerDetailActivity.class);
+           // in.addFlags(in.FLAG_ACTIVITY_NO_ANIMATION);
             in.putExtra("id",speakerId);
             startActivity(in);
         }
 
     }
 
+    @Override
+    public void notifyDataSetChanged(int pos) {
+     //   recyclerView.smoothScrollToPosition(pos);
+        speakerRecyclerAdapter.notifyDataSetChanged();
+        lastClickedPos = pos;
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_speaker,container,false);
 
-        final List<Speaker> allSpeakers = getSpeakers();
+        allSpeakers = getSpeakers();
         recyclerView = (RecyclerView)view.findViewById(R.id.recycler);
+        createRecycler();
+
+        return view;
+    }
+
+    private void createRecycler(){
+
         recyclerView.setHasFixedSize(true);
         GridLayoutManager glm = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(glm);
         speakerRecyclerAdapter = new SpeakerRecyclerAdapter(allSpeakers,this,mContext);
         recyclerView.setAdapter(speakerRecyclerAdapter);
         speakerRecyclerAdapter.notifyDataSetChanged();
+        if(lastClickedPos != -1){
+            recyclerView.smoothScrollToPosition(lastClickedPos);
+        }
 
-        return view;
     }
 
     private List<Speaker> getSpeakers(){
         Realm realm = AppDelegate.getRealmInstance();
+
         return realm.where(Speaker.class).findAll();
 
     }
@@ -89,4 +109,6 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
         mContext = (SpeakerActivity)context;
         super.onAttach(context);
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,6 +66,11 @@ public class HomeActivity extends LaunchActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -160,11 +167,13 @@ public class HomeActivity extends LaunchActivity{
     public boolean eventUpcoming(){
 
 
-
-        Date firstSession = allSessions.get(0).getTimeStart();
-        if(currentDate.before(firstSession)){
-            return true;
+        if(allSessions.size()!=0){
+            Date firstSession = allSessions.get(0).getTimeStart();
+            if(currentDate.before(firstSession)){
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -263,7 +272,10 @@ public class HomeActivity extends LaunchActivity{
                 rl2.setVisibility(View.GONE);
                 loadImages(currentTalks.get(0),speakerOneImage2);
                 speakerOneTv2.setText(currentTalks.get(0).getTitle());
-                buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
+                if(speaker1 != null){
+                    buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
+                }
+
                 startTimeOneTv2.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
             }
         }else if(eventOver()){
@@ -279,8 +291,6 @@ public class HomeActivity extends LaunchActivity{
                     .transform(new RoundedCornersTransform())
                     .into(speakerOneImage2);
         }
-
-
 
 
     }
@@ -312,12 +322,15 @@ public class HomeActivity extends LaunchActivity{
 
         Speaker speaker1 = realm.where(Speaker.class).equalTo("id", currentTalk.getSpeakerId()).findFirst();
 
+        if(speaker1 != null){
             Picasso.with(HomeActivity.this)
                     .load(speaker1.getPhotoUrl())
                     .fit()
                     .centerCrop()
                     .transform(new RoundedCornersTransform())
                     .into(view);
+        }
+
 
     }
     public void setOnClickListeners(){

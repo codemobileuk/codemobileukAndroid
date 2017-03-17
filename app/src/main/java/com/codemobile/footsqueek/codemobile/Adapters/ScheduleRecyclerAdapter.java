@@ -2,6 +2,7 @@ package com.codemobile.footsqueek.codemobile.adapters;
 
 import android.content.Context;
 import android.media.Image;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
@@ -52,12 +53,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.sessionWithHeaders = sessionWithHeaders;
     }
 
-    private void setClickListeners(final RecyclerView.ViewHolder holder, final Session session){
+    private void setClickListeners(final RecyclerView.ViewHolder holder, final Session session, final int position){
 
         ((ScheduleViewHolder)holder).row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scheduleRecyclerInterface.talkClicked(session.getId());
+                AppDelegate.setSharedView(((ScheduleViewHolder)holder).title);
+                AppDelegate.setSharedViewId("title" + position);
+
             }
         });
 
@@ -108,7 +112,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         Session session = sessionWithHeaders.get(position).getSession();
 
         if(holder instanceof ScheduleViewHolder){
-            setClickListeners(holder, session);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ((ScheduleViewHolder) holder).title.setTransitionName("title" + position);
+            }
+            setClickListeners(holder, session, position);
             Realm realm = AppDelegate.getRealmInstance();
             Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
 

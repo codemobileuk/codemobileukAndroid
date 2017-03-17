@@ -46,6 +46,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         type = params[0];
         HttpURLConnection urlConnection = null;
+
+
         BufferedReader reader = null;
 
         final String BASE_URL = "http://api.app.codemobile.co.uk/api"; //TODO get base URL
