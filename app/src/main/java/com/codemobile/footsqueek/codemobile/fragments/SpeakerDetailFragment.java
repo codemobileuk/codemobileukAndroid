@@ -70,6 +70,8 @@ public class SpeakerDetailFragment extends Fragment {
         Animation expand = AnimationUtils.loadAnimation(mContext, R.anim.expand);
         nameTv.startAnimation(expand);
         talkTv.startAnimation(expand);
+        twitter.startAnimation(expand);
+        facebook.startAnimation(expand);
 
 
 
@@ -172,8 +174,10 @@ public class SpeakerDetailFragment extends Fragment {
        // move.setInterpolator(new AccelerateDecelerateInterpolator());
         imageView.startAnimation(exitRight);
         bioTv.startAnimation(exitRight);
-        talkTv.setAnimation(collapse);
-        nameTv.setAnimation(collapse);
+        talkTv.startAnimation(collapse);
+        nameTv.startAnimation(collapse);
+        facebook.startAnimation(collapse);
+        twitter.startAnimation(collapse);
     }
 
     @Override
