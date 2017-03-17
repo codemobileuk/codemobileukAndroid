@@ -59,19 +59,33 @@ public class SpeakerDetailFragment extends Fragment {
         imageView = (ImageView)view.findViewById(R.id.speakerImage);
 
         setViews();
-
-        TranslateAnimation translateAnimation = new TranslateAnimation(0f,0f,2000f,0f);
-        translateAnimation.setDuration(1000);
-        translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-
-        Animation move = AnimationUtils.loadAnimation(mContext, R.anim.move_left_to_position);
-        move.setInterpolator(new AccelerateDecelerateInterpolator());
-        imageView.startAnimation(move);
+        Animation expand = AnimationUtils.loadAnimation(mContext, R.anim.expand);
+        nameTv.startAnimation(expand);
+        talkTv.startAnimation(expand);
 
 
-      //  Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.move_to_fade);
-      //  rotation.setInterpolator(new AccelerateDecelerateInterpolator());
-        bioTv.setAnimation(translateAnimation);
+        if(AppDelegate.isTwoPane()){
+            Animation enterLeft = AnimationUtils.loadAnimation(mContext, R.anim.move_left_to_position);
+            imageView.startAnimation(enterLeft);
+         //   bioTv.startAnimation(enterLeft);
+
+            TranslateAnimation translateAnimation = new TranslateAnimation(0f,0f,2000f,0f);
+            translateAnimation.setDuration(300);
+            translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            bioTv.setAnimation(translateAnimation);
+
+        }else{
+            TranslateAnimation translateAnimation = new TranslateAnimation(0f,0f,2000f,0f);
+            translateAnimation.setDuration(1000);
+            translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+            Animation move = AnimationUtils.loadAnimation(mContext, R.anim.move_left_to_position);
+            move.setInterpolator(new AccelerateDecelerateInterpolator());
+            imageView.startAnimation(move);
+            bioTv.setAnimation(translateAnimation);
+        }
+
+
 
         return view;
     }
@@ -118,6 +132,23 @@ public class SpeakerDetailFragment extends Fragment {
 
                     }
                 });
+
+    }
+
+    public void exitAnimation(){
+        Animation exitRight = AnimationUtils.loadAnimation(mContext, R.anim.move_from_position_to_right);
+        Animation collapse = AnimationUtils.loadAnimation(mContext, R.anim.collapse);
+       // move.setInterpolator(new AccelerateDecelerateInterpolator());
+        imageView.startAnimation(exitRight);
+        bioTv.startAnimation(exitRight);
+        talkTv.setAnimation(collapse);
+        nameTv.setAnimation(collapse);
+    }
+
+    @Override
+    public void onPause() {
+        exitAnimation();
+        super.onPause();
 
     }
 }

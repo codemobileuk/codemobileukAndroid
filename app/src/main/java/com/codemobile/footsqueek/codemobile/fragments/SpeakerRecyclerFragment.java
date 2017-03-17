@@ -3,6 +3,7 @@ package com.codemobile.footsqueek.codemobile.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -41,25 +42,39 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
     List<Speaker> allSpeakers;
     int lastClickedPos =-1;
     @Override
-    public void speakerClicked(String speakerId) {
+    public void speakerClicked(final String speakerId) {
 
-        Bundle data= new Bundle();
+       final Bundle data= new Bundle();
         data.putString("id",speakerId);
       //  speakerRecyclerAdapter.notifyDataSetChanged();
-
-        if(AppDelegate.isTwoPane()){
-            speakerDetailFragment = new SpeakerDetailFragment();
-            speakerDetailFragment.setArguments(data);
-            FragmentManager fragmentManager = mContext.getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.SpeakerDetailContainer, speakerDetailFragment);
-            ft.commit();
-        }else{
-            Intent in = new Intent(getActivity(), SpeakerDetailActivity.class);
-           // in.addFlags(in.FLAG_ACTIVITY_NO_ANIMATION);
-            in.putExtra("id",speakerId);
-            startActivity(in);
+        if(speakerDetailFragment!=null){
+            speakerDetailFragment.exitAnimation();
         }
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(AppDelegate.isTwoPane()){
+                        speakerDetailFragment = new SpeakerDetailFragment();
+                        speakerDetailFragment.setArguments(data);
+                        FragmentManager fragmentManager = mContext.getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.SpeakerDetailContainer, speakerDetailFragment);
+                        ft.commit();
+                    }else{
+                        Intent in = new Intent(getActivity(), SpeakerDetailActivity.class);
+                        // in.addFlags(in.FLAG_ACTIVITY_NO_ANIMATION);
+                        in.putExtra("id",speakerId);
+                        startActivity(in);
+                    }
+
+                }
+            }, 400);//TODO remove handeler and make endmation ended listener
+
+
+
+
 
     }
 
