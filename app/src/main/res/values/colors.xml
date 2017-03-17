@@ -12,6 +12,7 @@
 
 
     <color name="textDarkGrey">#434343</color>
+    <color name="primary_dark">#4b4747</color>
     <color name="textLightGrey">#95989A</color>
     <color name="textRed">#E81212</color>
 
