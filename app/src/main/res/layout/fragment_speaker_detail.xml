@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:gravity="top"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    >
+    android:padding="24dp">
 
 
     <ImageView
@@ -47,5 +48,31 @@
         android:paddingBottom="8dp"
         />
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_facebook"
+            android:id="@+id/facebook"
+            android:padding="8dp"
+
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_twitter"
+            android:id="@+id/twitter"
+            android:padding="8dp"
+            />
+
+
+    </LinearLayout>
 
 </LinearLayout>

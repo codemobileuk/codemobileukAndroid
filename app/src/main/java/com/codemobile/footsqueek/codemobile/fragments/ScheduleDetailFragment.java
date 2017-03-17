@@ -50,6 +50,7 @@ public class ScheduleDetailFragment extends Fragment {
     LineButton btnProfile, btnTalk;
     List<Tag> tags;
     LinearLayout tagLL, talksLL;
+    String twitterTag = "";
 
     @Override
     public void onAttach(Context context) {
@@ -96,6 +97,10 @@ public class ScheduleDetailFragment extends Fragment {
         buttons.add(btnProfile);
         buttons.add(btnTalk);
 
+        if(!speaker.getTwitter().equals("")){
+            twitterTag = speaker.getTwitter();
+        }
+
         btnProfile.setTogglePartners(buttons, true);
         btnTalk.setTogglePartners(buttons, false);
         return view;
@@ -104,8 +109,8 @@ public class ScheduleDetailFragment extends Fragment {
     public void openWebPage(String url){
 
 
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(intent);
+       // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+      //  startActivity(intent);
 
     }
 
@@ -130,7 +135,15 @@ public class ScheduleDetailFragment extends Fragment {
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("twitter://user?screen_name=[" +twitterTag +"]"));
+                    startActivity(intent);
 
+                }catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/" +twitterTag +"")));
+                }
             }
         });
 

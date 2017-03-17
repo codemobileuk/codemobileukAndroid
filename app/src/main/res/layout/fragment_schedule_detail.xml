@@ -60,6 +60,7 @@
                 android:padding="8dp"
                 />
 
+
         </LinearLayout>
     </LinearLayout>
 
@@ -103,7 +104,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="parent"
                 android:id="@+id/titleLL"
-                tools:layout_editor_absoluteX="32dp">
+                tools:layout_editor_absoluteX="64dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/buildingiconLL"
-                tools:layout_editor_absoluteY="828dp">
+                tools:layout_editor_absoluteY="1638dp">
 
                 <ImageView
                     android:layout_width="30dp"

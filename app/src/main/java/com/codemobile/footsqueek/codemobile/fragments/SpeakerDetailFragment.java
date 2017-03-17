@@ -2,8 +2,11 @@ package com.codemobile.footsqueek.codemobile.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,9 +37,10 @@ import io.realm.Realm;
 public class SpeakerDetailFragment extends Fragment {
 
     TextView nameTv,talkTv,bioTv;
-    ImageView imageView;
+    ImageView imageView , twitter, facebook;
     String speakerId = "-1";
     Context mContext;
+    String twitterTag = "";
 
 
     @Override
@@ -57,11 +61,14 @@ public class SpeakerDetailFragment extends Fragment {
         talkTv = (TextView)view.findViewById(R.id.speakerTalk);
         bioTv = (TextView)view.findViewById(R.id.speakerBio);
         imageView = (ImageView)view.findViewById(R.id.speakerImage);
+        twitter = (ImageView)view.findViewById(R.id.twitter);
+        facebook = (ImageView)view.findViewById(R.id.facebook);
 
         setViews();
         Animation expand = AnimationUtils.loadAnimation(mContext, R.anim.expand);
         nameTv.startAnimation(expand);
         talkTv.startAnimation(expand);
+
 
 
         if(AppDelegate.isTwoPane()){
@@ -85,11 +92,30 @@ public class SpeakerDetailFragment extends Fragment {
             bioTv.setAnimation(translateAnimation);
         }
 
-
+        setOnClickListeners();
 
         return view;
     }
 
+    public void setOnClickListeners(){
+
+        twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("twitter://user?screen_name=[" +twitterTag +"]"));
+                    startActivity(intent);
+
+                }catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/" +twitterTag +"")));
+                }
+            }
+
+        });
+
+    }
     private void setViews(){
 
         Speaker speaker;
@@ -100,6 +126,9 @@ public class SpeakerDetailFragment extends Fragment {
             speaker = realm.where(Speaker.class).equalTo("id", speakerId).findFirst();
             Session session = realm.where(Session.class).equalTo("speakerId",speakerId).findFirst();
 
+            if(!speaker.getTwitter().equals("")){
+                twitterTag = speaker.getTwitter();
+            }
             setImage(speaker);
 
             nameTv.setText(speaker.getFirstname());
