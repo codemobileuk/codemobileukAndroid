@@ -45,13 +45,13 @@ import io.realm.Realm;
 
 public class HomeActivity extends LaunchActivity{
 
-    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2;
+    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2, notificationTv;
     ImageView speakerTwoImage;
     ImageView speakerOneImage;
     ImageView speakerOneImage2;
     ConstraintLayout scheduleButton, locationButton, speakersButton;
     Context context;
-    LinearLayout ll;
+    LinearLayout ll,notificationPanel;
     RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
     ScheduleHorizontalRecyclerAdapter adapter;
@@ -96,6 +96,8 @@ public class HomeActivity extends LaunchActivity{
         startTimeOneTv = (TextView)findViewById(R.id.timeStartTv1);
         startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
         startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
+        notificationTv = (TextView)findViewById(R.id.notification_tv);
+        notificationPanel = (LinearLayout)findViewById(R.id.notification_panel);
         ll = (LinearLayout)findViewById(R.id.ll1);
         rl1 = (RelativeLayout)findViewById(R.id.rl1);
         rl2 = (RelativeLayout)findViewById(R.id.rl2);
@@ -112,11 +114,17 @@ public class HomeActivity extends LaunchActivity{
       //  getCurrentTalk();
         setupActionBar();
         navigationViewItemPosition = 0;
-
+        setNotificationTvText();
 
     }
 
-
+    private void setNotificationTvText(){
+        if(AppDelegate.isNotificationsOn()){
+            notificationTv.setText("Notifications are ON");
+        }else{
+            notificationTv.setText("Notifications are OFF");
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -360,6 +368,18 @@ public class HomeActivity extends LaunchActivity{
             public void onClick(View v) {
                 Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
                 startActivity(in);
+            }
+        });
+        notificationPanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AppDelegate.isNotificationsOn()){
+                    notificationTv.setText("Notifications are OFF");
+                    AppDelegate.setNotificationsOn(false);
+                }else{
+                    notificationTv.setText("Notifications are ON");
+                    AppDelegate.setNotificationsOn(true);
+                }
             }
         });
 
