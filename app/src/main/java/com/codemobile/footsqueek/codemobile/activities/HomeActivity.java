@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -34,6 +35,7 @@ import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -174,6 +176,30 @@ public class HomeActivity extends LaunchActivity{
 
         return false;
     }
+    public boolean mondayBeforeEvent(){
+        Calendar monday = Calendar.getInstance();
+
+        monday.set(Calendar.MONTH, 2);
+        monday.set(Calendar.YEAR, 2017);
+        monday.set(Calendar.DAY_OF_MONTH, 22);
+
+       // Date monday = calendar.getTime();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int mondayMonthDay = monday.get(Calendar.DAY_OF_MONTH);
+        int mondayMonth = monday.get(Calendar.MONTH);
+
+        if(day == mondayMonthDay && month == mondayMonth){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
     public boolean eventOver(){
 
 
@@ -253,8 +279,29 @@ public class HomeActivity extends LaunchActivity{
            speaker1 = realm.where(Speaker.class).equalTo("id", currentTalks.get(0).getSpeakerId()).findFirst();
         }
 
+        if(mondayBeforeEvent()){
+            rl2.setVisibility(View.GONE);
+            rl1.setVisibility(View.VISIBLE);
+            startTimeOneTv2.setVisibility(View.GONE);
+            speakerOneImage2.setVisibility(View.INVISIBLE);
+            comingsoonTv.setVisibility(View.VISIBLE);
+            constraintLayout.setVisibility(View.INVISIBLE);
 
-        if(eventUpcoming()){
+            rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.cardview_dark_background));
+            comingsoonTv.setText("Come down to Telfords bar for drinks at 7:00 \n Click here to navigate");
+            comingsoonTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String lon = "-2.9003047";
+                    String lat = "53.19341";
+
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?daddr=" + lat +"," +lon +""));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }else if(eventUpcoming()){
             //single view coming soon
             rl2.setVisibility(View.GONE);
             rl1.setVisibility(View.VISIBLE);
