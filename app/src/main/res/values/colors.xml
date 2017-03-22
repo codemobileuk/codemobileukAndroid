@@ -19,4 +19,5 @@
     <color name="transparent">#7ba14b4b</color>
     <color name="transGrey">#cd212121</color>
     <color name="cardViewGrey">#eeeeee</color>
+    <color name="none">#00000000</color>
 </resources>

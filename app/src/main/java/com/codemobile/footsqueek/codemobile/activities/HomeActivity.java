@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,7 +47,7 @@ import io.realm.Realm;
 
 public class HomeActivity extends LaunchActivity{
 
-    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2, notificationTv;
+    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2, notificationTv, comingsoonTv;
     ImageView speakerTwoImage;
     ImageView speakerOneImage;
     ImageView speakerOneImage2;
@@ -54,12 +56,15 @@ public class HomeActivity extends LaunchActivity{
     LinearLayout ll,notificationPanel;
     RelativeLayout rl1, rl2;
     RecyclerView recyclerView;
+    ConstraintLayout constraintLayout;
     ScheduleHorizontalRecyclerAdapter adapter;
 
     List<Session> upComingSessions;
     List<Session> allSessions;
     Date currentDate;
     HorizontalScheduleRecyclerInterface horizontalScheduleRecyclerInterface;
+
+    long lastSecond;
 
     //TODO reduce lines by removing the extra views that get hidden and instead resizing the original views
 
@@ -97,7 +102,9 @@ public class HomeActivity extends LaunchActivity{
         startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
         startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
         notificationTv = (TextView)findViewById(R.id.notification_tv);
+        comingsoonTv =  (TextView)findViewById(R.id.comingsoonTv);
         notificationPanel = (LinearLayout)findViewById(R.id.notification_panel);
+        constraintLayout = (ConstraintLayout)findViewById(R.id.constraintLayout1);
         ll = (LinearLayout)findViewById(R.id.ll1);
         rl1 = (RelativeLayout)findViewById(R.id.rl1);
         rl2 = (RelativeLayout)findViewById(R.id.rl2);
@@ -132,7 +139,7 @@ public class HomeActivity extends LaunchActivity{
         navigationViewItemPosition = 0;
     }
 
-    public void setUpRecycler(){
+    public void setUpHorizontalRecycler(){
 
       //  recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -252,15 +259,11 @@ public class HomeActivity extends LaunchActivity{
             rl2.setVisibility(View.GONE);
             rl1.setVisibility(View.VISIBLE);
             startTimeOneTv2.setVisibility(View.GONE);
+            speakerOneImage2.setVisibility(View.INVISIBLE);
+            comingsoonTv.setVisibility(View.VISIBLE);
+            constraintLayout.setVisibility(View.INVISIBLE);
 
-            Picasso.with(HomeActivity.this)
-                    .load("http://i.imgur.com/kFDeShI.jpg")
-                    .fit()
-                    .centerCrop()
-                    .transform(new RoundedCornersTransform())
-                    .into(speakerOneImage2);
-            speakerOneTv2.setText("Code Mobile");
-            buildingOneTv2.setText("Coming soon");
+            rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.cardview_dark_background));
 
 
         }else if(eventOn()){
@@ -269,6 +272,7 @@ public class HomeActivity extends LaunchActivity{
                 //2
                 rl1.setVisibility(View.GONE);
                 rl2.setVisibility(View.VISIBLE);
+                comingsoonTv.setVisibility(View.GONE);
                 loadImages(currentTalks.get(0),speakerOneImage);
                 loadImages(currentTalks.get(1),speakerTwoImage);
                 speakerOneTv.setText(currentTalks.get(0).getTitle());
@@ -281,7 +285,10 @@ public class HomeActivity extends LaunchActivity{
             }else{
                 //1
                 rl1.setVisibility(View.VISIBLE);
+                rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.none));
+                constraintLayout.setVisibility(View.VISIBLE);
                 rl2.setVisibility(View.GONE);
+                comingsoonTv.setVisibility(View.GONE);
                 loadImages(currentTalks.get(0),speakerOneImage2);
                 speakerOneTv2.setText(currentTalks.get(0).getTitle());
                 if(speaker1 != null){
@@ -464,7 +471,7 @@ public class HomeActivity extends LaunchActivity{
         fetcher.setFetcherInterface(new FetcherInterface() {
             @Override
             public void onComplete() {
-                setUpRecycler();
+                setUpHorizontalRecycler();
                 setUpPreviewViews();
             }
 
