@@ -45,6 +45,7 @@ public class SpeakerDetailFragment extends Fragment {
     String twitterTag = "";
 
 
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
