@@ -84,263 +84,52 @@
 
             </LinearLayout>
 
-            <RelativeLayout
 
+            <com.codemobile.footsqueek.codemobile.customUi.PreviewView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:visibility="gone"
-                android:layout_weight="5"
-                android:id="@+id/rl1"
-                android:padding="16dp"
+                android:layout_weight="5.5"
+                android:id="@+id/previewView"
                 >
+
+            </com.codemobile.footsqueek.codemobile.customUi.PreviewView>
+
+
+            <com.codemobile.footsqueek.codemobile.customUi.DoublePreviewView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5.5"
+                android:id="@+id/previewViewDouble"
+                >
+
+            </com.codemobile.footsqueek.codemobile.customUi.DoublePreviewView>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5.5"
+                android:id="@+id/mondayEventCL"
+                android:visibility="gone"
+                android:background="@color/textDarkGrey"
+                >
+
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Coming Soon!"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:textSize="30sp"
-                    android:textColor="@color/commonWhite"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:id="@+id/comingsoonTv"
-                    />
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="4dp"
-                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/commonWhite"
+                    android:id="@+id/announcementTextView"/>
 
 
-                    >
+            </android.support.constraint.ConstraintLayout>
 
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/speakerImageView3"
-
-
-                        />
-                    <TextView
-                        android:layout_margin="8dp"
-                        android:padding="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_box"
-                        android:text="00:00"
-                        android:id="@+id/timeStartTv3"
-                        />
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/gradient_color"
-                        android:padding="4dp"
-                        android:id="@+id/constraintLayout1"
-                        >
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="18sp"
-                            android:id="@+id/nameTv3"
-                            android:text="placeholder1"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/nameTv3"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="14sp"
-                            android:id="@+id/buildingTv3"
-                            android:text="placeholder2"
-                            />
-
-                    </android.support.constraint.ConstraintLayout>
-
-
-                </FrameLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="5"
-                android:id="@+id/rl2"
-                android:layout_margin="16dp"
-                >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="4dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/view2"
-
-                    >
-
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/speakerImageView1"
-
-
-                        />
-                    <TextView
-                        android:layout_margin="8dp"
-                        android:padding="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_box"
-                        android:text="00:00"
-                        android:id="@+id/timeStartTv1"
-                        />
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/gradient_color"
-                        android:padding="4dp"
-
-                        >
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="18sp"
-                            android:id="@+id/nameTv1"
-                            android:text="placeholder1"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/nameTv1"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="14sp"
-                            android:id="@+id/buildingTv1"
-                            android:text="placeholder2"
-                            />
-
-                    </android.support.constraint.ConstraintLayout>
-
-
-                </FrameLayout>
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_centerHorizontal="true"
-                    >
-
-                </View>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="4dp"
-                    android:layout_toRightOf="@id/view2"
-                    android:layout_alignParentRight="true"
-                    >
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/speakerImageView2"
-                        />
-
-                    <TextView
-                        android:layout_margin="8dp"
-                        android:padding="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_box"
-                        android:text="00:00"
-                        android:id="@+id/timeStartTv2"
-                        />
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/gradient_color"
-                        android:padding="4dp"
-
-                        >
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="18sp"
-                            android:id="@+id/nameTv2"
-                            android:text="placeholder1"
-                            />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            android:textColor="@color/commonWhite"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toBottomOf="@+id/nameTv2"
-                            android:id="@+id/buildingTv2"
-                            android:text="placeholder2"
-                            />
-
-                    </android.support.constraint.ConstraintLayout>
-
-
-
-                </FrameLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="16dp"
-                android:visibility="gone"
-                android:layout_weight="0.5">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New talks announced"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:gravity="right"
-                    android:layout_gravity="right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/moreTv"
-                    android:text="MORE"
-
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

@@ -36,7 +36,16 @@ public class RealmUtility {
 
     }
 
+    public static Session getUpcomingSession(){
 
+        Date date = new Date();
+        date.getTime();
+        Realm realm = AppDelegate.getRealmInstance();
+        List<Session> all = realm.where(Session.class).greaterThan("timeEnd",date).findAllSorted("timeStart");
+
+
+        return all.get(0);
+    }
 
     public static List<Session> getFutureSessions(){
 

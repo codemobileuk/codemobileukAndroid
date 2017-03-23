@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleHorizontalRecyclerAdapter;
+import com.codemobile.footsqueek.codemobile.customUi.DoublePreviewView;
+import com.codemobile.footsqueek.codemobile.customUi.PreviewView;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
@@ -49,24 +51,28 @@ import io.realm.Realm;
 
 public class HomeActivity extends LaunchActivity{
 
-    TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, speakerOneTv2, buildingOneTv2, startTimeOneTv, startTimeTwoTv, startTimeOneTv2, notificationTv, comingsoonTv;
-    ImageView speakerTwoImage;
-    ImageView speakerOneImage;
-    ImageView speakerOneImage2;
+ //   TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, startTimeOneTv, startTimeTwoTv, notificationTv;
+ //   TextView speakerOneTv2, buildingOneTv2, startTimeOneTv2, comingsoonTv;
+ //   ImageView speakerTwoImage;
+ //   ImageView speakerOneImage;
+ //   ImageView speakerOneImage2;
     ConstraintLayout scheduleButton, locationButton, speakersButton;
     Context context;
     LinearLayout ll,notificationPanel;
-    RelativeLayout rl1, rl2;
+ //   RelativeLayout rl2;
+    //RelativeLayout rl1;
     RecyclerView recyclerView;
-    ConstraintLayout constraintLayout;
+ //   ConstraintLayout constraintLayout;
     ScheduleHorizontalRecyclerAdapter adapter;
+    PreviewView previewView;
+    DoublePreviewView doublePreviewView;
+    TextView notificationTv, mondayNotificationTv;
+    ConstraintLayout mondayConstraintLayout;
 
     List<Session> upComingSessions;
     List<Session> allSessions;
     Date currentDate;
     HorizontalScheduleRecyclerInterface horizontalScheduleRecyclerInterface;
-
-    long lastSecond;
 
     //TODO reduce lines by removing the extra views that get hidden and instead resizing the original views
 
@@ -88,28 +94,17 @@ public class HomeActivity extends LaunchActivity{
         currentDate = new Date();
         currentDate.getTime();
         context = getApplicationContext();
-        speakerOneTv = (TextView)findViewById(R.id.nameTv1);
-        speakerTwoTv = (TextView)findViewById(R.id.nameTv2);
-        speakerOneTv2 = (TextView)findViewById(R.id.nameTv3);
-        buildingOneTv = (TextView)findViewById(R.id.buildingTv1);
-        buildingTwoTv = (TextView)findViewById(R.id.buildingTv2);
-        buildingOneTv2 = (TextView)findViewById(R.id.buildingTv3);
-        speakerOneImage = (ImageView) findViewById(R.id.speakerImageView1);
-        speakerTwoImage = (ImageView)findViewById(R.id.speakerImageView2);
-        speakerOneImage2 = (ImageView) findViewById(R.id.speakerImageView3);
         locationButton = (ConstraintLayout)findViewById(R.id.button_location);
         scheduleButton = (ConstraintLayout)findViewById(R.id.button_schedule);
         speakersButton = (ConstraintLayout)findViewById(R.id.button_speaker);
-        startTimeOneTv = (TextView)findViewById(R.id.timeStartTv1);
-        startTimeTwoTv = (TextView)findViewById(R.id.timeStartTv2);
-        startTimeOneTv2 = (TextView)findViewById(R.id.timeStartTv3);
         notificationTv = (TextView)findViewById(R.id.notification_tv);
-        comingsoonTv =  (TextView)findViewById(R.id.comingsoonTv);
         notificationPanel = (LinearLayout)findViewById(R.id.notification_panel);
-        constraintLayout = (ConstraintLayout)findViewById(R.id.constraintLayout1);
         ll = (LinearLayout)findViewById(R.id.ll1);
-        rl1 = (RelativeLayout)findViewById(R.id.rl1);
-        rl2 = (RelativeLayout)findViewById(R.id.rl2);
+        mondayNotificationTv = (TextView)findViewById(R.id.announcementTextView);
+        mondayConstraintLayout = (ConstraintLayout)findViewById(R.id.mondayEventCL);
+
+        previewView = (PreviewView)findViewById(R.id.previewView);
+        doublePreviewView = (DoublePreviewView)findViewById(R.id.previewViewDouble);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
@@ -120,7 +115,6 @@ public class HomeActivity extends LaunchActivity{
         fetchSchedule();
         setOnClickListeners();
         setUpScheduledNotifications();
-      //  getCurrentTalk();
         setupActionBar();
         navigationViewItemPosition = 0;
         setNotificationTvText();
@@ -179,9 +173,9 @@ public class HomeActivity extends LaunchActivity{
     public boolean mondayBeforeEvent(){
         Calendar monday = Calendar.getInstance();
 
-        monday.set(Calendar.MONTH, 2);
+        monday.set(Calendar.MONTH, 3);
         monday.set(Calendar.YEAR, 2017);
-        monday.set(Calendar.DAY_OF_MONTH, 22);
+        monday.set(Calendar.DAY_OF_MONTH,17);
 
        // Date monday = calendar.getTime();
 
@@ -240,14 +234,14 @@ public class HomeActivity extends LaunchActivity{
                 }else{
                     break;
                 }
-                    
+
                 prevSessionDate = all.get(i).getTimeStart().toString();
-                
+
             }
-           
+
             }
         return currentSession;
-        
+
     }
 
     public void refreshList(){
@@ -280,16 +274,13 @@ public class HomeActivity extends LaunchActivity{
         }
 
         if(mondayBeforeEvent()){
-            rl2.setVisibility(View.GONE);
-            rl1.setVisibility(View.VISIBLE);
-            startTimeOneTv2.setVisibility(View.GONE);
-            speakerOneImage2.setVisibility(View.INVISIBLE);
-            comingsoonTv.setVisibility(View.VISIBLE);
-            constraintLayout.setVisibility(View.INVISIBLE);
 
-            rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.cardview_dark_background));
-            comingsoonTv.setText("Come down to Telfords bar for drinks at 7:00 \n Click here to navigate");
-            comingsoonTv.setOnClickListener(new View.OnClickListener() {
+            mondayConstraintLayout.setVisibility(View.VISIBLE);
+            previewView.setVisibility(View.GONE);
+            doublePreviewView.setVisibility(View.GONE);
+
+            mondayNotificationTv.setText("Come down to Telfords bar for drinks at 7:00 \n Click here to navigate");
+            mondayConstraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String lon = "-2.9003047";
@@ -302,62 +293,33 @@ public class HomeActivity extends LaunchActivity{
                 }
             });
         }else if(eventUpcoming()){
-            //single view coming soon
-            rl2.setVisibility(View.GONE);
-            rl1.setVisibility(View.VISIBLE);
-            startTimeOneTv2.setVisibility(View.GONE);
-            speakerOneImage2.setVisibility(View.INVISIBLE);
-            comingsoonTv.setVisibility(View.VISIBLE);
-            constraintLayout.setVisibility(View.INVISIBLE);
 
-            rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.cardview_dark_background));
-
+            mondayConstraintLayout.setVisibility(View.VISIBLE);
+            previewView.setVisibility(View.GONE);
+            doublePreviewView.setVisibility(View.GONE);
 
         }else if(eventOn()){
             if(getCurrentTalk().size() ==2){
-                Speaker speaker2 = realm.where(Speaker.class).equalTo("id", currentTalks.get(1).getSpeakerId()).findFirst();
-                //2
-                rl1.setVisibility(View.GONE);
-                rl2.setVisibility(View.VISIBLE);
-                comingsoonTv.setVisibility(View.GONE);
-                loadImages(currentTalks.get(0),speakerOneImage);
-                loadImages(currentTalks.get(1),speakerTwoImage);
-                speakerOneTv.setText(currentTalks.get(0).getTitle());
-                speakerTwoTv.setText(currentTalks.get(1).getTitle());
-                buildingOneTv.setText(speaker1.getFirstname()+ " " +speaker1.getSurname());
-                buildingTwoTv.setText(speaker2.getFirstname()+ " " +speaker2.getSurname());
 
-                startTimeOneTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
-                startTimeTwoTv.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+                mondayConstraintLayout.setVisibility(View.GONE);
+                previewView.setVisibility(View.GONE);
+                doublePreviewView.setVisibility(View.VISIBLE);
+                doublePreviewView.loadViews();
+
             }else{
-                //1
-                rl1.setVisibility(View.VISIBLE);
-                rl1.setBackgroundColor(ContextCompat.getColor(context,R.color.none));
-                constraintLayout.setVisibility(View.VISIBLE);
-                rl2.setVisibility(View.GONE);
-                comingsoonTv.setVisibility(View.GONE);
-                loadImages(currentTalks.get(0),speakerOneImage2);
-                speakerOneTv2.setText(currentTalks.get(0).getTitle());
-                if(speaker1 != null){
-                    buildingOneTv2.setText(speaker1.getFirstname()+" " +speaker1.getSurname());
-                }
-
-                startTimeOneTv2.setText(TimeConverter.trimTimeFromDate(currentTalks.get(0).getTimeStart()));
+                mondayConstraintLayout.setVisibility(View.GONE);
+                previewView.setVisibility(View.VISIBLE);
+                doublePreviewView.setVisibility(View.GONE);
+                previewView.loadViews();
             }
-        }else if(eventOver()){
-            rl2.setVisibility(View.GONE);
-            rl1.setVisibility(View.VISIBLE);
-            speakerOneImage2.setBackgroundResource(R.drawable.codemob_logo);
-            speakerOneTv2.setText("Code Mobile is now over");
-            buildingOneTv2.setText("See you next year!!");
-            Picasso.with(HomeActivity.this)
-                    .load("http://i.imgur.com/kFDeShI.jpg")
-                    .fit()
-                    .centerCrop()
-                    .transform(new RoundedCornersTransform())
-                    .into(speakerOneImage2);
-        }
+        }else if(eventOver()) {
 
+
+            mondayConstraintLayout.setVisibility(View.VISIBLE);
+            previewView.setVisibility(View.GONE);
+            doublePreviewView.setVisibility(View.GONE);
+            mondayNotificationTv.setText("Code Mobile is now over \n See you next year!");
+        }
 
     }
 
@@ -378,7 +340,6 @@ public class HomeActivity extends LaunchActivity{
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-
 
     }
 
