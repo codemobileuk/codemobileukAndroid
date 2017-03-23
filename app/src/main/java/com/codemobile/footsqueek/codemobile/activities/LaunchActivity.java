@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -169,6 +170,11 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
                 Intent in = new Intent(getApplicationContext(),LocationsActivity.class);
                 startActivity(in);
             } else if (id == R.id.nav_website) {
+                String url = "http://www.codemobile.co.uk/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
 
             } else if (id == R.id.nav_sponsors) {
 
