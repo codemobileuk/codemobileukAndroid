@@ -115,9 +115,6 @@ public class LocationsActivity extends LaunchActivity {
     public List<Location> getLocations(){
         Realm realm = AppDelegate.getRealmInstance();
         List<Location> d= realm.where(Location.class).findAll();
-        for (int i = 0; i < d.size(); i++) {
-            Log.d("teste", d.get(i).getType()+" *(*(*(*(*");
-        }
 
         return realm.where(Location.class).findAllSorted("type");
     }

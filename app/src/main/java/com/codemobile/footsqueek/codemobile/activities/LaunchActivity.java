@@ -154,23 +154,28 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         // Handle navigation view navigationViewItemPosition clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            Intent in = new Intent(getApplicationContext(),HomeActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_schedule) {
-            Intent in = new Intent(getApplicationContext(),ScheduleActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_speakers) {
-            Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_map) {
-            Intent in = new Intent(getApplicationContext(),LocationsActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_website) {
+        if(!item.isChecked()){
+            if (id == R.id.nav_home) {
+                Intent in = new Intent(getApplicationContext(),HomeActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+            } else if (id == R.id.nav_schedule) {
+                Intent in = new Intent(getApplicationContext(),ScheduleActivity.class);
+                startActivity(in);
+            } else if (id == R.id.nav_speakers) {
+                Intent in = new Intent(getApplicationContext(),SpeakerActivity.class);
+                startActivity(in);
+            } else if (id == R.id.nav_map) {
+                Intent in = new Intent(getApplicationContext(),LocationsActivity.class);
+                startActivity(in);
+            } else if (id == R.id.nav_website) {
 
-        } else if (id == R.id.nav_sponsors) {
+            } else if (id == R.id.nav_sponsors) {
 
+            }
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

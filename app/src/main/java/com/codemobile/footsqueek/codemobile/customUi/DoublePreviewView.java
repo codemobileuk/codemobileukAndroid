@@ -128,10 +128,6 @@ import io.realm.Realm;
             talk2 = all.get(1);
             
         }
-        Log.d("testingde", "------===========-----------======-----=-=-=-=");
-        for (int i = 0; i < all.size(); i++) {
-            Log.d("testingde", all.get(i).getTimeStart()+"  ==  " + all.get(i).getTitle());
-        }
 
     }
 }

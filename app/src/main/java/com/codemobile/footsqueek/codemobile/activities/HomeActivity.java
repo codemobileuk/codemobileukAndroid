@@ -51,18 +51,11 @@ import io.realm.Realm;
 
 public class HomeActivity extends LaunchActivity{
 
- //   TextView speakerOneTv, speakerTwoTv, buildingOneTv, buildingTwoTv, startTimeOneTv, startTimeTwoTv, notificationTv;
- //   TextView speakerOneTv2, buildingOneTv2, startTimeOneTv2, comingsoonTv;
- //   ImageView speakerTwoImage;
- //   ImageView speakerOneImage;
- //   ImageView speakerOneImage2;
+
     ConstraintLayout scheduleButton, locationButton, speakersButton;
     Context context;
     LinearLayout ll,notificationPanel;
- //   RelativeLayout rl2;
-    //RelativeLayout rl1;
     RecyclerView recyclerView;
- //   ConstraintLayout constraintLayout;
     ScheduleHorizontalRecyclerAdapter adapter;
     PreviewView previewView;
     DoublePreviewView doublePreviewView;
@@ -266,15 +259,11 @@ public class HomeActivity extends LaunchActivity{
 
     public void setUpPreviewViews(){
 
-        Realm realm = AppDelegate.getRealmInstance();
-        List<Session> currentTalks = getCurrentTalk();
-        Speaker speaker1 = null;
-        if(currentTalks.size()>0){
-           speaker1 = realm.where(Speaker.class).equalTo("id", currentTalks.get(0).getSpeakerId()).findFirst();
-        }
-
         if(mondayBeforeEvent()){
-
+            /**
+             * Hardcoded an event occurring on the monday. To edit the day
+             * @see #mondayBeforeEvent()
+             * **/
             mondayConstraintLayout.setVisibility(View.VISIBLE);
             previewView.setVisibility(View.GONE);
             doublePreviewView.setVisibility(View.GONE);
@@ -343,23 +332,6 @@ public class HomeActivity extends LaunchActivity{
 
     }
 
-    public void loadImages(Session currentTalk, ImageView view){
-
-        Realm realm = AppDelegate.getRealmInstance();
-
-        Speaker speaker1 = realm.where(Speaker.class).equalTo("id", currentTalk.getSpeakerId()).findFirst();
-
-        if(speaker1 != null){
-            Picasso.with(HomeActivity.this)
-                    .load(speaker1.getPhotoUrl())
-                    .fit()
-                    .centerCrop()
-                    .transform(new RoundedCornersTransform())
-                    .into(view);
-        }
-
-
-    }
     public void setOnClickListeners(){
 
         scheduleButton.setOnClickListener(new View.OnClickListener() {
