@@ -95,6 +95,10 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
         recyclerView = (RecyclerView)view.findViewById(R.id.recycler);
         createRecycler();
 
+        if(AppDelegate.isTwoPane()){
+            speakerClicked(allSpeakers.get(0).getId());
+        }
+
         return view;
     }
 
