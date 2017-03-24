@@ -17,12 +17,17 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.customUi.LineButton;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
+import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.fragments.ScheduleRecyclerFragment;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleFilterInterface;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by greg on 19/01/2017.
@@ -38,7 +43,7 @@ public class ScheduleActivity extends LaunchActivity {
     List<Tag> uniqueTags;
     List<String> filteredTagNames = new ArrayList<>();
     Activity activity;
-    String id;
+   // String id;
     FrameLayout fragmentLayout;
     ScheduleRecyclerFragment newFragment;
 
@@ -55,7 +60,7 @@ public class ScheduleActivity extends LaunchActivity {
         newFragment = new ScheduleRecyclerFragment();
 
         Intent intent =  getIntent();
-        id = intent.getStringExtra("id");
+        String id = intent.getStringExtra("id");
 
         if (savedInstanceState == null) {
 
@@ -70,17 +75,48 @@ public class ScheduleActivity extends LaunchActivity {
         for (int i = 0; i < tags.size(); i++) {
             filteredTagNames.add(tags.get(i).getTag());
         }
+
+
         uniqueTags = RealmUtility.getUniqueTags();
 
         dayOneBtn = (LineButton)findViewById(R.id.dayOneButton);
         dayTwoBtn = (LineButton)findViewById(R.id.dayTwoButton);
         dayThreeBtn = (LineButton)findViewById(R.id.dayThreeButton);
 
+
+
         determinePaneLayout();
         setupActionBar();
         navigationViewItemPosition = 1;
 
         setupButtonListeners();
+        if(id != null){
+            setDay(getTalkDay(id));
+        }
+
+
+    }
+    public void setDay(int day){
+        if(day == 18){
+           dayOneBtn.customClick();
+        }else if(day == 19){
+            dayTwoBtn.customClick();
+        }else if(day == 20){
+            dayThreeBtn.customClick();
+          //  dayThreeBtn.updateViews();
+        }
+    }
+
+    public int getTalkDay (String id){
+
+        Realm realm = AppDelegate.getRealmInstance();
+        Session session = realm.where(Session.class).equalTo("id",id).findFirst();
+        Date sessionDate = session.getTimeStart();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sessionDate);
+
+        return cal.get(Calendar.DAY_OF_MONTH);
 
     }
 

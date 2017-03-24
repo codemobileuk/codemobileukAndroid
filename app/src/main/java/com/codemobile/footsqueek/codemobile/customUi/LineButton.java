@@ -113,7 +113,7 @@ public class LineButton extends LinearLayout {
     }
 
     public void customClick(){
-        //since i override the click here this is a workarround to have the buttons do their jobs.
+        //since i override the click here this is a workaround to have the buttons do their jobs.
         if(hasClickFocus){
             if(hasPartners){
                 hasClickFocus = true;
