@@ -156,22 +156,32 @@ public class ScheduleActivity extends LaunchActivity {
         dayOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleDayChooserInterface.dayOne();
-                dayOneBtn.customClick();
+                if (scheduleDayChooserInterface != null) {
+                    scheduleDayChooserInterface.dayOne();
+                    dayOneBtn.customClick();
+                }
+
+
             }
         });
         dayTwoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleDayChooserInterface.dayTwo();
-                dayTwoBtn.customClick();
+                if(scheduleDayChooserInterface != null){
+                    scheduleDayChooserInterface.dayTwo();
+                    dayTwoBtn.customClick();
+                }
+
             }
         });
         dayThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleDayChooserInterface.dayThree();
-                dayThreeBtn.customClick();
+                if(scheduleDayChooserInterface != null){
+                    scheduleDayChooserInterface.dayThree();
+                    dayThreeBtn.customClick();
+                }
+
             }
         });
     }
