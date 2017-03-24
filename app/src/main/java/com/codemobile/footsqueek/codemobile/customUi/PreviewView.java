@@ -1,6 +1,7 @@
 package com.codemobile.footsqueek.codemobile.customUi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.activities.HomeActivity;
+import com.codemobile.footsqueek.codemobile.activities.ScheduleActivity;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
@@ -36,6 +38,7 @@ public class PreviewView extends LinearLayout {
     Context context;
     Session talk;
     Date currentDate;
+    RelativeLayout rl1;
 
     public PreviewView(Context context) {
         super(context);
@@ -68,9 +71,10 @@ public class PreviewView extends LinearLayout {
         talkTv = (TextView)findViewById(R.id.sessionTv);
         speakerTv = (TextView)findViewById(R.id.speakerTv);
         mainImage = (ImageView)findViewById(R.id.imageView);
+        rl1 = (RelativeLayout)findViewById(R.id.rl1);
 
 
-
+        setOnClickListeners();
 
 
     }
@@ -107,6 +111,17 @@ public class PreviewView extends LinearLayout {
         }
 
 
+    }
+
+    private void setOnClickListeners(){
+        rl1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(context,ScheduleActivity.class);
+                in.putExtra("id",talk.getId());
+                context.startActivity(in);
+            }
+        });
     }
 
 }
