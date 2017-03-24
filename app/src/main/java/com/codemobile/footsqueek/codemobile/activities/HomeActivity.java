@@ -126,6 +126,7 @@ public class HomeActivity extends LaunchActivity{
     protected void onResume() {
         super.onResume();
         navigationViewItemPosition = 0;
+        setUpPreviewViews();
     }
 
     public void setUpHorizontalRecycler(){
@@ -253,6 +254,7 @@ public class HomeActivity extends LaunchActivity{
     protected void onPostResume() {
         super.onPostResume();
         refreshList();
+        fetchSchedule();
 
 
     }
@@ -367,6 +369,19 @@ public class HomeActivity extends LaunchActivity{
                     notificationTv.setText("Notifications are ON");
                     AppDelegate.setNotificationsOn(true);
                 }
+            }
+        });
+        previewView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        doublePreviewView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

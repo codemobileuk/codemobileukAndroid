@@ -1,9 +1,11 @@
 package com.codemobile.footsqueek.codemobile.customUi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.activities.ScheduleActivity;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
@@ -36,6 +39,7 @@ import io.realm.Realm;
     Session talk1, talk2;
     Speaker speaker1, speaker2;
     Context context;
+    FrameLayout frame1, frame2;
 
     public DoublePreviewView(Context context) {
         super(context);
@@ -72,9 +76,9 @@ import io.realm.Realm;
         talkTv2 = (TextView)findViewById(R.id.sessionTv2);
         speakerTv2 = (TextView)findViewById(R.id.speakerTv2);
         mainImage2 = (ImageView)findViewById(R.id.image2);
-
-
-
+        frame1 = (FrameLayout)findViewById(R.id.frame1);
+        frame2 = (FrameLayout)findViewById(R.id.frame2);
+        setOnClickListeners();
 
     }
 
@@ -128,6 +132,28 @@ import io.realm.Realm;
             talk2 = all.get(1);
             
         }
+
+    }
+
+    public void setOnClickListeners(){
+
+        frame1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(context,ScheduleActivity.class);
+                in.putExtra("id",talk1.getId());
+                context.startActivity(in);
+            }
+        });
+
+        frame2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(context,ScheduleActivity.class);
+                in.putExtra("id",talk2.getId());
+                context.startActivity(in);
+            }
+        });
 
     }
 }
