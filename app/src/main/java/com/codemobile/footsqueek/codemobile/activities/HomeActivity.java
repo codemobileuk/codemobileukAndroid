@@ -315,22 +315,44 @@ public class HomeActivity extends LaunchActivity{
     }
 
         public void setUpScheduledNotifications(){
-        Calendar calendar = Calendar.getInstance();
 
-        calendar.set(Calendar.MONTH, 0);
-        calendar.set(Calendar.YEAR, 2017);
-        calendar.set(Calendar.DAY_OF_MONTH, 25);
+            Intent myIntent = new Intent(HomeActivity.this, CurrentSessionChecker.class);
+            pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, myIntent,0);
 
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM,Calendar.PM);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            if(AppDelegate.isNotificationsOn()){
+                Calendar calendar = Calendar.getInstance();
 
-        Intent myIntent = new Intent(HomeActivity.this, CurrentSessionChecker.class);
-        pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, myIntent,0);
+                calendar.set(Calendar.MONTH, 0);
+                calendar.set(Calendar.YEAR, 2017);
+                calendar.set(Calendar.DAY_OF_MONTH, 25);
 
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                calendar.set(Calendar.HOUR_OF_DAY, 11);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.AM_PM,Calendar.PM);
+
+
+                /**
+                 * sets an alaram manager to go off every 15 minuets from the moment activated.
+                 * It then checks upcoming talks and creates a notification. Turning notifications off after
+                 * it has set one will not stop that specific one at the moment. Could probbably kill this intent.
+                 * **/
+
+                // TODO: set to go off at a specific time not when first run
+                // TODO: check doest run again and again. Not sure if it duplicates etc.
+                // TODO: see if this intent can be slaughtered
+
+
+                alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+
+                Log.d("Calender", "----- " +calendar.getTime());
+            }else{
+                alarmManager.cancel(pendingIntent);
+                Log.d("Calender", "cancel");
+            }
+
+
 
     }
 
@@ -362,12 +384,15 @@ public class HomeActivity extends LaunchActivity{
         notificationPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (AppDelegate.isNotificationsOn()){
                     notificationTv.setText("Notifications are OFF");
                     AppDelegate.setNotificationsOn(false);
+                    setUpScheduledNotifications();
                 }else{
                     notificationTv.setText("Notifications are ON");
                     AppDelegate.setNotificationsOn(true);
+                    setUpScheduledNotifications();
                 }
             }
         });

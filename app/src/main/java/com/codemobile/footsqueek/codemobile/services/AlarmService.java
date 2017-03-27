@@ -39,10 +39,13 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        Log.d("Calender", "Alarm service called - check time");
         //TODO really this should check if notifications are on before the alarm manager is created but that needs testing lots
         if(AppDelegate.isNotificationsOn()){
             NotificationScheduler notificationScheduler = new NotificationScheduler(getApplicationContext());
             notificationScheduler.checkIfNotificationNeeded();
+
+
         }
         //  NotificationManager  manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 

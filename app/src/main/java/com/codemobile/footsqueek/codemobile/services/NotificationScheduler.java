@@ -32,16 +32,17 @@ public class NotificationScheduler {
         Realm realm = AppDelegate.getRealmInstance();
 
         List<Session> sessions = realm.where(Session.class).findAllSorted("timeStart");
-        Log.d("dateeeee", sessions.size() +"   size");
+        Log.d("datee", sessions.size() +"   size");
         if(sessions.size() !=0){
             for (Session s: sessions) {
-                if(milliBetweenTwoDates(currentDate,s.getTimeStart()) < 900000 && milliBetweenTwoDates(currentDate,s.getTimeStart()) >60000 ){
-
+                //Only create if difference in time from now and talk is less that 15min and more than 1min
+                if(milliBetweenTwoDates(currentDate,s.getTimeStart()) < 1020000 && milliBetweenTwoDates(currentDate,s.getTimeStart()) >60000 ){
                     double seconds = milliBetweenTwoDates(currentDate,s.getTimeStart());
                     notification.createNotification(s.getTitle(),seconds/60000);
+                    Log.d("datee", "created notification " + s.getId());
                     break;
                 }else{
-                    Log.d("date", "dif: " + milliBetweenTwoDates(currentDate,s.getTimeStart()) +"    CD:"+currentDate.toString() +"  SD:" +s.getTimeStart());
+                    Log.d("datee", "dif: " + milliBetweenTwoDates(currentDate,s.getTimeStart()) +"    CD:"+currentDate.toString() +"  SD:" +s.getTimeStart());
                 }
             }
         }
