@@ -13,6 +13,8 @@ import com.codemobile.footsqueek.codemobile.adapters.LocationRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.LocationRowType;
 import com.codemobile.footsqueek.codemobile.database.LocationWithHeaders;
+import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
+import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class LocationsActivity extends LaunchActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locations);
-
+        fetchSchedule();
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -123,5 +125,25 @@ public class LocationsActivity extends LaunchActivity {
     protected void onResume() {
         super.onResume();
         navigationViewItemPosition = 3;
+    }
+
+    public void fetchSchedule(){
+
+        UpdateTables updateTables = new UpdateTables();
+        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
+            @Override
+            public void onComplete() {
+                addHeaders();
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+        updateTables.compareAndUpdate();
+
+
     }
 }

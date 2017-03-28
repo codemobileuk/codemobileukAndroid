@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.codemobile.footsqueek.codemobile.AppDelegate;
+import com.codemobile.footsqueek.codemobile.database.DataBaseVersion;
 import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
@@ -22,6 +24,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by greg on 17/01/2017.
@@ -90,6 +96,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 parseLocationJson(json);
             }else if(params[0].equals("Tags")){
                 parseTagsJson(json);
+            }else if (params[0].equals("Modified")){
+                parseUpdatedDbJson(json);
             }
             else{
                 Log.e("fetcher","No valid Json parser");
@@ -161,11 +169,15 @@ public class Fetcher extends AsyncTask<String,Void,String>{
         final String PHOTO_URL = "PhotoURL";
         final String FULLNAME = "FullName";
 
+        List<String> ids = new ArrayList<>();
         JSONArray speakerArray = new JSONArray(json);
         for (int i = 0; i < speakerArray.length(); i++) {
 
-            JSONObject speakerJSON = speakerArray.getJSONObject(i);
 
+           
+            JSONObject speakerJSON = speakerArray.getJSONObject(i);
+            ids.add(speakerJSON.getString(ID));
+         //   Log.d("missing", "id size: == " + speakerJSON.getString(ID));
             Speaker speaker = new Speaker(
                     speakerJSON.getString(ID),
                     speakerJSON.getString(FIRSTNAME),
@@ -177,10 +189,38 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                     speakerJSON.getString(FULLNAME)
 
             );
-
             RealmUtility.addNewRow(speaker);
 
         }
+        Realm realm = AppDelegate.getRealmInstance();
+        List<Speaker>speakers = realm.where(Speaker.class).findAll();
+
+
+        for (int j = 0; j <speakers.size() ; j++) {
+            //if id's dion't match and its the last one#
+            Log.d("miss3", "============" +j+"=================" +j+"======================");
+            boolean match =false;
+            for (int k = 0; k < ids.size(); k++) {
+                if(ids.get(k).equals(speakers.get(j).getId())){
+                    Log.d("miss3", "id speakers: " +speakers.get(j).getId() +"== K id= " +ids.get(k));
+                   match = true;
+                  // break;
+                }else if(!ids.get(k).equals(speakers.get(j).getId())){
+
+                    if( k == ids.size()-1){
+                        if(match){
+                            Log.d("miss3", "matched! not deleting");
+                        }else{
+                            Log.d("miss3", "delete: " +speakers.get(j).getId());
+                        }
+                    }
+                }
+
+            }
+            Log.d("miss3", "===================================================");
+
+        }
+
 
     }
 
@@ -250,6 +290,26 @@ public class Fetcher extends AsyncTask<String,Void,String>{
             Session.addNewRow(session);
         }
 
+    }
+
+    private void parseUpdatedDbJson(String json)throws JSONException{
+
+        final String ModifiedDate = "ModifiedDate";
+
+        JSONObject tagJSON = new JSONObject(json);
+      //  for (int i = 0; i < tagArray.length(); i++) {
+
+
+            //tagJSON.getJSONObject(ModifiedDate);
+
+            DataBaseVersion dbv = new DataBaseVersion(
+                    "1",
+                    tagJSON.getString(ModifiedDate)
+            );
+
+            RealmUtility.addNewRow(dbv);
+
+    //    }
     }
 
     @Override

@@ -30,8 +30,10 @@ import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
+import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
+import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
 import com.codemobile.footsqueek.codemobile.services.TimeConverter;
@@ -155,11 +157,13 @@ public class HomeActivity extends LaunchActivity{
 
     public boolean eventOn(){
 
-        Date firstSession = allSessions.get(0).getTimeStart();
-        Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
+        if(allSessions.size() != 0){
+            Date firstSession = allSessions.get(0).getTimeStart();
+            Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
 
-        if(currentDate.after(firstSession) && currentDate.before(lastSession)){
-            return true;
+            if(currentDate.after(firstSession) && currentDate.before(lastSession)){
+                return true;
+            }
         }
 
         return false;
@@ -190,11 +194,13 @@ public class HomeActivity extends LaunchActivity{
     }
     public boolean eventOver(){
 
-
-        Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
-        if(currentDate.after(lastSession)){
-            return true;
+        if(allSessions.size() >1){
+            Date lastSession = allSessions.get(allSessions.size()-1).getTimeEnd();
+            if(currentDate.after(lastSession)){
+                return true;
+            }
         }
+
         return false;
     }
     public boolean eventUpcoming(){
@@ -414,81 +420,8 @@ public class HomeActivity extends LaunchActivity{
 
     public void fetchSchedule(){
 
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-                fetchSpeakers();
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Schedule");
-
-    }
-    public void fetchSpeakers(){
-
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-                fetchLocations();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Speakers");
-
-    }
-
-    public void fetchLocations(){
-
-        final Fetcher fetcher= new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
-
-            @Override
-            public void onComplete() {
-                fetchTags();
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Locations");
-
-    }
-
-    public void fetchTags(){
-
-        final Fetcher fetcher = new Fetcher();
-        fetcher.setFetcherInterface(new FetcherInterface() {
+        UpdateTables updateTables = new UpdateTables();
+        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
             @Override
             public void onComplete() {
                 setUpHorizontalRecycler();
@@ -499,14 +432,14 @@ public class HomeActivity extends LaunchActivity{
             public void onError() {
 
             }
-
-            @Override
-            public void onProgress() {
-
-            }
         });
-        fetcher.execute("Tags");
+        updateTables.compareAndUpdate();
+
+
     }
+
+
+
 
 }
 

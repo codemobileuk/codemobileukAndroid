@@ -141,7 +141,10 @@ import io.realm.Realm;
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(context,ScheduleActivity.class);
-                in.putExtra("id",talk1.getId());
+                if(talk1 != null){
+                    in.putExtra("id",talk1.getId());
+                }
+
                 context.startActivity(in);
             }
         });
@@ -150,7 +153,9 @@ import io.realm.Realm;
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(context,ScheduleActivity.class);
-                in.putExtra("id",talk2.getId());
+                if(talk2 != null){
+                    in.putExtra("id",talk2.getId());
+                }
                 context.startActivity(in);
             }
         });
