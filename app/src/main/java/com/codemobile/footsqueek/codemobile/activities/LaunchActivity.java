@@ -46,10 +46,11 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-
+       // fetchSchedule();
         setColours();
         setupActionBar();
         determineTwoPane();
+
 
     }
 
@@ -197,13 +198,13 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
     }
 
-    public void fetchSchedule(){
+   /* public void fetchSchedule(){
 
         final UpdateTables updateTables = new UpdateTables();
         updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
             @Override
             public void onComplete() {
-                updateUi();
+              //  updateUi();
             }
 
             @Override
@@ -214,7 +215,7 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         updateTables.compareAndUpdate();
 
 
-    }
+    }*/
 
     public void updateUi(){
         Log.d("activity", this.getLocalClassName()+"   ===   " +" update UI");

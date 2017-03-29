@@ -19,6 +19,7 @@ public class UpdateTables {
     private boolean speakersUpdated = false, scheduleUpdated = false, tagsUpdated = false, locationsUpdated = false;
 
     UpdateTablesInterface updateTablesInterface;
+    Fetcher fetcher;
 
     public void setUpdateTablesInterface(UpdateTablesInterface updateTablesInterface){
         this.updateTablesInterface = updateTablesInterface;
@@ -32,23 +33,24 @@ public class UpdateTables {
         final Realm realm = AppDelegate.getRealmInstance();
         final DataBaseVersion dbv = realm.where(DataBaseVersion.class).findFirst();
         Log.d("Realmstuff", "db version before" + dbv.getDbVersion());
-        final Fetcher fetcher= new Fetcher();
+        fetcher = new Fetcher();
+        final String dbvString = dbv.getDbVersion();
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
             public void onComplete() {
 
                 DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
-                Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + newDbv.getDbVersion());
+                Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + dbvString+"  " + newDbv.getDbVersion());
                 if(dbv != null){
-                    if(!dbv.getDbVersion().equals(newDbv.getDbVersion())){
+                    //TODO if realm tables empty go get um
+                    if(!dbvString.equals(newDbv.getDbVersion())){
                             fetchSpeakers();
-                            fetchSchedule();
-                            fetchTags();
-                            fetchLocations();
+
                     }else{
                         Log.d("fetcher", "DB on latest version ");
                         updateTablesInterface.onComplete();
+
                     }
 
                 }
@@ -74,6 +76,8 @@ public class UpdateTables {
             if(speakersUpdated && scheduleUpdated && tagsUpdated && locationsUpdated) {
                 if (updateTablesInterface != null) {
                     updateTablesInterface.onComplete();
+                    Log.d("Realmstuff", "DB can be dropped again ");
+                    fetcher.setDropping(false);
                 }
 
             }
@@ -85,13 +89,14 @@ public class UpdateTables {
 
     private void fetchSchedule(){
 
-        final Fetcher fetcher= new Fetcher();
+        final Fetcher fetcher= new Fetcher("Speakers");
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
             public void onComplete() {
                 scheduleUpdated = true;
-                taskComplete();
+               // taskComplete();
+                fetchLocations();
             }
 
             @Override
@@ -117,7 +122,9 @@ public class UpdateTables {
             @Override
             public void onComplete() {
                 speakersUpdated = true;
-                taskComplete();
+                //taskComplete();
+                fetchSchedule();
+
             }
 
             @Override
@@ -144,7 +151,9 @@ public class UpdateTables {
             @Override
             public void onComplete() {
                 locationsUpdated = true;
-                taskComplete();
+              //  taskComplete();
+                fetchTags();
+
             }
 
             @Override

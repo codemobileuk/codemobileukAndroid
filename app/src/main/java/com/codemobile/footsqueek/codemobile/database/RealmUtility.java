@@ -28,8 +28,26 @@ public class RealmUtility {
 
     }
 
+    public static void deleteTables(){
+        final Realm realm = AppDelegate.getRealmInstance();
+        try{
+            realm.beginTransaction();
+            realm.delete(Session.class);
+            realm.delete(Speaker.class);
+            realm.delete(Tag.class);
+            realm.delete(Location.class);
+            realm.commitTransaction();
+            Log.d("Realmstuff", "db drop tables");
+
+        } catch (Exception e) {
+            Log.e("RealmError", "error" + e);
+            realm.cancelTransaction();
+
+        }
+    }
+
     public static void addNewRows(List<RealmObject> obj, final FetcherInterface fetcherInterface){
-        Realm realm = AppDelegate.getRealmInstance();
+        final Realm realm = AppDelegate.getRealmInstance();
 
         try{
             realm.beginTransaction();
@@ -42,10 +60,12 @@ public class RealmUtility {
             realm.cancelTransaction();
 
         }
+
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm element) {
                 Log.d("Realmstuff", "realm saved");
+                realm.removeAllChangeListeners();
                 fetcherInterface.onComplete();
 
             }

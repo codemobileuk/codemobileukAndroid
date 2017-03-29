@@ -121,7 +121,10 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
 
             ((ScheduleViewHolder)holder).title.setText(session.getTitle());
-            ((ScheduleViewHolder)holder).speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
+            if(speaker != null){
+                ((ScheduleViewHolder)holder).speaker.setText(speaker.getFirstname() + " " + speaker.getSurname());
+            }
+
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
             if(session.getLocationName().equals("Molloy")){
                 ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_molloy));

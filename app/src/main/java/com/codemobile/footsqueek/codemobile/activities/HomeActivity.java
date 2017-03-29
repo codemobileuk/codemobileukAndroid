@@ -419,14 +419,16 @@ public class HomeActivity extends LaunchActivity{
 
     }
 
-
-    @Override
+/*
+*  @Override
     public void updateUi() {
         super.updateUi();
         setUpHorizontalRecycler();
         setUpPreviewViews();
 
     }
+* */
+
 }
 
 

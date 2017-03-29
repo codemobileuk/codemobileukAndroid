@@ -59,14 +59,17 @@ public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<Sche
         holder.desc.setEllipsize(TextUtils.TruncateAt.END);
         holder.desc.setMaxLines(1);
         holder.desc.setText(sessions.get(position).getDesc());
-        holder.speaker.setText(speaker.getFirstname() +" " + speaker.getSurname());
+        if(speaker != null){
+            holder.speaker.setText(speaker.getFirstname() +" " + speaker.getSurname());
 
-        Picasso.with(mContext)
-                .load(speaker.getPhotoUrl())
-                .fit()
-                .centerCrop()
-                .into(holder.speakerImage);
-        setOnClickListeners(holder,position);
+            Picasso.with(mContext)
+                    .load(speaker.getPhotoUrl())
+                    .fit()
+                    .centerCrop()
+                    .into(holder.speakerImage);
+            setOnClickListeners(holder,position);
+        }
+
     }
 
     public void setOnClickListeners(ScheduleViewHolder holder, final int position){

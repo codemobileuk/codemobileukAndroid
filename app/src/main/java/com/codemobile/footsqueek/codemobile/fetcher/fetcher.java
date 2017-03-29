@@ -49,6 +49,17 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     List<Tag> tags = new ArrayList<>();
     List<Location> locations = new ArrayList<>();
     private static List<RealmObject> genericList = new ArrayList<>();
+    private boolean dropping;
+    String exacuteString;
+
+    public Fetcher(String params) {
+
+        exacuteString = params;
+
+    }
+    public Fetcher() {
+
+    }
 
     public void setFetcherInterface(FetcherInterface fetcherInterface){
         this.fetcherInterface = fetcherInterface;
@@ -59,14 +70,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         type = params[0];
         HttpURLConnection urlConnection = null;
-        if(!params[0].equals("Modified")){
-            Realm realm = AppDelegate.getRealmInstance();
 
-            realm.delete(Session.class);
-            realm.delete(Speaker.class);
-            realm.delete(Tag.class);
-            realm.delete(Location.class);
-        }
+
 
         BufferedReader reader = null;
 
@@ -149,7 +154,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     }
 
     private void parseLocationJson(String json)throws JSONException{
-
+        genericList = new ArrayList<>();
         final String NAME = "LocationName";
         final String LON = "Longitude";
         final String LAT = "Latitude";
@@ -172,13 +177,13 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 locationObject.getString(TYPE)
             );
 
-            RealmUtility.addNewRow(location);
+            genericList.add(location);
         }
 
     }
 
     private void parseSpeakersJson(String json)throws JSONException{
-
+        genericList = new ArrayList<>();
         final String ID = "SpeakerId";
         final String FIRSTNAME = "Firstname";
         final String SURNAME = "Surname";
@@ -195,7 +200,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
            
             JSONObject speakerJSON = speakerArray.getJSONObject(i);
-            ids.add(speakerJSON.getString(ID));
+      //      ids.add(speakerJSON.getString(ID));
          //   Log.d("missing", "id size: == " + speakerJSON.getString(ID));
             Speaker speaker = new Speaker(
                     speakerJSON.getString(ID),
@@ -246,7 +251,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     }
 
     private void parseTagsJson(String json)throws JSONException{
-
+        genericList = new ArrayList<>();
         final String ID = "TagId";
         final String TAG = "Tag";
         final String SessionId = "SessionId";
@@ -269,7 +274,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     }
 
     private void parseSessionJson(String json)throws JSONException{
-
+        genericList = new ArrayList<>();
         TimeConverter timeConverter = new TimeConverter();
 
         final String RESULTS = "Results";
@@ -315,7 +320,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     }
 
     private void parseUpdatedDbJson(String json)throws JSONException{
-
+        genericList = new ArrayList<>();
         final String ModifiedDate = "ModifiedDate";
 
         JSONObject tagJSON = new JSONObject(json);
@@ -343,14 +348,30 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        Log.d("Realmstuff", "on complete + " +s);
+        Log.d("Realmstuff", "on complete + " +s +" list size:: " +genericList.size() );
      //   fetcherInterface.onComplete();
         RealmUtility.addNewRows(genericList, fetcherInterface);
-        genericList = new ArrayList<>();
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if(exacuteString != null){
+            if(exacuteString.equals("Schedule") && !dropping){
+                dropping = true;
+                RealmUtility.deleteTables();
+            }
+        }
+
+
+    }
+
+    public boolean isDropping() {
+        return dropping;
+    }
+
+    public void setDropping(boolean dropping) {
+        this.dropping = dropping;
     }
 }
