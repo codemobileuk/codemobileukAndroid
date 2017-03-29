@@ -31,7 +31,7 @@ public class UpdateTables {
         //get old versio
         final Realm realm = AppDelegate.getRealmInstance();
         final DataBaseVersion dbv = realm.where(DataBaseVersion.class).findFirst();
-
+        Log.d("Realmstuff", "db version before" + dbv.getDbVersion());
         final Fetcher fetcher= new Fetcher();
         fetcher.setFetcherInterface(new FetcherInterface() {
 
@@ -39,6 +39,7 @@ public class UpdateTables {
             public void onComplete() {
 
                 DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
+                Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + newDbv.getDbVersion());
                 if(dbv != null){
                     if(!dbv.getDbVersion().equals(newDbv.getDbVersion())){
                             fetchSpeakers();

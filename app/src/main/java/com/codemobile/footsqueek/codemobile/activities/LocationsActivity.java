@@ -127,23 +127,12 @@ public class LocationsActivity extends LaunchActivity {
         navigationViewItemPosition = 3;
     }
 
-    public void fetchSchedule(){
-
-        UpdateTables updateTables = new UpdateTables();
-        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
-            @Override
-            public void onComplete() {
-                addHeaders();
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-        updateTables.compareAndUpdate();
 
 
+    @Override
+    public void updateUi() {
+        super.updateUi();
+        addHeaders();
+        adapter.notifyDataSetChanged();
     }
 }

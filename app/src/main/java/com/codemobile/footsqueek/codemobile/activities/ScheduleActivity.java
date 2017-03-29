@@ -257,4 +257,10 @@ public class ScheduleActivity extends LaunchActivity {
             }
         }, 0);
     }
+
+    @Override
+    public void updateUi() {
+        super.updateUi();
+
+    }
 }

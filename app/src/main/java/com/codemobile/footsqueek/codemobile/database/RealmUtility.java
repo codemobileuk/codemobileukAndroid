@@ -3,12 +3,14 @@ package com.codemobile.footsqueek.codemobile.database;
 import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
+import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -18,15 +20,52 @@ import io.realm.RealmResults;
 
 public class RealmUtility {
 
+    private static List<RealmObject> genericList = new ArrayList<>();
 
     public static void addNewRow(RealmObject obj){
 
+
+
+    }
+
+    public static void addNewRows(List<RealmObject> obj, final FetcherInterface fetcherInterface){
         Realm realm = AppDelegate.getRealmInstance();
 
         try{
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(obj);
             realm.commitTransaction();
+            Log.d("Realmstuff", "db edit");
+
+        } catch (Exception e) {
+            Log.e("RealmError", "error" + e);
+            realm.cancelTransaction();
+
+        }
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm element) {
+                Log.d("Realmstuff", "realm saved");
+                fetcherInterface.onComplete();
+
+            }
+        });
+
+    }
+
+   // public static void addNewRowDelayedCommit(RealmObject obj){
+
+  //      genericList.add(obj);
+
+ //   }
+
+    public static void commitData(){
+        Realm realm = AppDelegate.getRealmInstance();
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(genericList);
+            realm.commitTransaction();
+            Log.d("Realmstuff", "db edit");
 
         } catch (Exception e) {
             Log.e("RealmError", "error" + e);
@@ -34,7 +73,15 @@ public class RealmUtility {
 
         }
 
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm element) {
+                genericList = null;
+                Log.d("Realmstuff", "db edit changed!!!1");
+            }
+        });
     }
+
 
     public static void deleteRow(List<String> ids){
         Realm realm = AppDelegate.getRealmInstance();

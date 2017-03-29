@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 
 /**
  * Created by greg on 17/01/2017.
@@ -43,6 +44,12 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
     FetcherInterface fetcherInterface;
 
+    List<Speaker> speakers = new ArrayList<>();
+    List<Session> sessions = new ArrayList<>();
+    List<Tag> tags = new ArrayList<>();
+    List<Location> locations = new ArrayList<>();
+    private static List<RealmObject> genericList = new ArrayList<>();
+
     public void setFetcherInterface(FetcherInterface fetcherInterface){
         this.fetcherInterface = fetcherInterface;
     }
@@ -52,7 +59,14 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         type = params[0];
         HttpURLConnection urlConnection = null;
+        if(!params[0].equals("Modified")){
+            Realm realm = AppDelegate.getRealmInstance();
 
+            realm.delete(Session.class);
+            realm.delete(Speaker.class);
+            realm.delete(Tag.class);
+            realm.delete(Location.class);
+        }
 
         BufferedReader reader = null;
 
@@ -90,14 +104,19 @@ public class Fetcher extends AsyncTask<String,Void,String>{
             json = buffer.toString();
             if(params[0].equals("Schedule")){
                 parseSessionJson(json);
+                return params[0];
             }else if(params[0].equals("Speakers")){
                 parseSpeakersJson(json);
+                return params[0];
             }else if(params[0].equals("Locations")){
                 parseLocationJson(json);
+                return params[0];
             }else if(params[0].equals("Tags")){
                 parseTagsJson(json);
+                return params[0];
             }else if (params[0].equals("Modified")){
                 parseUpdatedDbJson(json);
+                return params[0];
             }
             else{
                 Log.e("fetcher","No valid Json parser");
@@ -189,9 +208,11 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                     speakerJSON.getString(FULLNAME)
 
             );
-            RealmUtility.addNewRow(speaker);
+          //  RealmUtility.addNewRow(speaker);
+            genericList.add(speaker);
 
         }
+
         Realm realm = AppDelegate.getRealmInstance();
         List<Speaker>speakers = realm.where(Speaker.class).findAll();
 
@@ -242,8 +263,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                     tagJSON.getString(SessionId)
             );
 
-            RealmUtility.addNewRow(tag);
-
+         //   RealmUtility.addNewRow(tag);
+            genericList.add(tag);
         }
     }
 
@@ -287,7 +308,8 @@ public class Fetcher extends AsyncTask<String,Void,String>{
                 locationJSON.getString(LOCATION_DESCRIPTION),
                 false
             );
-            Session.addNewRow(session);
+          //  Session.addNewRow(session);
+            genericList.add(session);
         }
 
     }
@@ -298,16 +320,16 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
         JSONObject tagJSON = new JSONObject(json);
       //  for (int i = 0; i < tagArray.length(); i++) {
-
-
             //tagJSON.getJSONObject(ModifiedDate);
 
             DataBaseVersion dbv = new DataBaseVersion(
                     "1",
                     tagJSON.getString(ModifiedDate)
             );
-
-            RealmUtility.addNewRow(dbv);
+        Log.d("Realmstuff", "Date: " +tagJSON.getString(ModifiedDate));
+            //RealmUtility.addNewRow(dbv);
+      //  RealmUtility.addNewRowDelayedCommit(dbv);
+        genericList.add(dbv);
 
     //    }
     }
@@ -321,6 +343,14 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        fetcherInterface.onComplete();
+        Log.d("Realmstuff", "on complete + " +s);
+     //   fetcherInterface.onComplete();
+        RealmUtility.addNewRows(genericList, fetcherInterface);
+        genericList = new ArrayList<>();
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 }

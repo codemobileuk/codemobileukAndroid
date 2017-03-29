@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
+import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 
 /**
  * Created by greg on 10/02/2017.
@@ -192,5 +195,28 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         super.onResume();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
+    }
+
+    public void fetchSchedule(){
+
+        final UpdateTables updateTables = new UpdateTables();
+        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
+            @Override
+            public void onComplete() {
+                updateUi();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+        updateTables.compareAndUpdate();
+
+
+    }
+
+    public void updateUi(){
+        Log.d("activity", this.getLocalClassName()+"   ===   " +" update UI");
     }
 }

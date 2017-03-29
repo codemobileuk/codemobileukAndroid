@@ -107,12 +107,14 @@ public class HomeActivity extends LaunchActivity{
         upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
 
-        fetchSchedule();
+      //  fetchSchedule();
         setOnClickListeners();
         setUpScheduledNotifications();
         setupActionBar();
         navigationViewItemPosition = 0;
         setNotificationTvText();
+
+
 
     }
 
@@ -128,11 +130,17 @@ public class HomeActivity extends LaunchActivity{
     protected void onResume() {
         super.onResume();
         navigationViewItemPosition = 0;
+      //  setUpPreviewViews();
+        refreshList();
+       // fetchSchedule();
+        setUpHorizontalRecycler();
         setUpPreviewViews();
     }
 
+    int poo = 1;
     public void setUpHorizontalRecycler(){
-
+        poo ++;
+        Log.d("activity", "horiz recycler: " + poo);
       //  recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(lm);
@@ -256,14 +264,7 @@ public class HomeActivity extends LaunchActivity{
         }
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        refreshList();
-        fetchSchedule();
 
-
-    }
 
     public void setUpPreviewViews(){
 
@@ -418,29 +419,14 @@ public class HomeActivity extends LaunchActivity{
 
     }
 
-    public void fetchSchedule(){
 
-        UpdateTables updateTables = new UpdateTables();
-        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
-            @Override
-            public void onComplete() {
-                setUpHorizontalRecycler();
-                setUpPreviewViews();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-        updateTables.compareAndUpdate();
-
+    @Override
+    public void updateUi() {
+        super.updateUi();
+        setUpHorizontalRecycler();
+        setUpPreviewViews();
 
     }
-
-
-
-
 }
 
 
