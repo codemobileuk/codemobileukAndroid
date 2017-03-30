@@ -3,6 +3,8 @@ package com.codemobile.footsqueek.codemobile.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.codemobile.footsqueek.codemobile.Animations.ExpandViewAnimation;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.SpeakerRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
@@ -43,6 +46,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
     int clickedPos = -1;
     ExpandViewAnimation expandViewAnimation;
     ExpandViewAnimation reduceSize;
+    SessionFavorite sessionFavorite;
 
     public SpeakerRecyclerAdapter(List<Speaker> speakers, SpeakerRecyclerInterface speakerRecyclerInterface, Context context) {
         this.context = context;
@@ -140,7 +144,19 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
 
         }*/
 
+        if(session != null){
+            sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+            if(sessionFavorite != null){
+                if(sessionFavorite.getFavorite()){
+                    holder.favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                }else{
+                    holder.favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                }
+            }
 
+        }
 
         holder.speakerName.setText(speakers.get(position).getFirstname() +" " +speakers.get(position).getSurname() );
         if(session != null){
@@ -222,8 +238,8 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
         TextView speakerName;
         TextView speakerTalk;
         TextView speakerBio;
-        LinearLayout row;
-        ImageView imageView;
+        ConstraintLayout row;
+        ImageView imageView, favorite;
 
 
         public SpeakerViewHolder(View itemView) {
@@ -232,8 +248,9 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
             speakerName = (TextView)itemView.findViewById(R.id.speakerName);
             speakerTalk = (TextView)itemView.findViewById(R.id.speakerTalk);
             speakerBio = (TextView)itemView.findViewById(R.id.speakerBio);
-            row = (LinearLayout)itemView.findViewById(R.id.row);
-            imageView = (ImageView) itemView.findViewById(R.id.speakerImage);
+            row = (ConstraintLayout)itemView.findViewById(R.id.row);
+            imageView = (ImageView)itemView.findViewById(R.id.speakerImage);
+            favorite = (ImageView)itemView.findViewById(R.id.favorite_btn);
         }
     }
 

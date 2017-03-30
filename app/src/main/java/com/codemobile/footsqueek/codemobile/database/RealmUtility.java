@@ -24,7 +24,18 @@ public class RealmUtility {
 
     public static void addNewRow(RealmObject obj){
 
+        Realm realm = AppDelegate.getRealmInstance();
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(obj);
+            realm.commitTransaction();
+            Log.d("Realmstuff", "db edit");
 
+        } catch (Exception e) {
+            Log.e("RealmError", "error" + e);
+            realm.cancelTransaction();
+
+        }
 
     }
 

@@ -32,27 +32,38 @@ public class UpdateTables {
         //get old versio
         final Realm realm = AppDelegate.getRealmInstance();
         final DataBaseVersion dbv = realm.where(DataBaseVersion.class).findFirst();
-        Log.d("Realmstuff", "db version before" + dbv.getDbVersion());
+        final String dbvString;
+        if(dbv !=null){
+            Log.d("Realmstuff", "db version before" + dbv.getDbVersion());
+            dbvString = dbv.getDbVersion();
+        }else{
+            dbvString = null;
+        }
+
         fetcher = new Fetcher();
-        final String dbvString = dbv.getDbVersion();
+
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
             public void onComplete() {
 
                 DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
-                Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + dbvString+"  " + newDbv.getDbVersion());
-                if(dbv != null){
-                    //TODO if realm tables empty go get um
-                    if(!dbvString.equals(newDbv.getDbVersion())){
-                            fetchSpeakers();
+                if (dbvString != null) {
+                    Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + dbvString+"  " + newDbv.getDbVersion());
+
+                    }else if(dbv != null){
+                        //TODO if realm tables empty go get um
+                        if(!dbvString.equals(newDbv.getDbVersion())){
+                                fetchSpeakers();
+
+                        }else{
+                            Log.d("fetcher", "DB on latest version ");
+                            updateTablesInterface.onComplete();
+
+                        }
 
                     }else{
-                        Log.d("fetcher", "DB on latest version ");
-                        updateTablesInterface.onComplete();
-
-                    }
-
+                    fetchSpeakers();
                 }
 
 

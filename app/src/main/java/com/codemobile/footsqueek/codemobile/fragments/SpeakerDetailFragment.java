@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,9 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
 import com.squareup.picasso.Callback;
@@ -39,10 +39,13 @@ import io.realm.Realm;
 public class SpeakerDetailFragment extends Fragment {
 
     TextView nameTv,talkTv,bioTv;
-    ImageView imageView , twitter;
-    String speakerId = "-1";
+    ImageView imageView , twitter, favorite;
+    String speakerId = "-1", sessionId;
+    Session session;
+    SessionFavorite sessionFavorite;
     Context mContext;
     String twitterTag = "";
+    boolean isFavorite = false;
 
 
 
@@ -59,12 +62,17 @@ public class SpeakerDetailFragment extends Fragment {
 
         Bundle extras = getArguments();
         speakerId = extras.getString("id");
+        Realm realm = AppDelegate.getRealmInstance();
+        if(speakerId != null){
+            session = realm.where(Session.class).equalTo("speakerId",speakerId).findFirst();
+        }
 
         nameTv = (TextView)view.findViewById(R.id.speakerName);
         talkTv = (TextView)view.findViewById(R.id.speakerTalk);
         bioTv = (TextView)view.findViewById(R.id.speakerBio);
         imageView = (ImageView)view.findViewById(R.id.speakerImage);
         twitter = (ImageView)view.findViewById(R.id.twitter);
+        favorite = (ImageView)view.findViewById(R.id.favorite_btn);
 
         setViews();
         Animation expand = AnimationUtils.loadAnimation(mContext, R.anim.expand);
@@ -96,6 +104,20 @@ public class SpeakerDetailFragment extends Fragment {
         }
 
         setOnClickListeners();
+        if(session != null){
+            sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+            if(sessionFavorite != null){
+                if(sessionFavorite.getFavorite()){
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                }else{
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                }
+            }
+
+        }
+
 
         return view;
     }
@@ -117,6 +139,24 @@ public class SpeakerDetailFragment extends Fragment {
             }
 
         });
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(isFavorite){
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
+                    isFavorite = false;
+
+                }else{
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                    isFavorite = true;
+                }
+                sessionFavorite = new SessionFavorite(session.getId(),"",isFavorite);
+                RealmUtility.addNewRow(sessionFavorite);
+
+            }
+        });
 
     }
     private void setViews(){
@@ -127,7 +167,7 @@ public class SpeakerDetailFragment extends Fragment {
         } else {
             Realm realm = AppDelegate.getRealmInstance();
             speaker = realm.where(Speaker.class).equalTo("id", speakerId).findFirst();
-            Session session = realm.where(Session.class).equalTo("speakerId",speakerId).findFirst();
+
 
             if(!speaker.getTwitter().equals("")){
                 twitterTag = speaker.getTwitter();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -18,14 +18,24 @@
             android:layout_gravity="top"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginRight="16dp"
-            android:id="@+id/speakerImage"/>
+            android:id="@+id/speakerImage"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
 
     <LinearLayout
+        android:padding="10dp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/favorite_btn"
+        app:layout_constraintLeft_toRightOf="@id/speakerImage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
 
         <TextView
@@ -49,5 +59,14 @@
             android:id="@+id/speakerBio"
             />
     </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/favorite_not_selected"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/favorite_btn"
+        />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
