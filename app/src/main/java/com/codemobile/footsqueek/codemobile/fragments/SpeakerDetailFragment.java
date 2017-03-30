@@ -39,7 +39,7 @@ import io.realm.Realm;
 public class SpeakerDetailFragment extends Fragment {
 
     TextView nameTv,talkTv,bioTv;
-    ImageView imageView , twitter, facebook;
+    ImageView imageView , twitter;
     String speakerId = "-1";
     Context mContext;
     String twitterTag = "";
@@ -65,14 +65,12 @@ public class SpeakerDetailFragment extends Fragment {
         bioTv = (TextView)view.findViewById(R.id.speakerBio);
         imageView = (ImageView)view.findViewById(R.id.speakerImage);
         twitter = (ImageView)view.findViewById(R.id.twitter);
-        facebook = (ImageView)view.findViewById(R.id.facebook);
 
         setViews();
         Animation expand = AnimationUtils.loadAnimation(mContext, R.anim.expand);
         nameTv.startAnimation(expand);
         talkTv.startAnimation(expand);
         twitter.startAnimation(expand);
-        facebook.startAnimation(expand);
 
 
 
@@ -177,7 +175,6 @@ public class SpeakerDetailFragment extends Fragment {
         bioTv.startAnimation(exitRight);
         talkTv.startAnimation(collapse);
         nameTv.startAnimation(collapse);
-        facebook.startAnimation(collapse);
         twitter.startAnimation(collapse);
     }
 

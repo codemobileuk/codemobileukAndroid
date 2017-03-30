@@ -42,7 +42,7 @@ import io.realm.Realm;
 public class ScheduleDetailFragment extends Fragment {
 
     TextView title, speakerTv, timeStart, speakerOrg, talkDesc, buildingName, speakerDesc;
-    ImageView speakerImg, buildingIcon, twitter, facebook;
+    ImageView speakerImg, buildingIcon, twitter;
     String talkId ="-1";
     Session session;
     Speaker speaker;
@@ -87,7 +87,6 @@ public class ScheduleDetailFragment extends Fragment {
         btnProfile = (LineButton)view.findViewById(R.id.btn_profile);
         btnTalk = (LineButton)view.findViewById(R.id.btn_talk);
         twitter = (ImageView)view.findViewById(R.id.twitter);
-        facebook = (ImageView)view.findViewById(R.id.facebook);
         addTags();
         setImage();
         setTextViews();
@@ -147,12 +146,7 @@ public class ScheduleDetailFragment extends Fragment {
             }
         });
 
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openWebPage(speaker.getTwitter());
-            }
-        });
+
     }
 
     private void setImage(){

@@ -44,15 +44,7 @@
         android:layout_gravity="center"
         >
 
-        <ImageView
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_facebook"
-            android:id="@+id/facebook"
-            android:padding="8dp"
-
-            />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
