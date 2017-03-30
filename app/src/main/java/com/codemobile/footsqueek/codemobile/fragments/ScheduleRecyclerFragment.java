@@ -326,6 +326,11 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
         sfd.add(s);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        tealAdapter.notifyDataSetChanged();
 
+    }
 
 }

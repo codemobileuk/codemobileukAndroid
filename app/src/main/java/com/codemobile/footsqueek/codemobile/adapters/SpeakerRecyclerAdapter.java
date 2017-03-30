@@ -46,7 +46,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
     int clickedPos = -1;
     ExpandViewAnimation expandViewAnimation;
     ExpandViewAnimation reduceSize;
-    SessionFavorite sessionFavorite;
+
 
     public SpeakerRecyclerAdapter(List<Speaker> speakers, SpeakerRecyclerInterface speakerRecyclerInterface, Context context) {
         this.context = context;
@@ -144,19 +144,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
 
         }*/
 
-        if(session != null){
-            sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
-            if(sessionFavorite != null){
-                if(sessionFavorite.getFavorite()){
-                    holder.favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
-                    sessionFavorite = new SessionFavorite(session.getId(),"",true);
-                }else{
-                    holder.favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
-                    sessionFavorite = new SessionFavorite(session.getId(),"",false);
-                }
-            }
 
-        }
 
         holder.speakerName.setText(speakers.get(position).getFirstname() +" " +speakers.get(position).getSurname() );
         if(session != null){
@@ -239,7 +227,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
         TextView speakerTalk;
         TextView speakerBio;
         ConstraintLayout row;
-        ImageView imageView, favorite;
+        ImageView imageView;
 
 
         public SpeakerViewHolder(View itemView) {
@@ -250,7 +238,6 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
             speakerBio = (TextView)itemView.findViewById(R.id.speakerBio);
             row = (ConstraintLayout)itemView.findViewById(R.id.row);
             imageView = (ImageView)itemView.findViewById(R.id.speakerImage);
-            favorite = (ImageView)itemView.findViewById(R.id.favorite_btn);
         }
     }
 

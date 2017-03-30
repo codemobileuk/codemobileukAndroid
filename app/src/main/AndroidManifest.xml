@@ -10,7 +10,7 @@
         android:name=".AppDelegate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LaunchActivity"
+        <activity android:name=".activities.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar"
         >
 

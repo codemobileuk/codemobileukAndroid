@@ -1,7 +1,6 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -33,7 +32,7 @@ import io.realm.Realm;
  * Created by greg on 19/01/2017.
  */
 
-public class ScheduleActivity extends LaunchActivity {
+public class ScheduleActivity extends BaseActivity {
 
     LineButton dayOneBtn, dayTwoBtn, dayThreeBtn;
 

@@ -8,21 +8,16 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
@@ -31,18 +26,9 @@ import com.codemobile.footsqueek.codemobile.customUi.DoublePreviewView;
 import com.codemobile.footsqueek.codemobile.customUi.PreviewView;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
-import com.codemobile.footsqueek.codemobile.database.Speaker;
-import com.codemobile.footsqueek.codemobile.fetcher.Fetcher;
-import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
-import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
-import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
-import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
-import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,7 +40,7 @@ import io.realm.Realm;
  * Created by greg on 20/01/2017.
  */
 
-public class HomeActivity extends LaunchActivity{
+public class HomeActivity extends BaseActivity {
 
 
     ConstraintLayout scheduleButton, locationButton, speakersButton;

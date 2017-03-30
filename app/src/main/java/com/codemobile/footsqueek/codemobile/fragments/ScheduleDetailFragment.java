@@ -22,7 +22,9 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.customUi.LineButton;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
@@ -42,7 +44,7 @@ import io.realm.Realm;
 public class ScheduleDetailFragment extends Fragment {
 
     TextView title, speakerTv, timeStart, speakerOrg, talkDesc, buildingName, speakerDesc;
-    ImageView speakerImg, buildingIcon, twitter;
+    ImageView speakerImg, buildingIcon, twitter, favorite;
     String talkId ="-1";
     Session session;
     Speaker speaker;
@@ -51,6 +53,8 @@ public class ScheduleDetailFragment extends Fragment {
     List<Tag> tags;
     LinearLayout tagLL, talksLL;
     String twitterTag = "";
+    boolean isFavorite;
+    SessionFavorite sessionFavorite;
 
     @Override
     public void onAttach(Context context) {
@@ -87,6 +91,8 @@ public class ScheduleDetailFragment extends Fragment {
         btnProfile = (LineButton)view.findViewById(R.id.btn_profile);
         btnTalk = (LineButton)view.findViewById(R.id.btn_talk);
         twitter = (ImageView)view.findViewById(R.id.twitter);
+        favorite = (ImageView)view.findViewById(R.id.favorite_btn);
+
         addTags();
         setImage();
         setTextViews();
@@ -98,6 +104,20 @@ public class ScheduleDetailFragment extends Fragment {
 
         if(!speaker.getTwitter().equals("")){
             twitterTag = speaker.getTwitter();
+        }
+
+        if(session != null){
+            sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+            if(sessionFavorite != null){
+                if(sessionFavorite.getFavorite()){
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                }else{
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
+                    sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                }
+            }
+
         }
 
         btnProfile.setTogglePartners(buttons, true);
@@ -143,6 +163,24 @@ public class ScheduleDetailFragment extends Fragment {
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://twitter.com/" +twitterTag +"")));
                 }
+            }
+        });
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(isFavorite){
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
+                    isFavorite = false;
+
+                }else{
+                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                    isFavorite = true;
+                }
+                sessionFavorite = new SessionFavorite(session.getId(),"",isFavorite);
+                RealmUtility.addNewRow(sessionFavorite);
+
             }
         });
 
@@ -219,4 +257,5 @@ public class ScheduleDetailFragment extends Fragment {
             }
         }
 
-    }
+
+}

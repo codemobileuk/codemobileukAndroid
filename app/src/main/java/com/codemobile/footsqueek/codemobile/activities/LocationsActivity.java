@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
@@ -13,8 +12,6 @@ import com.codemobile.footsqueek.codemobile.adapters.LocationRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.LocationRowType;
 import com.codemobile.footsqueek.codemobile.database.LocationWithHeaders;
-import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
-import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,7 @@ import io.realm.Realm;
  * Created by greg on 06/02/2017.
  */
 
-public class LocationsActivity extends LaunchActivity {
+public class LocationsActivity extends BaseActivity {
 
     LocationRecyclerAdapter adapter;
     RecyclerView recyclerView;

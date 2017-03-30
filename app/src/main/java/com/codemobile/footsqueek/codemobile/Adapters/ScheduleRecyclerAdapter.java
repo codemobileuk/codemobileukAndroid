@@ -15,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.ScheduleRowType;
+import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.SessionFullData;
 import com.codemobile.footsqueek.codemobile.database.SessionType;
 import com.codemobile.footsqueek.codemobile.database.Tag;
@@ -46,6 +48,9 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static int TYPE_BREAK = 1;
     private static int TYPE_SESSION = 0;
     private static int TYPE_HEADER = 2;
+    SessionFavorite sessionFavorite;
+    boolean isFavorite = false;
+
 
     public ScheduleRecyclerAdapter(List<SessionFullData> sessionWithHeaders, ScheduleRecyclerInterface scheduleRecyclerInterface, Context context) {
         this.context = context;
@@ -109,15 +114,30 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+        Realm realm = AppDelegate.getRealmInstance();
         Session session = sessionWithHeaders.get(position).getSession();
 
         if(holder instanceof ScheduleViewHolder){
+            onClickListeners(holder, session);
+            if(session != null){
+                sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+                if(sessionFavorite != null){
+                    if(sessionFavorite.getFavorite()){
+                        ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
+                        sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                    }else{
+                        ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
+                        sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                    }
+                }
+
+            }
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ((ScheduleViewHolder) holder).title.setTransitionName("title" + position);
             }
             setClickListeners(holder, session, position);
-            Realm realm = AppDelegate.getRealmInstance();
             Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
 
             ((ScheduleViewHolder)holder).title.setText(session.getTitle());
@@ -182,6 +202,25 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
+    public void onClickListeners(final RecyclerView.ViewHolder holder, final Session session){
+
+        ((ScheduleViewHolder)holder).favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFavorite){
+                    ((ScheduleViewHolder)holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
+                    isFavorite = false;
+
+                }else{
+                    ((ScheduleViewHolder)holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
+                    isFavorite = true;
+                }
+                sessionFavorite = new SessionFavorite(session.getId(),"",isFavorite);
+                RealmUtility.addNewRow(sessionFavorite);
+            }
+        });
+
+    }
 
     @Override
     public int getItemCount() {
@@ -194,7 +233,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView speaker;
         TextView timeStart;
         TextView tag1, tag2;
-        ImageView buildingIcon;
+        ImageView buildingIcon, favorite;
         View line;
         LinearLayout row;
 
@@ -211,6 +250,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             buildingIcon = (ImageView)itemView.findViewById(R.id.buildingIcon);
             tag1 = (TextView)itemView.findViewById(R.id.tag1);
             tag2 = (TextView)itemView.findViewById(R.id.tag2);
+            favorite = (ImageView)itemView.findViewById(R.id.favorite_btn);
 
         }
 
