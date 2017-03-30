@@ -10,5 +10,9 @@
     <string name="schedule">Schedule</string>
     <string name="speakers">Speakers</string>
 
+    <string name="options_notifications_on">allticked</string>
+    <string name="options_notifications_fav">favoritesTicked</string>
+    <string name="options_notifications_off">noneticked</string>
+
 
 </resources>

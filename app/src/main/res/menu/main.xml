@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:visible="true" android:id="@+id/m_area"
+        android:titleCondensed="Notif"
+        android:title="Notifications"
+        android:enabled="true">
+        <menu>
+            <item android:id="@+id/all"
+                android:title="All"
+                android:checkable="true"
+                >
 
+            </item>
+            <item android:id="@+id/favorites_only"
+                android:title="Favorites Only"
+                android:checkable="true"
+                >
+
+            </item>
+            <item android:id="@+id/off"
+                android:title="Off"
+                android:checkable="true">
+
+            </item>
+        </menu>
+    </item>
 
 </menu>

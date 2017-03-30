@@ -25,7 +25,7 @@ public class AppDelegate extends Application{
     public static View sharedView;
     public static String sharedViewId;
 
-    public static boolean notificationsOn = true;
+  //  public static boolean notificationsOn = true;
 
 
 
@@ -42,13 +42,6 @@ public class AppDelegate extends Application{
 
     }
 
-    public static boolean isNotificationsOn() {
-        return notificationsOn;
-    }
-
-    public static void setNotificationsOn(boolean notificationsOn) {
-        AppDelegate.notificationsOn = notificationsOn;
-    }
 
     public static boolean isTwoPane() {
         return twoPane;

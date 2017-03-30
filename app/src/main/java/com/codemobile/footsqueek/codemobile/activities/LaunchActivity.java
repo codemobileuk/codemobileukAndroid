@@ -1,6 +1,8 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -32,10 +34,13 @@ import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 
 public class LaunchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    int[][] states;
-    int[] colors;
-    ColorStateList myList;
+    private int[][] states;
+    private int[] colors;
+    private ColorStateList myList;
     int navigationViewItemPosition = 0;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    Menu submenu;
 
 
     @Override
@@ -50,6 +55,7 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         setColours();
         setupActionBar();
         determineTwoPane();
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
 
 
     }
@@ -135,6 +141,31 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        boolean allTicked = sharedPreferences.getBoolean("allticked",false);
+        boolean favoritesTicked = sharedPreferences.getBoolean("favoritesTicked",false);
+        boolean noneTicked = sharedPreferences.getBoolean("noneticked",true);
+
+
+        for (int i = 0; i < menu.size(); i++) {
+            Log.d("menust", "size: " +menu.size());
+            submenu =  menu.getItem(i).getSubMenu();
+            for (int j = 0; j < submenu.size(); j++) {
+                if(submenu.getItem(j).getItemId()==R.id.all){
+                    submenu.getItem(j).setChecked(allTicked);
+                    Log.d("menust", "setting all ticked");
+
+                }else if(submenu.getItem(j).getItemId() == R.id.favorites_only){
+                    submenu.getItem(j).setChecked(favoritesTicked);
+                    Log.d("menust", "setting fav only");
+                }else if(submenu.getItem(j).getItemId() == R.id.off){
+                    submenu.getItem(j).setChecked(noneTicked);
+                    Log.d("menust", "setting none ticked");
+                }
+            }
+
+        }
+
         return true;
     }
 
@@ -143,14 +174,69 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
         // Handle action bar navigationViewItemPosition clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+
         int id = item.getItemId();
+        if(item.isCheckable()){
+            if(item.isChecked()){
 
+            }else{
+                item.setChecked(true);
+                toggleNotificationCheckBoxes(item.getItemId());
+
+            }
+
+        }
+        editor.commit();
         //noinspection SimplifiableIfStatement
-
-
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void toggleNotificationCheckBoxes(int id){
+
+        MenuItem all = null;
+        MenuItem favorites = null;
+        MenuItem none = null;
+        for (int i = 0; i < submenu.size(); i++) {
+            if(submenu.getItem(i).getItemId() ==R.id.all){
+                all = submenu.getItem(i);
+            }else  if(submenu.getItem(i).getItemId() ==R.id.favorites_only){
+                favorites = submenu.getItem(i);
+            }else  if(submenu.getItem(i).getItemId() ==R.id.off){
+                none = submenu.getItem(i);
+            }
+
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("allticked", false);
+        editor.putBoolean("favoritesTicked", false);
+        editor.putBoolean("noneticked", false);
+
+        if(favorites != null && all != null && none != null){
+            favorites.setChecked(false);
+            all.setChecked(false);
+            none.setChecked(false);
+
+
+            if(all.getItemId() == id){
+                editor.putBoolean("allticked", true);
+                all.setChecked(true);
+            }else if(favorites.getItemId() == id){
+                editor.putBoolean("favoritesTicked", true);
+                favorites.setChecked(true);
+            }else if(none.getItemId() == id){
+                editor.putBoolean("noneticked", true);
+                none.setChecked(true);
+            }
+        }
+        editor.commit();
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -182,7 +268,10 @@ public class LaunchActivity extends AppCompatActivity implements NavigationView.
             } else if (id == R.id.nav_sponsors) {
 
             }
+
+
         }
+
 
 
 

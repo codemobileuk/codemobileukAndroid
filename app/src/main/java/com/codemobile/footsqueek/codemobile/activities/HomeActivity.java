@@ -9,12 +9,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -112,16 +115,26 @@ public class HomeActivity extends LaunchActivity{
         setUpScheduledNotifications();
         setupActionBar();
         navigationViewItemPosition = 0;
-        setNotificationTvText();
 
 
 
     }
 
-    private void setNotificationTvText(){
-        if(AppDelegate.isNotificationsOn()){
+
+
+
+
+    public void setNotificationTvText(){
+
+        boolean allTicked = sharedPreferences.getBoolean("allticked",false);
+        boolean favoritesTicked = sharedPreferences.getBoolean("favoritesTicked",false);
+        boolean noneTicked = sharedPreferences.getBoolean("noneticked",true);
+
+        if(allTicked){
             notificationTv.setText("Notifications are ON");
-        }else{
+        }else if(favoritesTicked){
+            notificationTv.setText("Notifications are ON for favorites only");
+        }else if(noneTicked){
             notificationTv.setText("Notifications are OFF");
         }
     }
@@ -135,6 +148,7 @@ public class HomeActivity extends LaunchActivity{
        // fetchSchedule();
         setUpHorizontalRecycler();
         setUpPreviewViews();
+        setNotificationTvText();
     }
 
     int poo = 1;
@@ -327,7 +341,10 @@ public class HomeActivity extends LaunchActivity{
             pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, myIntent,0);
 
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            if(AppDelegate.isNotificationsOn()){
+
+            boolean noneTicked = sharedPreferences.getBoolean("noneticked",true);
+
+            if(!noneTicked){
                 Calendar calendar = Calendar.getInstance();
 
                 calendar.set(Calendar.MONTH, 0);
@@ -388,21 +405,7 @@ public class HomeActivity extends LaunchActivity{
                 startActivity(in);
             }
         });
-        notificationPanel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if (AppDelegate.isNotificationsOn()){
-                    notificationTv.setText("Notifications are OFF");
-                    AppDelegate.setNotificationsOn(false);
-                    setUpScheduledNotifications();
-                }else{
-                    notificationTv.setText("Notifications are ON");
-                    AppDelegate.setNotificationsOn(true);
-                    setUpScheduledNotifications();
-                }
-            }
-        });
         previewView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -419,15 +422,20 @@ public class HomeActivity extends LaunchActivity{
 
     }
 
-/*
-*  @Override
-    public void updateUi() {
-        super.updateUi();
-        setUpHorizontalRecycler();
-        setUpPreviewViews();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setNotificationTvText();
+            }
+        }, 0);
+
+        return super.onOptionsItemSelected(item);
 
     }
-* */
+
 
 }
 
