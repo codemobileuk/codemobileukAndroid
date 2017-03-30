@@ -126,23 +126,7 @@ public class LocationsActivity extends LaunchActivity {
         super.onResume();
         navigationViewItemPosition = 3;
     }
-    public void fetchSchedule() {
-    Log.d("Realmstuff","----------------------------------------------");
-        final UpdateTables updateTables = new UpdateTables();
-        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
-            @Override
-            public void onComplete() {
-                //  updateUi();
-                Log.d("Realmstuff","-----COMPLETE-----");
-            }
 
-            @Override
-            public void onError() {
-
-            }
-        });
-        updateTables.compareAndUpdate();
-    }
 
 
  /*   @Override

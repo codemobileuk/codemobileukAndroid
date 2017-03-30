@@ -74,8 +74,6 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
 
 
 
-
-
     }
 
     @Override
@@ -100,6 +98,12 @@ public class SpeakerRecyclerFragment extends Fragment implements SpeakerRecycler
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        speakerRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void createRecycler(){
