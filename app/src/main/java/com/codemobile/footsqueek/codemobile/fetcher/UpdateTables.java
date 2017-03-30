@@ -29,7 +29,7 @@ public class UpdateTables {
 
 
     public void compareAndUpdate(){
-        //get old versio
+        //get old version
         final Realm realm = AppDelegate.getRealmInstance();
         final DataBaseVersion dbv = realm.where(DataBaseVersion.class).findFirst();
         final String dbvString;
@@ -50,19 +50,20 @@ public class UpdateTables {
                 DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
                 if (dbvString != null) {
                     Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + dbvString+"  " + newDbv.getDbVersion());
-
-                    }else if(dbv != null){
-                        //TODO if realm tables empty go get um
-                        if(!dbvString.equals(newDbv.getDbVersion())){
-                                fetchSpeakers();
-
-                        }else{
-                            Log.d("fetcher", "DB on latest version ");
-                            updateTablesInterface.onComplete();
-
-                        }
+                    Log.d("Realmstuff", "db version compare o/n: " + dbv.getDbVersion() + "  " + dbvString+"  " + newDbv.getDbVersion());
+                    updateTablesInterface.onComplete();
+                }else if(dbv != null){
+                    //TODO if realm tables empty go get um
+                    if(!dbvString.equals(newDbv.getDbVersion())){
+                            fetchSpeakers();
 
                     }else{
+                        Log.d("fetcher", "DB on latest version ");
+                        updateTablesInterface.onComplete();
+
+                    }
+
+                }else{
                     fetchSpeakers();
                 }
 
@@ -87,7 +88,7 @@ public class UpdateTables {
             if(speakersUpdated && scheduleUpdated && tagsUpdated && locationsUpdated) {
                 if (updateTablesInterface != null) {
                     updateTablesInterface.onComplete();
-                    Log.d("Realmstuff", "DB can be dropped again ");
+                    Log.d("Realmstuff", "READY!==============");
                     fetcher.setDropping(false);
                 }
 
