@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -17,10 +18,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -112,16 +116,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
 
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) {
-            Toast.makeText(this, "Large screen", Toast.LENGTH_LONG).show();
+      //      Toast.makeText(this, "Large screen", Toast.LENGTH_LONG).show();
         }
         else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-            Toast.makeText(this, "Normal sized screen", Toast.LENGTH_LONG).show();
+  //          Toast.makeText(this, "Normal sized screen", Toast.LENGTH_LONG).show();
         }
         else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {
-            Toast.makeText(this, "Small sized screen", Toast.LENGTH_LONG).show();
+    //        Toast.makeText(this, "Small sized screen", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "Screen size is neither large, normal or small", Toast.LENGTH_LONG).show();
+    //        Toast.makeText(this, "Screen size is neither large, normal or small", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -276,8 +280,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -287,7 +289,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
+        if (navigationView != null) {
+            navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
+
+        }
+
+
     }
 
     public void fetchSchedule(){

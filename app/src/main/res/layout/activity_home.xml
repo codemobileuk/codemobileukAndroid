@@ -73,12 +73,15 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:id="@+id/ll1"
+        android:transitionName="profile"
+
         >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/codemob_logo"
+
             />
 
 
@@ -249,7 +252,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/commonWhite"
                 android:gravity="center"
-                android:id="@+id/locationTV"/>
+                android:id="@+id/locationTV"
+                />
         </android.support.constraint.ConstraintLayout>
 
 

@@ -14,12 +14,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"
         >
 
         </activity>
         <activity android:name=".activities.LaunchActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:noHistory="true"
+
+
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +32,7 @@
         <activity android:name=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
 
+            android:parentActivityName=".activities.LaunchActivity"
             >
 
         </activity>
