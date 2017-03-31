@@ -90,7 +90,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
 
-        holder.button.setOnClickListener(new View.OnClickListener() {
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String lon = location.getLongitude()+"";
