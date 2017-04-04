@@ -60,9 +60,9 @@ public class ScheduleHorizontalRecyclerAdapter extends RecyclerView.Adapter<Sche
         holder.desc.setMaxLines(1);
         holder.desc.setText(sessions.get(position).getDesc());
         if(speaker != null){
-            if(speaker.getPhotoUrl().equals("")){
+            if(!speaker.getPhotoUrl().equals("") && speaker.getPhotoUrl() != null){
                 holder.speaker.setText(speaker.getFirstname() +" " + speaker.getSurname());
-
+                Log.d("asdasdasd", "speker url++__+" + speaker.getPhotoUrl() + " CCCC _+" + speaker.getFirstname() +"    " +sessions.get(position).getSessionType() + "  " +sessions.get(position).getId());
                 Picasso.with(mContext)
                         .load(speaker.getPhotoUrl())
                         .fit()

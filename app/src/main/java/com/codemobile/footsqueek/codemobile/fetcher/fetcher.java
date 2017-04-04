@@ -315,6 +315,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
             );
           //  Session.addNewRow(session);
             genericList.add(session);
+            Log.d("asdasdasd", session.getSessionType() +"==");
         }
 
     }

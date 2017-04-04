@@ -105,7 +105,13 @@ public class HomeActivity extends BaseActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         Realm realm = AppDelegate.getRealmInstance();
-        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
+        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).notEqualTo("sessionType","Break").findAllSorted("timeStart");
+    //    upComingSessions = realm.where(Session.class).notEqualTo("sessionType","1").greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
+    //    upComingSessions = realm.where(Session.class).notEqualTo("sessionType","1").findAllSorted("timeStart");
+
+        for (int i = 0; i < upComingSessions.size(); i++) {
+            Log.d("asdaeee", upComingSessions.get(i).getTitle() +"   " + upComingSessions.get(i).getSessionType()+" :::" + upComingSessions.get(i).getId()+"|||||3434343");
+        }
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
 
       //  fetchSchedule();
@@ -268,7 +274,7 @@ public class HomeActivity extends BaseActivity {
         Realm realm = AppDelegate.getRealmInstance();
         currentDate = new Date();
         currentDate.getTime();
-        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
+        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).notEqualTo("sessionType","Break").findAllSorted("timeStart");
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
         setUpPreviewViews();
         if(adapter != null){
