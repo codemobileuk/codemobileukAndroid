@@ -253,7 +253,6 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         sfd.clear();
         if(getFilteredSessionIds().length !=0){
             allTalks = realm.where(Session.class).between("timeStart", startOfDay, endOfDay).in("id",getFilteredSessionIds()).findAllSorted("timeStart", Sort.ASCENDING, "locationName", Sort.DESCENDING);
-
         }
         for (int i = 0; i < allTalks.size(); i++) {
             if(i != allTalks.size()-1 && i !=0){//All cases where i isnt the last of first

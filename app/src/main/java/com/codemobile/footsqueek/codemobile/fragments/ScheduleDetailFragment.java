@@ -73,8 +73,12 @@ public class ScheduleDetailFragment extends Fragment {
         Realm realm = AppDelegate.getRealmInstance();
 
         session = realm.where(Session.class).equalTo("id", talkId).findFirst();
-        speaker = realm.where(Speaker.class).equalTo("id", session.getSpeakerId()).findFirst();
-        tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
+        if (session != null){
+            speaker = realm.where(Speaker.class).equalTo("id", session.getSpeakerId()).findFirst();
+            tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
+        }
+
+
 
 
         title = (TextView)view.findViewById(R.id.title);
@@ -102,9 +106,12 @@ public class ScheduleDetailFragment extends Fragment {
         buttons.add(btnProfile);
         buttons.add(btnTalk);
 
-        if(!speaker.getTwitter().equals("")){
-            twitterTag = speaker.getTwitter();
+        if(speaker != null){
+            if(!speaker.getTwitter().equals("")){
+                twitterTag = speaker.getTwitter();
+            }
         }
+
 
         if(session != null){
             sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
@@ -190,49 +197,57 @@ public class ScheduleDetailFragment extends Fragment {
     private void setImage(){
 
 
-        Picasso.with(mContext)
-                .load(speaker.getPhotoUrl()).fit().centerCrop()
-                .into(speakerImg, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Bitmap imageBitmap = ((BitmapDrawable) speakerImg.getDrawable()).getBitmap();
-                        CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
-                        circleCroppedBitmap.createRoundImage(speakerImg);
-                    }
+        if(speaker != null){
+            Picasso.with(mContext)
+                    .load(speaker.getPhotoUrl()).fit().centerCrop()
+                    .into(speakerImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Bitmap imageBitmap = ((BitmapDrawable) speakerImg.getDrawable()).getBitmap();
+                            CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
+                            circleCroppedBitmap.createRoundImage(speakerImg);
+                        }
 
-                    @Override
-                    public void onError() {
+                        @Override
+                        public void onError() {
 
-                        Log.d ("forum",speaker.getPhotoUrl()+" ===_+_+_=");
-                    }
-                });
+                            Log.d ("forum",speaker.getPhotoUrl()+" ===_+_+_=");
+                        }
+                    });
 
 
-        if(session.getLocationName().equals("Molloy")){
-            buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_molloy));
+            if(session.getLocationName().equals("Molloy")){
+                buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_molloy));
 
-        }else{
-            buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_beswick));
+            }else{
+                buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_beswick));
+            }
         }
-        buildingName.setText(session.getLocationName());
+
+        if(session != null){
+            buildingName.setText(session.getLocationName());
+        }
+
     }
 
     private void addTags(){
 
 
+        if(tags != null){
+            for (int i = 0; i < tags.size(); i++) {
+                final TextView tagTextView = new TextView(mContext);
+                tagTextView.setText(tags.get(i).getTag());
+                tagTextView.setBackgroundResource(R.drawable.rounded_text_box);
+                tagTextView.setPadding(12,12,12,12);
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                llp.setMargins(4,4,4,4);
+                tagTextView.setLayoutParams(llp);
 
-        for (int i = 0; i < tags.size(); i++) {
-            final TextView tagTextView = new TextView(mContext);
-            tagTextView.setText(tags.get(i).getTag());
-            tagTextView.setBackgroundResource(R.drawable.rounded_text_box);
-            tagTextView.setPadding(12,12,12,12);
-            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(4,4,4,4);
-            tagTextView.setLayoutParams(llp);
+                tagLL.addView(tagTextView);
 
-            tagLL.addView(tagTextView);
-
+            }
         }
+
 
     }
 
