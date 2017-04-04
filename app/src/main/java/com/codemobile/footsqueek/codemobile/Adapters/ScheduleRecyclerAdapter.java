@@ -153,16 +153,21 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             List<Tag> tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
-
+                if(session.getTitle().contains("Built-In")){
+                    Log.d("asddddddeee", "=====" + tags.size() + "   ");
+                }
                // hardcoded number of text views for displaying tags in the recycler to 2.
                 if(tags.size() >= 2){
                     ((ScheduleViewHolder) holder).tag1.setText(tags.get(1).getTag());
                     ((ScheduleViewHolder) holder).tag2.setText(tags.get(0).getTag());
+                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
+                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.VISIBLE);
                 }else if(tags.size() ==1){
                     ((ScheduleViewHolder) holder).tag1.setText(tags.get(0).getTag());
+                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
                     ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
                 }else{
-                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.INVISIBLE);
                     ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
                 }
 
