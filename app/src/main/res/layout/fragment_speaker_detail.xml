@@ -27,6 +27,14 @@
         android:textStyle="bold"
         android:paddingBottom="8dp"
         />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_twitter"
+        android:id="@+id/twitter"
+        android:padding="8dp"
+        android:layout_gravity="center"
+        />
     <TextView
         android:layout_gravity="center"
         android:layout_width="wrap_content"
@@ -45,13 +53,7 @@
         >
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_twitter"
-            android:id="@+id/twitter"
-            android:padding="8dp"
-            />
+
     <TextView
         android:layout_gravity="left"
         android:layout_width="wrap_content"
