@@ -147,11 +147,7 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
 
 
         holder.speakerName.setText(speakers.get(position).getFirstname() +" " +speakers.get(position).getSurname() );
-        if(session != null){
-            holder.speakerTalk.setText(session.getTitle());
-        }else{
-            holder.speakerTalk.setText("A speaker with no talks :O");
-        }
+        holder.speakerTalk.setText(speakers.get(position).getOrganisation());
 
         Picasso.with(context)
                 .load(speakers.get(position)
