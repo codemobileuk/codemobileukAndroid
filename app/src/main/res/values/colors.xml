@@ -20,4 +20,5 @@
     <color name="transGrey">#cd212121</color>
     <color name="cardViewGrey">#eeeeee</color>
     <color name="none">#00000000</color>
+    <color name="black">#263238</color>
 </resources>

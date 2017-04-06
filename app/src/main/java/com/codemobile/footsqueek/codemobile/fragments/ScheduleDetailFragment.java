@@ -237,6 +237,7 @@ public class ScheduleDetailFragment extends Fragment {
             for (int i = 0; i < tags.size(); i++) {
                 final TextView tagTextView = new TextView(mContext);
                 tagTextView.setText(tags.get(i).getTag());
+                tagTextView.setTextSize(10);
                 tagTextView.setBackgroundResource(R.drawable.rounded_text_box);
                 tagTextView.setPadding(12,12,12,12);
                 LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

@@ -146,11 +146,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-            if(session.getLocationName().equals("Molloy")){
+          /*  if(session.getLocationName().equals("Molloy")){
                 ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_molloy));
             }else{
                 ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_beswick));
-            }
+            }*/
 
             List<Tag> tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
                 if(session.getTitle().contains("Built-In")){
@@ -180,6 +180,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                     ((ScheduleViewHolder) holder).timeStart.setVisibility(View.GONE);
                 }else if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.NORMAL){
                     ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
+                    ((ScheduleViewHolder)holder).timeStart.setVisibility(View.VISIBLE);
                     ((ScheduleViewHolder)holder).timeStart.setText(TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
                     actualRowCount++;
                 }
