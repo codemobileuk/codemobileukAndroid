@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -122,13 +124,20 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(session != null){
                 sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
                 if(sessionFavorite != null){
+                    Log.d("testingstuff", "favorites: " + sessionFavorite.getFavorite() +" id: " +session.getId());
                     if(sessionFavorite.getFavorite()){
                         ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
-                        sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                       //sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                      //  isFavorite = true;
                     }else{
                         ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
-                        sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                      //  sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                     //   isFavorite = false;
                     }
+                }else{
+                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
+                    //  sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                    //   isFavorite = false;
                 }
 
             }
@@ -213,18 +222,51 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         ((ScheduleViewHolder)holder).favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFavorite){
-                    ((ScheduleViewHolder)holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
-                    isFavorite = false;
+                Realm realm = AppDelegate.getRealmInstance();
+                sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+//                Log.d("testingstuff", "favorites1: " + sessionFavorite.getFavorite() +" id: " +session.getId());
+                Animation spinIn = AnimationUtils.loadAnimation(context,R.anim.spin);
+                final Animation spinOut = AnimationUtils.loadAnimation(context,R.anim.after_spin);
 
-                }else{
-                    ((ScheduleViewHolder)holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
-                    isFavorite = true;
-                }
-                sessionFavorite = new SessionFavorite(session.getId(),"",isFavorite);
-                RealmUtility.addNewRow(sessionFavorite);
+
+                    ((ScheduleViewHolder) holder).favorite.startAnimation(spinIn);
+                    spinIn.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            if(sessionFavorite != null) {
+                                Log.d("testingstuff", "favorites2: " + sessionFavorite.getFavorite() + " id: " + session.getId());
+                                if (sessionFavorite.getFavorite()) {
+                                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context, R.drawable.favorite_not_selected));
+                                    sessionFavorite = new SessionFavorite(session.getId(), "", false);
+                                } else {
+                                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context, R.drawable.favorite));
+                                    sessionFavorite = new SessionFavorite(session.getId(), "", true);
+                                }
+
+                            }else{
+                                ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context, R.drawable.favorite));
+                                sessionFavorite = new SessionFavorite(session.getId(), "", true);
+                            }
+                            ((ScheduleViewHolder) holder).favorite.startAnimation(spinOut);
+                            RealmUtility.addNewRow(sessionFavorite);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+
             }
         });
+
+
 
     }
 

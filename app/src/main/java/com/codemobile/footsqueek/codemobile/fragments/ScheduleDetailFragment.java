@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +55,7 @@ public class ScheduleDetailFragment extends Fragment {
     List<Tag> tags;
     LinearLayout tagLL, talksLL;
     String twitterTag = "";
-    boolean isFavorite;
+  //  boolean isFavorite;
     SessionFavorite sessionFavorite;
 
     @Override
@@ -118,11 +120,14 @@ public class ScheduleDetailFragment extends Fragment {
             if(sessionFavorite != null){
                 if(sessionFavorite.getFavorite()){
                     favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
-                    sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                  //  sessionFavorite = new SessionFavorite(session.getId(),"",true);
                 }else{
                     favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
-                    sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                   // sessionFavorite = new SessionFavorite(session.getId(),"",false);
                 }
+            }else{
+                sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                RealmUtility.addNewRow(sessionFavorite);
             }
 
         }
@@ -175,18 +180,53 @@ public class ScheduleDetailFragment extends Fragment {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Realm realm = AppDelegate.getRealmInstance();
+                sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
 
 
-                if(isFavorite){
-                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
-                    isFavorite = false;
+                Animation spinIn = AnimationUtils.loadAnimation(mContext,R.anim.spin);
+                final Animation spinOut = AnimationUtils.loadAnimation(mContext,R.anim.after_spin);
 
-                }else{
-                    favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
-                    isFavorite = true;
-                }
-                sessionFavorite = new SessionFavorite(session.getId(),"",isFavorite);
-                RealmUtility.addNewRow(sessionFavorite);
+
+                favorite.startAnimation(spinIn);
+                spinIn.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if(sessionFavorite != null) {
+                            if(sessionFavorite.getFavorite()){
+                                favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite_not_selected));
+                                sessionFavorite = new SessionFavorite(session.getId(),"",false);
+                                //  isFavorite = false;
+
+                            }else{
+                                favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                                sessionFavorite = new SessionFavorite(session.getId(),"",true);
+                                //  isFavorite = true;
+                            }
+
+                            RealmUtility.addNewRow(sessionFavorite);
+                        }else{
+                            favorite.setBackground(ContextCompat.getDrawable(mContext,R.drawable.favorite));
+                            sessionFavorite = new SessionFavorite(session.getId(), "", true);
+                        }
+                        favorite.startAnimation(spinOut);
+                        RealmUtility.addNewRow(sessionFavorite);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
+
+
 
             }
         });
