@@ -164,7 +164,6 @@ public class HomeActivity extends BaseActivity {
             alert.show();
             showDialog = false;
         }else if(TimeConverter.isDateAfterThursdayMorning()){
-            Log.d("potatoes", "boiled umed mashed umed");
         }
     }
     public void createThursdayNotification(){

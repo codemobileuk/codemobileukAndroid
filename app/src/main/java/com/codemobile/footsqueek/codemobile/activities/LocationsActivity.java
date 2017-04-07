@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
@@ -65,13 +66,17 @@ public class LocationsActivity extends BaseActivity {
     public void addHeaders(){
 
         List<Location> locations = getLocations();
+        for (int i = 0; i < locations.size(); i++) {
+
+            Log.d("asdasdasd", "Loc: "  + locations.get(i).getType());
+        }
 
         String lastType = "";
 
         for (int i = 0; i < locations.size(); i++) {
 
             if(i == 0){
-                lastType = locations.get(i).getType();
+
                 LocationWithHeaders header = new LocationWithHeaders(
                         null,
                         LocationRowType.HEADER,
@@ -106,14 +111,19 @@ public class LocationsActivity extends BaseActivity {
                 locationsWithHeaders.add(row);
             }
 
+            lastType = locations.get(i).getType();
+        }
 
+        for (int i = 0; i < locationsWithHeaders.size(); i++) {
+
+
+            Log.d("asdasdasd", "Loc: "  + locationsWithHeaders.get(i).getRowType());
         }
 
     }
 
     public List<Location> getLocations(){
         Realm realm = AppDelegate.getRealmInstance();
-        List<Location> d= realm.where(Location.class).findAll();
 
         return realm.where(Location.class).findAllSorted("type");
     }
