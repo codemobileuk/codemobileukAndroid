@@ -3,6 +3,7 @@ package com.codemobile.footsqueek.codemobile.activities;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
@@ -32,6 +34,7 @@ import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
+import com.codemobile.footsqueek.codemobile.services.TimeConverter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +66,7 @@ public class HomeActivity extends BaseActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     HorizontalScheduleRecyclerInterface horizontalScheduleRecyclerInterface;
+
 
     //TODO reduce lines by removing the extra views that get hidden and instead resizing the original views
 
@@ -119,14 +123,57 @@ public class HomeActivity extends BaseActivity {
         setUpScheduledNotifications();
         setupActionBar();
         navigationViewItemPosition = 0;
-
+        thursdaySpecialEvent();
 
 
     }
 
+    public void thursdaySpecialEvent(){
 
+        boolean showDialog = sharedPreferences.getBoolean("noneticked",true);
 
+        if(TimeConverter.isDateAfterThursdayMorning() && TimeConverter.isBeforeEndOfThursday() && showDialog){
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setMessage("If you have a moment please fill in our feedback form, you can access it from the main menu at anytime.");
+            builder.setTitle("Code Mobile Feedback form");
+            builder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("thursdayalert", false);
+                    editor.commit();
+
+                    dialog.cancel();
+                    String url = "https://docs.google.com/forms/d/e/1FAIpQLSfWruGR12AtCEMVJo_RHzqwyIiaYw9KMvOrK36_DlAD2xUlQw/viewform";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
+            builder.setNegativeButton("No Thanks", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("thursdayalert", false);
+                    editor.commit();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            showDialog = false;
+        }else if(TimeConverter.isDateAfterThursdayMorning()){
+            Log.d("potatoes", "boiled umed mashed umed");
+        }
+    }
+    public void createThursdayNotification(){
+
+    }
+
+    public void updateUiForThursday(){
+
+    }
 
     public void setNotificationTvText(){
 

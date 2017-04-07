@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -39,6 +40,62 @@ public class TimeConverter {
         String[] split  = dateString.split(" ");
 
         return split[3].substring(0,split[3].length()-3);
+
+    }
+
+    public static boolean isDateAfterThursdayMorning(){
+        //Very specific method for codeMobile
+
+        Date currentDate = new Date();
+        currentDate.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+
+        Calendar thursday = Calendar.getInstance();
+
+        thursday.set(Calendar.MONTH, 3);
+        thursday.set(Calendar.YEAR, 2017);
+        thursday.set(Calendar.DAY_OF_MONTH,7);
+        thursday.set(Calendar.HOUR_OF_DAY,10);
+        thursday.set(Calendar.MINUTE,0);
+
+        Date thursdayMorn = thursday.getTime();
+
+
+        // Date monday = calendar.getTime();
+
+        if(currentDate.after(thursdayMorn)){
+           return true;
+        }
+        return false;
+
+    }
+
+    public static boolean isBeforeEndOfThursday(){
+        //Very specific method for codeMobile
+
+        Date currentDate = new Date();
+        currentDate.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentDate);
+
+        Calendar thursday = Calendar.getInstance();
+
+        thursday.set(Calendar.MONTH, 3);
+        thursday.set(Calendar.YEAR, 2017);
+        thursday.set(Calendar.DAY_OF_MONTH,7);
+        thursday.set(Calendar.HOUR_OF_DAY,16);
+        thursday.set(Calendar.MINUTE,0);
+
+        Date thursdayaft = thursday.getTime();
+
+
+        // Date monday = calendar.getTime();
+
+        if(currentDate.before(thursdayaft)){
+            return true;
+        }
+        return false;
 
     }
 

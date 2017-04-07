@@ -1,14 +1,11 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -18,19 +15,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Fade;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Toast;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
 import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
+import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+
 
 /**
  * Created by greg on 10/02/2017.
@@ -88,8 +83,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -99,7 +93,18 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemTextColor(myList);
         navigationView.setItemIconTintList(myList);
 
-        navigationView.getMenu().getItem(0).setChecked(true);
+
+        if(TimeConverter.isDateAfterThursdayMorning()){
+            navigationView.inflateMenu(R.menu.drawer_menu_post_conference);
+        }else{
+
+
+        }
+        if (navigationView != null) {
+            navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
+
+        }
+
 
 
     }
@@ -171,6 +176,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
             } else if (id == R.id.nav_sponsors) {
 
+            } else if(id == R.id.nav_feedback){
+                String url = "https://docs.google.com/forms/d/e/1FAIpQLSfWruGR12AtCEMVJo_RHzqwyIiaYw9KMvOrK36_DlAD2xUlQw/viewform";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
 
 
@@ -186,11 +196,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
+        if(navigationView != null){
             navigationView.getMenu().getItem(navigationViewItemPosition).setChecked(true);
-
         }
-
 
     }
 
