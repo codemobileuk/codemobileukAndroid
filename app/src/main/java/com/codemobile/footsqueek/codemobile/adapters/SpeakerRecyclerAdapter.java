@@ -149,22 +149,25 @@ public class SpeakerRecyclerAdapter extends RecyclerView.Adapter<SpeakerRecycler
         holder.speakerName.setText(speakers.get(position).getFirstname() +" " +speakers.get(position).getSurname() );
         holder.speakerTalk.setText(speakers.get(position).getOrganisation());
 
-        Picasso.with(context)
-                .load(speakers.get(position)
-                .getPhotoUrl()).fit().centerCrop()
-                .into(holder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Bitmap imageBitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
-                        CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, context);
-                        circleCroppedBitmap.createRoundImage(holder.imageView);
-                    }
+        if(speakers.get(position).getPhotoUrl() != null && !speakers.get(position).getPhotoUrl().equals("") ){
+            Picasso.with(context)
+                    .load(speakers.get(position)
+                            .getPhotoUrl()).fit().centerCrop()
+                    .into(holder.imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Bitmap imageBitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
+                            CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, context);
+                            circleCroppedBitmap.createRoundImage(holder.imageView);
+                        }
 
-                    @Override
-                    public void onError() {
+                        @Override
+                        public void onError() {
 
-                    }
-                });
+                        }
+                    });
+        }
+
 
         setOnClickListeners(holder, position);
 

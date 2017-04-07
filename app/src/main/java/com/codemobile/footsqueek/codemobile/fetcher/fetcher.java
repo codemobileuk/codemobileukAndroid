@@ -53,12 +53,12 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     String exacuteString;
 
     public Fetcher(String params) {
-
+        Log.d("realmstuff", "fetcher constructor +p");
         exacuteString = params;
 
     }
     public Fetcher() {
-
+        Log.d("realmstuff", "fetcher constructor");
     }
 
     public void setFetcherInterface(FetcherInterface fetcherInterface){
@@ -67,6 +67,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
     @Override
     protected String doInBackground(String... params) {
+
 
         type = params[0];
         HttpURLConnection urlConnection = null;
@@ -352,18 +353,19 @@ public class Fetcher extends AsyncTask<String,Void,String>{
         Log.d("Realmstuff", "on complete + " +s +" list size:: " +genericList.size() );
      //   fetcherInterface.onComplete();
         RealmUtility.addNewRows(genericList, fetcherInterface);
-
+        Log.d("realmstuff", "fetcher should die?");
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         if(exacuteString != null){
-            if(exacuteString.equals("Schedule") && !dropping){
-                dropping = true;
+            if(exacuteString.equals("Speakers")){
+
                 RealmUtility.deleteTables();
             }
         }
+
 
 
     }

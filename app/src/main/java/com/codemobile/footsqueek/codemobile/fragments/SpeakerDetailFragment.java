@@ -156,22 +156,24 @@ public class SpeakerDetailFragment extends Fragment {
     }
 
     private void setImage(Speaker speaker){
+        if(speaker.getPhotoUrl() != null && !speaker.getPhotoUrl().equals("") ) {
+            Picasso.with(mContext)
+                    .load(speaker.getPhotoUrl()).fit().centerCrop()
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Bitmap imageBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
+                            circleCroppedBitmap.createRoundImage(imageView);
+                        }
 
-        Picasso.with(mContext)
-                .load(speaker.getPhotoUrl()).fit().centerCrop()
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Bitmap imageBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                        CircleCroppedBitmap circleCroppedBitmap = new CircleCroppedBitmap(imageBitmap, mContext);
-                        circleCroppedBitmap.createRoundImage(imageView);
-                    }
+                        @Override
+                        public void onError() {
 
-                    @Override
-                    public void onError() {
+                        }
+                    });
 
-                    }
-                });
+        }
 
     }
 

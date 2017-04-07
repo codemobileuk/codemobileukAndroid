@@ -51,6 +51,7 @@ public class UpdateTables {
                  if(dbv != null){
                     //TODO if realm tables empty go get um
                     if(!dbvString.equals(newDbv.getDbVersion())){
+                        Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
                             fetchSpeakers();
 
                     }else{
@@ -60,6 +61,7 @@ public class UpdateTables {
                     }
 
                 }else{
+                     Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
                     fetchSpeakers();
                 }
 
@@ -93,11 +95,10 @@ public class UpdateTables {
 
 
 
-
-
     private void fetchSchedule(){
+        Log.d("realmstuff", "fetching schedule inSC");
 
-        final Fetcher fetcher= new Fetcher("Speakers");
+        final Fetcher fetcher= new Fetcher();
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
@@ -105,6 +106,7 @@ public class UpdateTables {
                 scheduleUpdated = true;
                // taskComplete();
                 fetchLocations();
+                Log.d("realmstuff", "fetching loc got sched");
             }
 
             @Override
@@ -123,15 +125,17 @@ public class UpdateTables {
 
     }
     private void fetchSpeakers(){
-
-        final Fetcher fetcher= new Fetcher();
+        Log.d("realmstuff", "fetching speakers");
+        final Fetcher fetcher= new Fetcher("Speakers");
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
             public void onComplete() {
                 speakersUpdated = true;
                 //taskComplete();
+                Log.d("realmstuff", "fetching schedule");
                 fetchSchedule();
+
 
             }
 
