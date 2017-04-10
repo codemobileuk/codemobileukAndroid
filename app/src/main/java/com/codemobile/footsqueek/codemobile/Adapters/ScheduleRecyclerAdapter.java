@@ -119,6 +119,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if(holder instanceof ScheduleViewHolder){
             onClickListeners(holder, session);
+            if(AppDelegate.isTwoPane()){
+                ((ScheduleViewHolder) holder).favorite.setVisibility(View.INVISIBLE);
+            }else{
+                ((ScheduleViewHolder) holder).favorite.setVisibility(View.VISIBLE);
+            }
             if(session != null){
                 sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
                 if(sessionFavorite != null){

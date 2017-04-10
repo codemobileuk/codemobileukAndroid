@@ -223,9 +223,6 @@ public class ScheduleDetailFragment extends Fragment {
                 });
 
 
-
-
-
             }
         });
 
@@ -255,10 +252,10 @@ public class ScheduleDetailFragment extends Fragment {
 
 
             if(session.getLocationName().equals("Molloy")){
-                buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_molloy));
+                buildingIcon.setImageResource(R.drawable.ic_molloy);
 
             }else{
-                buildingIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_beswick));
+                buildingIcon.setImageResource(R.drawable.ic_beswick);
             }
         }
 
@@ -281,7 +278,6 @@ public class ScheduleDetailFragment extends Fragment {
                 LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 llp.setMargins(4,4,4,4);
                 tagTextView.setLayoutParams(llp);
-
                 tagLL.addView(tagTextView);
 
             }
