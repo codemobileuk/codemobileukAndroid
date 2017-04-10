@@ -151,7 +151,6 @@ public class SpeakerDetailFragment extends Fragment {
             }
 
             bioTv.setText(speaker.getProfile());
-            bioTv.setMovementMethod(new ScrollingMovementMethod());
         }
 
 
