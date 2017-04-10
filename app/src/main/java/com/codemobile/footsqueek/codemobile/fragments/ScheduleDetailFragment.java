@@ -301,7 +301,6 @@ public class ScheduleDetailFragment extends Fragment {
                     speakerOrg.setText(speaker.getOrganisation());
                     title.setText(session.getTitle());
                     talkDesc.setText(session.getDesc());
-                    talkDesc.setMovementMethod(new ScrollingMovementMethod());
                     timeStart.setText(TimeManager.trimTimeFromDate(session.getTimeStart()) +" - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
                     speakerDesc.setText(speaker.getProfile());
                     speakerDesc.setMovementMethod(new ScrollingMovementMethod());

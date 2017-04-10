@@ -88,98 +88,103 @@
             app:Text="Profile"/>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/talksLL">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-          >
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
-                android:id="@+id/titleLL"
-                tools:layout_editor_absoluteX="64dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:id="@+id/title"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/timeStart"
-                    app:layout_constraintLeft_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
-                    app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/buildingiconLL"
-                tools:layout_editor_absoluteY="1638dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/buildingIcon"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/buildingName"
-                    />
-
-            </LinearLayout>
+        android:layout_height="wrap_content">
 
 
-        </android.support.constraint.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/talksLL">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/talk_desc"
-                android:textColor="@color/black"
-                android:scrollbars="vertical"
-                />
+              >
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
+                    android:id="@+id/titleLL"
+                    tools:layout_editor_absoluteX="64dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/title"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeStart"
+                        app:layout_constraintLeft_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title"
+                        app:layout_constraintRight_toLeftOf="@+id/buildingiconLL"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    app:layout_constraintRight_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/buildingiconLL"
+                    tools:layout_editor_absoluteY="1638dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/buildingIcon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buildingName"
+                        />
+
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/talk_desc"
+                    android:textColor="@color/black"
+                    android:scrollbars="vertical"
+                    />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tagsLL"
+                ></LinearLayout>
 
         </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tagsLL"
-            ></LinearLayout>
-
-    </LinearLayout>
-
+    </ScrollView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
