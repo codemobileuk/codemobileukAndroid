@@ -8,7 +8,7 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.database.DataBaseVersion;
 import com.codemobile.footsqueek.codemobile.database.Location;
 import com.codemobile.footsqueek.codemobile.database.Tag;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
@@ -276,7 +276,7 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
     private void parseSessionJson(String json)throws JSONException{
         genericList = new ArrayList<>();
-        TimeConverter timeConverter = new TimeConverter();
+        TimeManager timeConverter = new TimeManager();
 
         final String RESULTS = "Results";
         final String ID = "SessionId";

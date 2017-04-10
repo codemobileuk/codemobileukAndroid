@@ -3,12 +3,10 @@ package com.codemobile.footsqueek.codemobile.customUi;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -18,10 +16,9 @@ import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,8 +96,8 @@ import io.realm.Realm;
                 speakerTv2.setText(speaker2.getFirstname()+ " " +speaker2.getSurname());
             }
 
-            timestartTv1.setText(TimeConverter.trimTimeFromDate(talk1.getTimeStart()));
-            timestartTv2.setText(TimeConverter.trimTimeFromDate(talk2.getTimeStart()));
+            timestartTv1.setText(TimeManager.trimTimeFromDate(talk1.getTimeStart()));
+            timestartTv2.setText(TimeManager.trimTimeFromDate(talk2.getTimeStart()));
         }
     }
 

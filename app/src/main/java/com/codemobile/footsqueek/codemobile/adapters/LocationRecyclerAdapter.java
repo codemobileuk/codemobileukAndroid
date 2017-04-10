@@ -109,7 +109,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     public static class LocationViewHolder extends RecyclerView.ViewHolder{
 
       //  Button directionsButton;
-        TextView locationName, distanceTv;
+        TextView locationName;
         ImageView imageView, button;
 
         public LocationViewHolder(View itemView) {
@@ -117,7 +117,6 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
            // directionsButton = (Button)itemView.findViewById(R.id.navigate_button);
             locationName = (TextView)itemView.findViewById(R.id.location_name);
-            distanceTv = (TextView)itemView.findViewById(R.id.distance_tv);
             imageView = (ImageView)itemView.findViewById(R.id.placeImageView);
             button = (ImageView)itemView.findViewById(R.id.button);
         }

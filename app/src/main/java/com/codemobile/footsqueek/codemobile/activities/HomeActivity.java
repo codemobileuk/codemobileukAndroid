@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,13 +15,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Explode;
-import android.transition.Fade;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -34,7 +30,7 @@ import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,7 +128,7 @@ public class HomeActivity extends BaseActivity {
 
         boolean showDialog = sharedPreferences.getBoolean("noneticked",true);
 
-        if(TimeConverter.isDateAfterThursdayMorning() && TimeConverter.isBeforeEndOfThursday() && showDialog){
+        if(TimeManager.isDateAfterThursdayMorning() && TimeManager.isBeforeEndOfThursday() && showDialog){
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
             builder.setMessage("If you have a moment please fill in our feedback form, you can access it from the main menu at anytime.");
             builder.setTitle("Code Mobile Feedback form");
@@ -163,7 +159,7 @@ public class HomeActivity extends BaseActivity {
             AlertDialog alert = builder.create();
             alert.show();
             showDialog = false;
-        }else if(TimeConverter.isDateAfterThursdayMorning()){
+        }else if(TimeManager.isDateAfterThursdayMorning()){
         }
     }
     public void createThursdayNotification(){

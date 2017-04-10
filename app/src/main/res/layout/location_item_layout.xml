@@ -35,18 +35,7 @@
                 android:layout_alignParentTop="true"
                 android:text="PLANCE NAMCE" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:layout_below="@+id/location_name"
-                android:textSize="14dp"
-                android:id="@+id/distance_tv"
-                android:textColor="@color/textLightGrey"
-                android:layout_alignParentLeft="true"
 
-                android:layout_alignParentBottom="true"
-                android:text="distance" />
 
             <ImageView
 

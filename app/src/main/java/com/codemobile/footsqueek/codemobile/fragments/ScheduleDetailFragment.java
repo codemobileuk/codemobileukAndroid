@@ -15,14 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
-import com.codemobile.footsqueek.codemobile.adapters.ScheduleRecyclerAdapter;
 import com.codemobile.footsqueek.codemobile.customUi.LineButton;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
@@ -30,7 +28,7 @@ import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.services.CircleCroppedBitmap;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -306,7 +304,7 @@ public class ScheduleDetailFragment extends Fragment {
                     speakerOrg.setText(speaker.getOrganisation());
                     title.setText(session.getTitle());
                     talkDesc.setText(session.getDesc());
-                    timeStart.setText(TimeConverter.trimTimeFromDate(session.getTimeStart()) +" - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+                    timeStart.setText(TimeManager.trimTimeFromDate(session.getTimeStart()) +" - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
                     speakerDesc.setText(speaker.getProfile());
                 }
 

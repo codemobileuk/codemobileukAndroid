@@ -1,7 +1,6 @@
 package com.codemobile.footsqueek.codemobile.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
@@ -23,12 +22,11 @@ import com.codemobile.footsqueek.codemobile.database.SessionFavorite;
 import com.codemobile.footsqueek.codemobile.database.SessionFullData;
 import com.codemobile.footsqueek.codemobile.database.SessionType;
 import com.codemobile.footsqueek.codemobile.database.Tag;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -190,7 +188,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }else if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.NORMAL){
                     ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
                     ((ScheduleViewHolder)holder).timeStart.setVisibility(View.VISIBLE);
-                    ((ScheduleViewHolder)holder).timeStart.setText(TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+                    ((ScheduleViewHolder)holder).timeStart.setText(TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
                     actualRowCount++;
                 }
 
@@ -202,7 +200,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         }else if(holder instanceof BreakHolder){
             //actualRowCount++;
-            ((BreakHolder) holder).time.setText(TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()));
+            ((BreakHolder) holder).time.setText(TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
             ((BreakHolder) holder).name.setText(sessionWithHeaders.get(position).getSession().getSessionType());
 
         }else if(holder instanceof HeaderHolder){

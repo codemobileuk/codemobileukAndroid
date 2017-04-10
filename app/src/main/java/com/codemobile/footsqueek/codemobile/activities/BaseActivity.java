@@ -24,7 +24,7 @@ import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
 import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 
 
 /**
@@ -94,7 +94,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(myList);
 
 
-        if(TimeConverter.isDateAfterThursdayMorning()){
+        if(TimeManager.isDateAfterThursdayMorning()){
             navigationView.inflateMenu(R.menu.drawer_menu_post_conference);
         }else{
 
@@ -172,10 +172,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
-
-
-            } else if (id == R.id.nav_sponsors) {
-
             } else if(id == R.id.nav_feedback){
                 String url = "https://docs.google.com/forms/d/e/1FAIpQLSfWruGR12AtCEMVJo_RHzqwyIiaYw9KMvOrK36_DlAD2xUlQw/viewform";
                 Intent i = new Intent(Intent.ACTION_VIEW);

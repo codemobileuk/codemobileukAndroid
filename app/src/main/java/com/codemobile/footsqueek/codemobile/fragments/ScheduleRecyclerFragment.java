@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import com.codemobile.footsqueek.codemobile.database.Tag;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleFilterInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -291,7 +290,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         SessionFullData s = new SessionFullData(
                 null,
                 ScheduleRowType.DOUBLE_TIME_HEADER,
-                TimeConverter.trimTimeFromDate(session.getTimeStart())+ " - " +TimeConverter.trimTimeFromDate(session.getTimeEnd()),
+                TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()),
                 session.getTitle()
         );
         sfd.add(s);

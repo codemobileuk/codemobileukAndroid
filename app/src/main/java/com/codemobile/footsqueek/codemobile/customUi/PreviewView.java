@@ -2,7 +2,6 @@ package com.codemobile.footsqueek.codemobile.customUi;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,18 +11,15 @@ import android.widget.TextView;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
-import com.codemobile.footsqueek.codemobile.activities.HomeActivity;
 import com.codemobile.footsqueek.codemobile.activities.ScheduleActivity;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
 import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.services.RoundedCornersTransform;
-import com.codemobile.footsqueek.codemobile.services.TimeConverter;
+import com.codemobile.footsqueek.codemobile.services.TimeManager;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
 
@@ -90,7 +86,7 @@ public class PreviewView extends LinearLayout {
                 speakerTv.setText(speaker1.getFirstname()+ " " +speaker1.getSurname());
             }
                 talkTv.setText(talk.getTitle());
-                timeStartTv.setText(TimeConverter.trimTimeFromDate(talk.getTimeStart()));
+                timeStartTv.setText(TimeManager.trimTimeFromDate(talk.getTimeStart()));
         }
 
     }

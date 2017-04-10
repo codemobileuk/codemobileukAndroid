@@ -12,7 +12,7 @@ import java.util.TimeZone;
  * Created by greg on 18/01/2017.
  */
 
-public class TimeConverter {
+public class TimeManager {
 
 
 
@@ -55,7 +55,7 @@ public class TimeConverter {
 
         thursday.set(Calendar.MONTH, 3);
         thursday.set(Calendar.YEAR, 2017);
-        thursday.set(Calendar.DAY_OF_MONTH,7);
+        thursday.set(Calendar.DAY_OF_MONTH,20);
         thursday.set(Calendar.HOUR_OF_DAY,10);
         thursday.set(Calendar.MINUTE,0);
 
@@ -83,7 +83,7 @@ public class TimeConverter {
 
         thursday.set(Calendar.MONTH, 3);
         thursday.set(Calendar.YEAR, 2017);
-        thursday.set(Calendar.DAY_OF_MONTH,7);
+        thursday.set(Calendar.DAY_OF_MONTH,20);
         thursday.set(Calendar.HOUR_OF_DAY,16);
         thursday.set(Calendar.MINUTE,0);
 

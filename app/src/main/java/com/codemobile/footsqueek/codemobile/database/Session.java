@@ -176,4 +176,5 @@ public class Session extends RealmObject {
     public boolean checkIfRowNeedsUpdate(Session newRow){
         return false;
     }
+
 }
