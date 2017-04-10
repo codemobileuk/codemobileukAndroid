@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -300,8 +301,10 @@ public class ScheduleDetailFragment extends Fragment {
                     speakerOrg.setText(speaker.getOrganisation());
                     title.setText(session.getTitle());
                     talkDesc.setText(session.getDesc());
+                    talkDesc.setMovementMethod(new ScrollingMovementMethod());
                     timeStart.setText(TimeManager.trimTimeFromDate(session.getTimeStart()) +" - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
                     speakerDesc.setText(speaker.getProfile());
+                    speakerDesc.setMovementMethod(new ScrollingMovementMethod());
                 }
 
             }

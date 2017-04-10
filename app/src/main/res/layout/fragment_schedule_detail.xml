@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="16dp"
     android:layout_height="match_parent">
     <ImageView
+        android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/favorite_not_selected"
         android:id="@+id/favorite_btn"
         android:layout_gravity="right"
-        android:padding="20dp"
+        android:padding="25dp"
 
         />
 
@@ -158,15 +158,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/talk_desc"
                 android:textColor="@color/black"
+                android:scrollbars="vertical"
                 />
 
 
@@ -187,6 +184,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/speaker_desc"
         android:visibility="gone"
+        android:scrollbars="vertical"
         android:textColor="@color/black"
         />
 

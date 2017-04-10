@@ -14,7 +14,7 @@ import com.codemobile.footsqueek.codemobile.fragments.ScheduleDetailFragment;
  * Created by greg on 19/01/2017.
  */
 
-public class ScheduleDetailActivity extends AppCompatActivity {
+public class ScheduleDetailActivity extends BaseActivity {
 
     ScheduleDetailFragment scheduleDetailFragment;
     String talkId ="-1";
@@ -27,6 +27,8 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        setupActionBar();
+        getSupportActionBar().setTitle("Schedule");
         Intent intent = getIntent();
         if(intent != null){
             talkId =  intent.getStringExtra("id");//-1?

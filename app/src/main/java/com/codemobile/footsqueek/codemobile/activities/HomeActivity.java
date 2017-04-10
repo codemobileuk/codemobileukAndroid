@@ -71,19 +71,13 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-       /* if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-            getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-            getWindow().setExitTransition(new Fade());
-            getWindow().setEnterTransition(new Fade());
-            getWindow().setTitle("FAYSDAJSDASD");
-        }
-*/
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
 
         sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
 
@@ -106,20 +100,15 @@ public class HomeActivity extends BaseActivity {
 
         Realm realm = AppDelegate.getRealmInstance();
         upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).notEqualTo("sessionType","Break").findAllSorted("timeStart");
-    //    upComingSessions = realm.where(Session.class).notEqualTo("sessionType","1").greaterThan("timeEnd",currentDate).findAllSorted("timeStart");
-    //    upComingSessions = realm.where(Session.class).notEqualTo("sessionType","1").findAllSorted("timeStart");
 
-        for (int i = 0; i < upComingSessions.size(); i++) {
-            Log.d("asdaeee", upComingSessions.get(i).getTitle() +"   " + upComingSessions.get(i).getSessionType()+" :::" + upComingSessions.get(i).getId()+"|||||3434343");
-        }
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
 
-      //  fetchSchedule();
         setOnClickListeners();
         setUpScheduledNotifications();
         setupActionBar();
         navigationViewItemPosition = 0;
         thursdaySpecialEvent();
+
 
 
     }
@@ -162,13 +151,6 @@ public class HomeActivity extends BaseActivity {
         }else if(TimeManager.isDateAfterThursdayMorning()){
         }
     }
-    public void createThursdayNotification(){
-
-    }
-
-    public void updateUiForThursday(){
-
-    }
 
     public void setNotificationTvText(){
 
@@ -189,23 +171,15 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         navigationViewItemPosition = 0;
-      //  setUpPreviewViews();
         refreshList();
-       // fetchSchedule();
         setUpHorizontalRecycler();
         setUpPreviewViews();
         setNotificationTvText();
     }
 
-    int poo = 1;
     public void setUpHorizontalRecycler(){
-        poo ++;
-        Log.d("activity", "horiz recycler: " + poo);
-      //  recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(lm);
-
-
         adapter = new ScheduleHorizontalRecyclerAdapter(upComingSessions,context);
 
         horizontalScheduleRecyclerInterface = new HorizontalScheduleRecyclerInterface() {
@@ -357,7 +331,7 @@ public class HomeActivity extends BaseActivity {
             doublePreviewView.setVisibility(View.GONE);
 
         }else if(eventOn()){
-            if(getCurrentTalk().size() ==2){
+            if(getCurrentTalk().size() == 2){
 
                 mondayConstraintLayout.setVisibility(View.GONE);
                 previewView.setVisibility(View.GONE);

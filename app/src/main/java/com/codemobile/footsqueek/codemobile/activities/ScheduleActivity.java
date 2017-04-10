@@ -86,6 +86,7 @@ public class ScheduleActivity extends BaseActivity {
 
         determinePaneLayout();
         setupActionBar();
+        getSupportActionBar().setTitle("Schedule");
         navigationViewItemPosition = 1;
 
         setupButtonListeners();

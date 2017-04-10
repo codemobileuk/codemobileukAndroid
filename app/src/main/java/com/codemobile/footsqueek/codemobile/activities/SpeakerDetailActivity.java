@@ -15,7 +15,7 @@ import com.codemobile.footsqueek.codemobile.fragments.SpeakerDetailFragment;
  * Created by greg on 23/01/2017.
  */
 
-public class SpeakerDetailActivity extends AppCompatActivity {
+public class SpeakerDetailActivity extends BaseActivity {
 
 
     SpeakerDetailFragment speakerDetailFragment;
@@ -47,6 +47,8 @@ public class SpeakerDetailActivity extends AppCompatActivity {
             ft.replace(R.id.SpeakerDetailContainer, speakerDetailFragment);
             ft.commit();
         }
+        setupActionBar();
+        getSupportActionBar().setTitle("Speakers");
     }
 
     @Override

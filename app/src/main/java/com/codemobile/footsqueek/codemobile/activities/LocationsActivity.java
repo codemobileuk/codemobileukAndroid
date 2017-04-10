@@ -59,6 +59,7 @@ public class LocationsActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         setupActionBar();
+        getSupportActionBar().setTitle("Locations");
         navigationViewItemPosition = 3;
 
     }

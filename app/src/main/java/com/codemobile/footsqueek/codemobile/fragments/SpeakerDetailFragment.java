@@ -143,7 +143,7 @@ public class SpeakerDetailFragment extends Fragment {
             }
             setImage(speaker);
 
-            nameTv.setText(speaker.getFirstname());
+            nameTv.setText(speaker.getFirstname() +" " +speaker.getSurname());
             if(session != null){
                 talkTv.setText(session.getTitle());
             }else{

@@ -24,6 +24,7 @@ public class SpeakerActivity extends BaseActivity {
         }
 
         setupActionBar();
+        getSupportActionBar().setTitle("Speakers");
         navigationViewItemPosition = 2;
     }
 
