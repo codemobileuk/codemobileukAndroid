@@ -63,6 +63,7 @@
         android:textSize="18sp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:scrollbars="vertical"
         />
 
 
