@@ -6,7 +6,6 @@
     android:background="@color/commonVeryDarkGrey"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:weightSum="20"
-    android:padding="8dp"
 
     >
 <LinearLayout

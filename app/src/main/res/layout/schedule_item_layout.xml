@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:textSize="14sp"
-                android:textColor="@color/textDarkGrey"
+
+                android:textColor="@color/textRed"
                 android:id="@+id/timeStart"/>
 
             <TextView

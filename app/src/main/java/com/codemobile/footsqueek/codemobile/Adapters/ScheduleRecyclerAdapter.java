@@ -111,7 +111,6 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             setTwoPane(holder);
             setFavorites(holder, session);
             setTagVisibility(holder, session);
-
             Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
 
             ((ScheduleViewHolder)holder).title.setText(session.getTitle());
