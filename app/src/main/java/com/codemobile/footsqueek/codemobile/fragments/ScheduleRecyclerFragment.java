@@ -60,10 +60,13 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     ScheduleDayChooserInterface mListener;
 
     public ScheduleDayChooserInterface getScheduleDayChooserInterface(){
+
         return mListener;
     }
 
     public ScheduleFilterInterface getFilterInterface(){
+
+
         return filterInterface;
     }
 
@@ -87,6 +90,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
 
         return view;
     }
+
+
 
     public void daySelectorListener(){
         mListener = new ScheduleDayChooserInterface() {
@@ -376,6 +381,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     public void onResume() {
         super.onResume();
         tealAdapter.notifyDataSetChanged();
+        daySelectorListener();
 
     }
 

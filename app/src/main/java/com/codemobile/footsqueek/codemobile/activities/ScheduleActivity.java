@@ -123,7 +123,7 @@ public class ScheduleActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        scheduleDayChooserInterface = newFragment.getScheduleDayChooserInterface();
+
     }
 
     public void determinePaneLayout() {
@@ -138,6 +138,12 @@ public class ScheduleActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         navigationViewItemPosition = 1;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        scheduleDayChooserInterface = newFragment.getScheduleDayChooserInterface();
     }
 
     public void setupButtonListeners(){
