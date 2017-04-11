@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -282,7 +283,50 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                 scheduleNormal(allTalks.get(i));
             }
         }
+        addRowColours();
         return sfd;
+
+    }
+
+    private void addRowColours(){
+        boolean prevColWhite = false;
+        for (int i = 0; i < sfd.size(); i++) {
+            if(i == 0){
+
+                if(sfd.get(i).getRowType() == ScheduleRowType.DOUBLE_TIME_HEADER){
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    sfd.get(i+1).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    sfd.get(i+2).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    i++;
+                    i++;
+                }else{
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                }
+                prevColWhite = true;
+            }else if(prevColWhite){
+                if(sfd.get(i).getRowType() == ScheduleRowType.DOUBLE_TIME_HEADER){
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonLightGrey));
+                    sfd.get(i+1).setRowColour(ContextCompat.getColor(mContext,R.color.commonLightGrey));
+                    sfd.get(i+2).setRowColour(ContextCompat.getColor(mContext,R.color.commonLightGrey));
+                    i++;
+                    i++;
+                }else{
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonLightGrey));
+                }
+                prevColWhite = false;
+            }else if(!prevColWhite){
+                if(sfd.get(i).getRowType() == ScheduleRowType.DOUBLE_TIME_HEADER){
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    sfd.get(i+1).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    sfd.get(i+2).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                    i++;
+                    i++;
+                }else{
+                    sfd.get(i).setRowColour(ContextCompat.getColor(mContext,R.color.commonWhite));
+                }
+                prevColWhite = true;
+            }
+        }
 
     }
 
@@ -291,7 +335,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                 null,
                 ScheduleRowType.DOUBLE_TIME_HEADER,
                 TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()),
-                session.getTitle()
+                session.getTitle(),
+                -1
         );
         sfd.add(s);
     }
@@ -300,7 +345,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                 session,
                 ScheduleRowType.NORMAL,
                 null,
-                null
+                null,
+                -1
         );
         sfd.add(s);
 
@@ -310,7 +356,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                 session,
                 ScheduleRowType.DOUBLE_LEFT,
                 null,
-                null
+                null,
+                -1
         );
         sfd.add(s);
     }
@@ -319,7 +366,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                 session,
                 ScheduleRowType.DOUBLE_RIGHT,
                 null,
-                null
+                null,
+                -1
         );
 
         sfd.add(s);

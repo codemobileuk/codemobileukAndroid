@@ -168,6 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/talk_desc"
+                    android:lineSpacingExtra="4dp"
                     android:textColor="@color/black"
                     android:scrollbars="vertical"
                     />
@@ -190,6 +191,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/speaker_desc"
         android:visibility="gone"
+        android:lineSpacingExtra="4dp"
         android:scrollbars="vertical"
         android:textColor="@color/black"
         />

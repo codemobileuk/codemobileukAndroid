@@ -28,6 +28,7 @@ import com.codemobile.footsqueek.codemobile.database.Speaker;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -49,28 +50,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static int TYPE_SESSION = 0;
     private static int TYPE_HEADER = 2;
     SessionFavorite sessionFavorite;
-    boolean isFavorite = false;
 
-
+    private  Realm realm;
     public ScheduleRecyclerAdapter(List<SessionFullData> sessionWithHeaders, ScheduleRecyclerInterface scheduleRecyclerInterface, Context context) {
         this.context = context;
         this.scheduleRecyclerInterface = scheduleRecyclerInterface;
         this.sessionWithHeaders = sessionWithHeaders;
     }
 
-    private void setClickListeners(final RecyclerView.ViewHolder holder, final Session session, final int position){
 
-        ((ScheduleViewHolder)holder).row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scheduleRecyclerInterface.talkClicked(session.getId());
-                AppDelegate.setSharedView(((ScheduleViewHolder)holder).title);
-                AppDelegate.setSharedViewId("title" + position);
-
-            }
-        });
-
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -111,45 +99,19 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Realm realm = AppDelegate.getRealmInstance();
+        realm = AppDelegate.getRealmInstance();
         Session session = sessionWithHeaders.get(position).getSession();
 
         if(holder instanceof ScheduleViewHolder){
-            onClickListeners(holder, session);
-            if(AppDelegate.isTwoPane()){
-                ((ScheduleViewHolder) holder).favorite.setVisibility(View.INVISIBLE);
-            }else{
-                ((ScheduleViewHolder) holder).favorite.setVisibility(View.VISIBLE);
-            }
-            if(session != null){
-                sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
-                if(sessionFavorite != null){
-                    Log.d("testingstuff", "favorites: " + sessionFavorite.getFavorite() +" id: " +session.getId());
-                    if(sessionFavorite.getFavorite()){
-                        ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
-                       //sessionFavorite = new SessionFavorite(session.getId(),"",true);
-                      //  isFavorite = true;
-                    }else{
-                        ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
-                      //  sessionFavorite = new SessionFavorite(session.getId(),"",false);
-                     //   isFavorite = false;
-                    }
-                }else{
-                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
-                    //  sessionFavorite = new SessionFavorite(session.getId(),"",false);
-                    //   isFavorite = false;
-                }
+            onClickListeners(holder, session, position);
+            setTwoPane(holder);
+            setFavorites(holder, session);
+            setTagVisibility(holder, session);
 
-            }
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ((ScheduleViewHolder) holder).title.setTransitionName("title" + position);
-            }
-            setClickListeners(holder, session, position);
             Speaker speaker = realm.where(Speaker.class).equalTo("id",session.getSpeakerId()).findFirst();
 
             ((ScheduleViewHolder)holder).title.setText(session.getTitle());
@@ -158,76 +120,101 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-          /*  if(session.getLocationName().equals("Molloy")){
-                ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_molloy));
-            }else{
-                ((ScheduleViewHolder) holder).buildingIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_beswick));
-            }*/
 
-            List<Tag> tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
-                if(session.getTitle().contains("Built-In")){
-                    Log.d("asddddddeee", "=====" + tags.size() + "   ");
-                }
-               // hardcoded number of text views for displaying tags in the recycler to 2.
-                if(tags.size() >= 2){
-                    ((ScheduleViewHolder) holder).tag1.setText(tags.get(1).getTag());
-                    ((ScheduleViewHolder) holder).tag2.setText(tags.get(0).getTag());
-                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
-                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.VISIBLE);
-                }else if(tags.size() ==1){
-                    ((ScheduleViewHolder) holder).tag1.setText(tags.get(0).getTag());
-                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
-                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
-                }else{
-                    ((ScheduleViewHolder) holder).tag1.setVisibility(View.INVISIBLE);
-                    ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
-                }
+            ((ScheduleViewHolder)holder).row.setBackgroundColor(sessionWithHeaders.get(position).getRowColour());
 
                 if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT){
                     ((ScheduleViewHolder)holder).line.setVisibility(View.VISIBLE);
                     ((ScheduleViewHolder) holder).timeStart.setVisibility(View.GONE);
+                    ((ScheduleViewHolder)holder).timeStart.setText("Act row count: " + actualRowCount +" Position: " +position);
+
                 }
                 if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT){
                     ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
                     ((ScheduleViewHolder) holder).timeStart.setVisibility(View.GONE);
+                    ((ScheduleViewHolder)holder).timeStart.setText("Act row count: " + actualRowCount +" Position: " +position);
+
                 }else if(sessionWithHeaders.get(position).getRowType() == ScheduleRowType.NORMAL){
                     ((ScheduleViewHolder)holder).line.setVisibility(View.INVISIBLE);
                     ((ScheduleViewHolder)holder).timeStart.setVisibility(View.VISIBLE);
                     ((ScheduleViewHolder)holder).timeStart.setText(TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
                     actualRowCount++;
+
                 }
 
-            if(actualRowCount % 2 ==0){
-                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
-            }else {
-                ((ScheduleViewHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonLightGrey));
-            }
 
         }else if(holder instanceof BreakHolder){
-            //actualRowCount++;
             ((BreakHolder) holder).time.setText(TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
             ((BreakHolder) holder).name.setText(sessionWithHeaders.get(position).getSession().getSessionType());
+
 
         }else if(holder instanceof HeaderHolder){
             actualRowCount ++;
             ((HeaderHolder) holder).time.setText(sessionWithHeaders.get(position).getTime());
-            if(actualRowCount % 2 ==0){
-                ((HeaderHolder)holder).row.setBackgroundColor(ContextCompat.getColor(this.context,R.color.commonWhite));
-            }else {
-                ((HeaderHolder)holder).row.setBackgroundColor(ContextCompat.getColor(context,R.color.commonLightGrey));
+            ((HeaderHolder)holder).row.setBackgroundColor(sessionWithHeaders.get(position).getRowColour());
+
+        }
+    }
+
+    private void setTwoPane(RecyclerView.ViewHolder holder){
+        if(AppDelegate.isTwoPane()){
+            ((ScheduleViewHolder) holder).favorite.setVisibility(View.INVISIBLE);
+        }else{
+            ((ScheduleViewHolder) holder).favorite.setVisibility(View.VISIBLE);
+        }
+    }
+    private void setFavorites(RecyclerView.ViewHolder holder, Session session){
+        if(session != null){
+            sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
+            if(sessionFavorite != null){
+                if(sessionFavorite.getFavorite()){
+                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite));
+                }else{
+                    ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
+                }
+            }else{
+                ((ScheduleViewHolder) holder).favorite.setBackground(ContextCompat.getDrawable(context,R.drawable.favorite_not_selected));
             }
+
+        }
+    }
+
+    private void setTagVisibility(RecyclerView.ViewHolder holder, Session session){
+        List<Tag> tags = realm.where(Tag.class).equalTo("sessionId",session.getId()).findAll();
+        // hardcoded number of text views for displaying tags in the recycler to 2.
+        if(tags.size() >= 2){
+            ((ScheduleViewHolder) holder).tag1.setText(tags.get(1).getTag());
+            ((ScheduleViewHolder) holder).tag2.setText(tags.get(0).getTag());
+            ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
+            ((ScheduleViewHolder) holder).tag2.setVisibility(View.VISIBLE);
+        }else if(tags.size() ==1){
+            ((ScheduleViewHolder) holder).tag1.setText(tags.get(0).getTag());
+            ((ScheduleViewHolder) holder).tag1.setVisibility(View.VISIBLE);
+            ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+        }else{
+            ((ScheduleViewHolder) holder).tag1.setVisibility(View.INVISIBLE);
+            ((ScheduleViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
         }
     }
 
 
-    public void onClickListeners(final RecyclerView.ViewHolder holder, final Session session){
+    public void onClickListeners(final RecyclerView.ViewHolder holder, final Session session,final int position){
+
+        ((ScheduleViewHolder)holder).row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scheduleRecyclerInterface.talkClicked(session.getId());
+                AppDelegate.setSharedView(((ScheduleViewHolder)holder).title);
+                AppDelegate.setSharedViewId("title" + position);
+
+            }
+        });
 
         ((ScheduleViewHolder)holder).favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Realm realm = AppDelegate.getRealmInstance();
                 sessionFavorite = realm.where(SessionFavorite.class).equalTo("sessionId",session.getId()).findFirst();
-//                Log.d("testingstuff", "favorites1: " + sessionFavorite.getFavorite() +" id: " +session.getId());
                 Animation spinIn = AnimationUtils.loadAnimation(context,R.anim.spin);
                 final Animation spinOut = AnimationUtils.loadAnimation(context,R.anim.after_spin);
 
@@ -324,13 +311,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         TextView time;
         LinearLayout row;
-      //  TextView name;
 
         public HeaderHolder(View itemView) {
             super(itemView);
 
             time = (TextView)itemView.findViewById(R.id.timeStart);
-            //name = (TextView)itemView.findViewById(R.id.name);
             row = (LinearLayout)itemView.findViewById(R.id.row);
         }
     }
