@@ -72,6 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:id="@+id/ll1"
+                android:transitionName="profile"
                 >
 
                 <ImageView

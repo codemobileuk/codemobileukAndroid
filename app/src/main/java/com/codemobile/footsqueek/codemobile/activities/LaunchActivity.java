@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -56,7 +58,7 @@ public class LaunchActivity extends BaseActivity {
         Realm realm = AppDelegate.getRealmInstance();
         logo = (ImageView)findViewById(R.id.logo);
         frame = (FrameLayout)findViewById(R.id.frame);
-        pd = new ProgressDialog(this);
+        pd = new ProgressDialog(LaunchActivity.this);
         pd.setMessage("Fetching Schedule");
         pd.show();
 
@@ -76,7 +78,17 @@ public class LaunchActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try{
+            if (pd != null && pd.isShowing()) {
+                pd.dismiss();
+            }
+        }catch (Exception e){
+            Log.e("LaunchActivity" ,e.getMessage());
+        }
+    }
 
     public void noConnectionOrPopulatedDb(){
 
@@ -105,32 +117,52 @@ public class LaunchActivity extends BaseActivity {
 
 
 
-        pd.dismiss();
+        try{
+            if (pd != null && pd.isShowing()) {
+                pd.dismiss();
+            }
+        }catch (Exception e){
+            Log.e("Launch activity" ,e.getMessage());
+        }
 
-        final Handler handler = new Handler();
+
+       /* final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                setIntent();
+
             }
-        }, 500);
+        }, 500);*/
 
 
-
+        setIntent();
 
 
     }
 
     public void setIntent(){
-        Intent in = new Intent(getApplicationContext(),HomeActivity.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,frame,"profile");
-        //  ActivityOptionsCompat.makeCustomAnimation(this, ,-1);
-        ActivityCompat.finishAfterTransition(this);
 
-        ActivityCompat.startActivity(this, in, options.toBundle());
-        finish();
+        //When phone is in landscape (and view locked to portrait) the first intent throws a npe
+        try{
+            Intent in = new Intent(getApplicationContext(),HomeActivity.class);
+            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,frame,"profile");
+            //  ActivityOptionsCompat.makeCustomAnimation(this, ,-1);
+            //andro ActivityCompat.finishAfterTransition(this);
+
+            ActivityCompat.startActivity(this, in, options.toBundle());
+            finish();
+        }catch (Exception e){
+            Intent in = new Intent(getApplicationContext(),HomeActivity.class);
+            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+        }
+
+
+
+
+        /**/
     }
 
 

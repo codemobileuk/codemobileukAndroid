@@ -44,14 +44,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+       // setContentView(R.layout.activity_launch);
 
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
        // fetchSchedule();
         setColours();
-        setupActionBar();
+//        setupActionBar();
         determineTwoPane();
 
 
@@ -112,10 +112,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private void determineTwoPane(){
 
         View view = findViewById(R.id.largelayout);
-        if(view != null){
-            AppDelegate.setTwoPane(true);
-        }else{
+        if(getResources().getBoolean(R.bool.portrait_only)){
             AppDelegate.setTwoPane(false);
+        }else{
+            AppDelegate.setTwoPane(true);
         }
 
 
@@ -138,11 +138,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        if(drawer != null){
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
+
     }
 
 
