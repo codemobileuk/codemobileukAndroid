@@ -7,6 +7,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -33,6 +35,7 @@ public class AppDelegate extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         //TODO add in realm migration once data set is more stable
         Context ctx = getApplicationContext();

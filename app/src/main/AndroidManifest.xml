@@ -67,6 +67,9 @@
             android:enabled="true" />
 
         <receiver android:name=".services.CurrentSessionChecker"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="af933a7c34c94cc6d9e05e2a38b4b7c92f7ec274" />
     </application>
 
 </manifest>

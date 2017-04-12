@@ -1,5 +1,8 @@
 package com.codemobile.footsqueek.codemobile.fetcher;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
@@ -20,13 +23,23 @@ public class UpdateTables {
 
     UpdateTablesInterface updateTablesInterface;
     Fetcher fetcher;
+    Context context;
 
     public void setUpdateTablesInterface(UpdateTablesInterface updateTablesInterface){
         this.updateTablesInterface = updateTablesInterface;
 
     }
 
+    public UpdateTables(Context context) {
+        this.context = context;
+    }
 
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     public void compareAndUpdate(){
         //get old version
@@ -40,45 +53,49 @@ public class UpdateTables {
             dbvString = null;
         }
 
-        fetcher = new Fetcher();
+        if(isNetworkAvailable()){
+            //do nothing
 
-        fetcher.setFetcherInterface(new FetcherInterface() {
+            fetcher = new Fetcher();
 
-            @Override
-            public void onComplete() {
+            fetcher.setFetcherInterface(new FetcherInterface() {
 
-                DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
-                 if(dbv != null){
-                    //TODO if realm tables empty go get um
-                    if(dbvString.equals(newDbv.getDbVersion())){
-                        Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
-                            fetchSpeakers();
+                @Override
+                public void onComplete() {
+
+                    DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
+                     if(dbv != null){
+                        //TODO if realm tables empty go get um
+                        if(dbvString.equals(newDbv.getDbVersion())){
+                            Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
+                                fetchSpeakers();
+
+                        }else{
+                            Log.d("fetcher", "DB on latest version ");
+                            updateTablesInterface.onComplete();
+
+                        }
 
                     }else{
-                        Log.d("fetcher", "DB on latest version ");
-                        updateTablesInterface.onComplete();
-
+                         Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
+                        fetchSpeakers();
                     }
 
-                }else{
-                     Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
-                    fetchSpeakers();
+
                 }
 
+                @Override
+                public void onError() {
 
-            }
+                }
 
-            @Override
-            public void onError() {
+                @Override
+                public void onProgress() {
 
-            }
-
-            @Override
-            public void onProgress() {
-
-            }
-        });
-        fetcher.execute("Modified");
+                }
+            });
+            fetcher.execute("Modified");
+        }
     }
 
     private void taskComplete(){

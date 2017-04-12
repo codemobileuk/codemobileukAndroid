@@ -203,7 +203,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     public void fetchSchedule(){
 
-        final UpdateTables updateTables = new UpdateTables();
+        final UpdateTables updateTables = new UpdateTables(getApplicationContext());
         updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
             @Override
             public void onComplete() {

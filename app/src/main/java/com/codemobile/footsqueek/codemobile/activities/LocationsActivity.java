@@ -33,13 +33,15 @@ public class LocationsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locations);
-        fetchSchedule();
+       // fetchSchedule();
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         recyclerView.setHasFixedSize(true);
+
+
 
         addHeaders();
         GridLayoutManager glm = new GridLayoutManager(getApplicationContext(),2);
@@ -69,7 +71,6 @@ public class LocationsActivity extends BaseActivity {
         List<Location> locations = getLocations();
         for (int i = 0; i < locations.size(); i++) {
 
-            Log.d("asdasdasd", "Loc: "  + locations.get(i).getType());
         }
 
         String lastType = "";
@@ -115,11 +116,7 @@ public class LocationsActivity extends BaseActivity {
             lastType = locations.get(i).getType();
         }
 
-        for (int i = 0; i < locationsWithHeaders.size(); i++) {
 
-
-            Log.d("asdasdasd", "Loc: "  + locationsWithHeaders.get(i).getRowType());
-        }
 
     }
 
@@ -137,10 +134,11 @@ public class LocationsActivity extends BaseActivity {
 
 
 
- /*   @Override
+    /*@Override
     public void updateUi() {
         super.updateUi();
         addHeaders();
         adapter.notifyDataSetChanged();
+        Log.d("Realmstuff", "locations adapter updated");
     }*/
 }
