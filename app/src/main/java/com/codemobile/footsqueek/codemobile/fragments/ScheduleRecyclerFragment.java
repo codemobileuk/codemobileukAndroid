@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.Sort;
 
@@ -180,11 +182,16 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if(sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT || sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT ){
-                    return 1;
+                if(position < sessionsAndHeaders.size()){
+                    if(sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT || sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT ){
+                        return 1;
+                    }else{
+                        return 2;
+                    }
                 }else{
-                    return 2;
+                    return 1;
                 }
+
 
             }
         });
@@ -381,8 +388,8 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     @Override
     public void onResume() {
         super.onResume();
-        tealAdapter.notifyDataSetChanged();
-        daySelectorListener();
+       // tealAdapter.notifyDataSetChanged();
+      //  daySelectorListener();
 
     }
 
