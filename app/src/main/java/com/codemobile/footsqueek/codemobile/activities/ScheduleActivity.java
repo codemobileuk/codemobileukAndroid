@@ -264,9 +264,5 @@ public class ScheduleActivity extends BaseActivity {
         }, 0);
     }
 
-    @Override
-    public void updateUi() {
-        super.updateUi();
 
-    }
 }

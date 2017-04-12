@@ -199,7 +199,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         tealRecyclerView.setLayoutManager(glm);
         tealAdapter = new ScheduleRecyclerAdapter(sessionsAndHeaders,this,mContext);
         tealRecyclerView.setAdapter(tealAdapter);
-        tealAdapter.notifyDataSetChanged();
+      //  tealAdapter.notifyDataSetChanged();
 
     }
 
