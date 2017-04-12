@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.R;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
+import com.codemobile.footsqueek.codemobile.database.Session;
 
 import io.realm.Realm;
 
@@ -62,12 +63,12 @@ public class LaunchActivity extends BaseActivity {
         pd.setMessage("Fetching Schedule");
         pd.show();
 
-
+        Session session = realm.where(Session.class).findFirst();
 
         if(isNetworkAvailable()) {
            fetchSchedule();
         }else{
-            if (realm.isEmpty()) {
+            if (session != null){
                 pd.dismiss();
                 noConnectionOrPopulatedDb();
             } else {

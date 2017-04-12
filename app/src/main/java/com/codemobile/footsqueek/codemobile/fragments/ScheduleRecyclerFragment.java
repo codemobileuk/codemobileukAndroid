@@ -174,6 +174,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     }
 
     public void setupRecycler(final List<SessionFullData>sessionsAndHeaders){
+
         GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
 
         glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
