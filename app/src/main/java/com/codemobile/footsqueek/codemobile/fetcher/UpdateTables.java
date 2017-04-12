@@ -50,7 +50,7 @@ public class UpdateTables {
                 DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
                  if(dbv != null){
                     //TODO if realm tables empty go get um
-                    if(!dbvString.equals(newDbv.getDbVersion())){
+                    if(dbvString.equals(newDbv.getDbVersion())){
                         Log.d("Realmstuff", "TOLD TO GET SPEAKERS SO HERE I GO!==============");
                             fetchSpeakers();
 

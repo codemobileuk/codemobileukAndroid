@@ -72,7 +72,7 @@ public class LaunchActivity extends BaseActivity {
                 noConnectionOrPopulatedDb();
             } else {
                 pd.dismiss();
-
+                setIntent();
             }
         }
 
@@ -92,10 +92,10 @@ public class LaunchActivity extends BaseActivity {
 
     public void noConnectionOrPopulatedDb(){
 
-        new AlertDialog.Builder(getApplicationContext())
+        new AlertDialog.Builder(LaunchActivity.this)
                 .setTitle("There is a problem with the connection")
                 .setMessage("Could not find Schedule, please check your internet and try again")
-                .setPositiveButton("Thats Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -126,17 +126,17 @@ public class LaunchActivity extends BaseActivity {
         }
 
 
-       /* final Handler handler = new Handler();
+        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                setIntent();
 
             }
-        }, 500);*/
+        }, 500);
 
 
-        setIntent();
+
 
 
     }
