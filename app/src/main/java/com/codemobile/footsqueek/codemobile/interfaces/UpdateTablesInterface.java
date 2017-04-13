@@ -8,5 +8,6 @@ public interface UpdateTablesInterface {
 
     void onComplete();
     void onError();
+    void onUpdateNeeded(boolean update);
 
 }

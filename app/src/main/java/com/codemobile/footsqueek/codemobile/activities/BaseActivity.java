@@ -1,5 +1,6 @@
 package com.codemobile.footsqueek.codemobile.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
@@ -13,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -214,11 +216,82 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             public void onError() {
 
             }
+
+            @Override
+            public void onUpdateNeeded(boolean update) {
+                new AlertDialog.Builder(BaseActivity.this)
+                        .setTitle("Content update available")
+                        .setMessage("To download now hit ok!")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent in = new Intent(getApplicationContext(),LaunchActivity.class);
+                                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(in);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
         });
         updateTables.compareAndUpdate();
 
 
     }
+
+    public void checkUpdated(){
+
+        final UpdateTables updateTables = new UpdateTables(getApplicationContext());
+        updateTables.setUpdateTablesInterface(new UpdateTablesInterface() {
+            @Override
+            public void onComplete() {
+                updateUi();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onUpdateNeeded(boolean update) {
+                if(update){
+                    new AlertDialog.Builder(BaseActivity.this)
+                            .setTitle("Content update available")
+                            .setMessage("To download now hit ok!")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent in = new Intent(getApplicationContext(),LaunchActivity.class);
+                                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(in);
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }else{
+
+                }
+
+            }
+        });
+        updateTables.isDataBaseUpToDate();
+
+
+    }
+
 
     public void updateUi(){
         Log.d("activity", this.getLocalClassName()+"   ===   " +" update UI");

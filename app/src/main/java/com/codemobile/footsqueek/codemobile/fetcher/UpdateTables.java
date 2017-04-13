@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.codemobile.footsqueek.codemobile.AppDelegate;
 import com.codemobile.footsqueek.codemobile.database.DataBaseVersion;
+import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.interfaces.FetcherInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.UpdateTablesInterface;
 
@@ -39,6 +40,59 @@ public class UpdateTables {
                 = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void isDataBaseUpToDate(){
+        final Realm realm = AppDelegate.getRealmInstance();
+        final DataBaseVersion oldDbv = realm.where(DataBaseVersion.class).findFirst();
+        final String dbvString;
+        if(oldDbv !=null){
+            Log.d("Realmstuff", "db version before" + oldDbv.getDbVersion());
+            dbvString = oldDbv.getDbVersion();
+        }else{
+            dbvString = null;
+        }
+
+        if(isNetworkAvailable()){
+            //do nothing
+            fetcher = new Fetcher();
+            fetcher.setFetcherInterface(new FetcherInterface() {
+
+                @Override
+                public void onComplete() {
+
+                    DataBaseVersion newDbv = realm.where(DataBaseVersion.class).findFirst();
+                    if(oldDbv != null){
+                        //TODO if realm tables empty go get um
+                        if(!dbvString.equals(newDbv.getDbVersion())){
+
+                            updateTablesInterface.onUpdateNeeded(true);
+                            RealmUtility.addNewRow(oldDbv);
+                        }else{
+                            Log.d("fetcher", "DB on latest version ");
+                            updateTablesInterface.onUpdateNeeded(false);
+                            RealmUtility.addNewRow(oldDbv);
+                        }
+                    }else{
+
+                        updateTablesInterface.onUpdateNeeded(true);
+                    }
+
+
+                }
+
+                @Override
+                public void onError() {
+
+                }
+
+                @Override
+                public void onProgress() {
+
+                }
+            });
+            fetcher.execute("Modified");
+        }
     }
 
     public void compareAndUpdate(){

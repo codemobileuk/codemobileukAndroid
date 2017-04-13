@@ -28,6 +28,7 @@ import com.codemobile.footsqueek.codemobile.customUi.DoublePreviewView;
 import com.codemobile.footsqueek.codemobile.customUi.PreviewView;
 import com.codemobile.footsqueek.codemobile.database.RealmUtility;
 import com.codemobile.footsqueek.codemobile.database.Session;
+import com.codemobile.footsqueek.codemobile.fetcher.UpdateTables;
 import com.codemobile.footsqueek.codemobile.interfaces.HorizontalScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.CurrentSessionChecker;
 import com.codemobile.footsqueek.codemobile.services.TimeManager;
@@ -77,7 +78,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-      //  fetchSchedule();
+
 
         sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
 
@@ -175,6 +176,7 @@ public class HomeActivity extends BaseActivity {
         setUpHorizontalRecycler();
         setUpPreviewViews();
         setNotificationTvText();
+        checkUpdated();
     }
 
     public void setUpHorizontalRecycler(){
