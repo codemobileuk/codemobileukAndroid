@@ -23,8 +23,8 @@ android {
         applicationId "com.codemobile.footsqueek.codemobile"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
-        versionName "2.3"
+        versionCode 8
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
