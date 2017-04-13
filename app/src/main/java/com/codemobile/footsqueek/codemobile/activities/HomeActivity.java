@@ -148,7 +148,7 @@ public class HomeActivity extends BaseActivity {
             });
             AlertDialog alert = builder.create();
             alert.show();
-            showDialog = false;
+
         }else if(TimeManager.isDateAfterThursdayMorning()){
         }
     }
