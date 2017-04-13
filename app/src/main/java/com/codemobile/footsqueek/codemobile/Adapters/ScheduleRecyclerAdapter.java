@@ -144,7 +144,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         }else if(holder instanceof BreakHolder){
             ((BreakHolder) holder).time.setText(TimeManager.trimTimeFromDate(session.getTimeStart())+ " - " + TimeManager.trimTimeFromDate(session.getTimeEnd()));
-            ((BreakHolder) holder).name.setText(sessionWithHeaders.get(position).getSession().getSessionType());
+            ((BreakHolder) holder).name.setText(sessionWithHeaders.get(position).getSession().getTitle());
 
 
         }else if(holder instanceof HeaderHolder){
