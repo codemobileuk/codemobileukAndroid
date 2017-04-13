@@ -29,6 +29,8 @@ import com.codemobile.footsqueek.codemobile.interfaces.ScheduleDayChooserInterfa
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleFilterInterface;
 import com.codemobile.footsqueek.codemobile.interfaces.ScheduleRecyclerInterface;
 import com.codemobile.footsqueek.codemobile.services.TimeManager;
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,11 +46,11 @@ import io.realm.Sort;
 
 public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecyclerInterface{
 
-    RecyclerView tealRecyclerView;
-    ScheduleRecyclerAdapter tealAdapter;
-    ScheduleDetailFragment scheduleDetailFragment;
-    ScheduleFilterInterface filterInterface;
-    FragmentActivity mContext;
+    private RecyclerView tealRecyclerView;
+    private ScheduleRecyclerAdapter tealAdapter;
+    private ScheduleDetailFragment scheduleDetailFragment;
+    private ScheduleFilterInterface filterInterface;
+    private FragmentActivity mContext;
 
     final static int DAY_ONE = 0;
     final static int DAY_TWO = 1;
@@ -59,7 +61,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     private List<String> filterTagNames = new ArrayList<>();
     private List <SessionFullData> sfd = new ArrayList<>();
 
-    ScheduleDayChooserInterface mListener;
+    private ScheduleDayChooserInterface mListener;
 
     public ScheduleDayChooserInterface getScheduleDayChooserInterface(){
 
@@ -175,13 +177,15 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         super.onAttach(activity);
     }
 
-    public void setupRecycler(final List<SessionFullData>sessionsAndHeaders){
+    private void setupRecycler(final List<SessionFullData>sessionsAndHeaders){
+
 
         GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
 
         glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
+
                 if(position < sessionsAndHeaders.size()){
                     if(sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_LEFT || sessionsAndHeaders.get(position).getRowType() == ScheduleRowType.DOUBLE_RIGHT ){
                         return 1;
@@ -189,13 +193,18 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
                         return 2;
                     }
                 }else{
-                    return 1;
+                    //Somtimes the position is greater than the array. This is a measure to catch the IOOB crash
+                        for (int i = 0; i < sessionsAndHeaders.size(); i++) {
+                            Crashlytics.log(5, "GridLayoutManager", sessionsAndHeaders.get(i).getName());
+                        }
+
+                    return 0;
+
                 }
 
 
             }
         });
-
         tealRecyclerView.setLayoutManager(glm);
         tealAdapter = new ScheduleRecyclerAdapter(sessionsAndHeaders,this,mContext);
         tealRecyclerView.setAdapter(tealAdapter);
@@ -388,7 +397,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
     @Override
     public void onResume() {
         super.onResume();
-       // tealAdapter.notifyDataSetChanged();
+        tealAdapter.notifyDataSetChanged();
       //  daySelectorListener();
 
     }
