@@ -100,7 +100,7 @@ public class HomeActivity extends BaseActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
         Realm realm = AppDelegate.getRealmInstance();
-        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).notEqualTo("sessionType","Break").findAllSorted("timeStart");
+        upComingSessions = realm.where(Session.class).notEqualTo("sessionType","Break").findAllSorted("timeStart");
 
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
 
@@ -292,7 +292,7 @@ public class HomeActivity extends BaseActivity {
         Realm realm = AppDelegate.getRealmInstance();
         currentDate = new Date();
         currentDate.getTime();
-        upComingSessions = realm.where(Session.class).greaterThan("timeEnd",currentDate).notEqualTo("sessionType","Break").findAllSorted("timeStart");
+        upComingSessions = realm.where(Session.class).notEqualTo("sessionType","Break").findAllSorted("timeStart");
         allSessions = realm.where(Session.class).findAllSorted("timeStart");
         setUpPreviewViews();
         if(adapter != null){

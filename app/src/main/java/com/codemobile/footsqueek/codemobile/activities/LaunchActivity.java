@@ -51,9 +51,6 @@ public class LaunchActivity extends BaseActivity {
         }
         super.onCreate(savedInstanceState);
 
-
-
-
         setContentView(R.layout.activity_launch_loading);
 
         Realm realm = AppDelegate.getRealmInstance();
@@ -116,8 +113,6 @@ public class LaunchActivity extends BaseActivity {
     public void updateUi() {
         super.updateUi();
 
-
-
         try{
             if (pd != null && pd.isShowing()) {
                 pd.dismiss();
@@ -135,10 +130,6 @@ public class LaunchActivity extends BaseActivity {
 
             }
         }, 500);
-
-
-
-
 
     }
 
@@ -159,9 +150,6 @@ public class LaunchActivity extends BaseActivity {
             in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(in);
         }
-
-
-
 
         /**/
     }

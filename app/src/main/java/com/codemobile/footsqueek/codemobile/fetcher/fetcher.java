@@ -82,10 +82,11 @@ public class Fetcher extends AsyncTask<String,Void,String>{
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .appendPath(params[0])
+                    .appendQueryParameter("Event","1")//1== code mobile 2 == code frontend
                     .build(); //TODO add anything required here
 
             URL url = new URL(builtUri.toString());
-
+            Log.d("URLTEST", url+"");
             urlConnection = (HttpURLConnection)url.openConnection();
             urlConnection.setRequestMethod("GET");//TODO presuming
             urlConnection.setRequestProperty("Content-Type","application/json");
