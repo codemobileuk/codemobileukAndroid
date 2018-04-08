@@ -34,7 +34,7 @@ import io.realm.RealmObject;
  * Created by greg on 17/01/2017.
  */
 
-public class Fetcher extends AsyncTask<String,Void,String>{
+public class fetcher extends AsyncTask<String,Void,String>{
 
     String json = null;
     private static final int SCHEDULE = 0;
@@ -52,12 +52,12 @@ public class Fetcher extends AsyncTask<String,Void,String>{
     private boolean dropping;
     String exacuteString;
 
-    public Fetcher(String params) {
+    public fetcher(String params) {
         Log.d("realmstuff", "fetcher constructor +p");
         exacuteString = params;
 
     }
-    public Fetcher() {
+    public fetcher() {
         Log.d("realmstuff", "fetcher constructor");
     }
 

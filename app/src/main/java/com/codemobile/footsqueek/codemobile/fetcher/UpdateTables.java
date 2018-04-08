@@ -23,7 +23,7 @@ public class UpdateTables {
     private boolean speakersUpdated = false, scheduleUpdated = false, tagsUpdated = false, locationsUpdated = false;
 
     UpdateTablesInterface updateTablesInterface;
-    Fetcher fetcher;
+    fetcher fetcher;
     Context context;
 
     public void setUpdateTablesInterface(UpdateTablesInterface updateTablesInterface){
@@ -55,7 +55,7 @@ public class UpdateTables {
 
         if(isNetworkAvailable()){
             //do nothing
-            fetcher = new Fetcher();
+            fetcher = new fetcher();
             fetcher.setFetcherInterface(new FetcherInterface() {
 
                 @Override
@@ -110,7 +110,7 @@ public class UpdateTables {
         if(isNetworkAvailable()){
             //do nothing
 
-            fetcher = new Fetcher();
+            fetcher = new fetcher();
 
             fetcher.setFetcherInterface(new FetcherInterface() {
 
@@ -169,7 +169,7 @@ public class UpdateTables {
     private void fetchSchedule(){
         Log.d("realmstuff", "fetching schedule inSC");
 
-        final Fetcher fetcher= new Fetcher();
+        final fetcher fetcher= new fetcher();
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
@@ -197,7 +197,7 @@ public class UpdateTables {
     }
     private void fetchSpeakers(){
         Log.d("realmstuff", "fetching speakers");
-        final Fetcher fetcher= new Fetcher("Speakers");
+        final fetcher fetcher= new fetcher("Speakers");
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
@@ -228,7 +228,7 @@ public class UpdateTables {
 
     private void fetchLocations(){
 
-        final Fetcher fetcher= new Fetcher();
+        final fetcher fetcher= new fetcher();
         fetcher.setFetcherInterface(new FetcherInterface() {
 
             @Override
@@ -257,7 +257,7 @@ public class UpdateTables {
 
     private void fetchTags(){
 
-        final Fetcher fetcher = new Fetcher();
+        final fetcher fetcher = new fetcher();
         fetcher.setFetcherInterface(new FetcherInterface() {
             @Override
             public void onComplete() {

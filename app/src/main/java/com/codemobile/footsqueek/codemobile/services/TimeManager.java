@@ -54,8 +54,8 @@ public class TimeManager {
         Calendar thursday = Calendar.getInstance();
 
         thursday.set(Calendar.MONTH, 3);
-        thursday.set(Calendar.YEAR, 2017);
-        thursday.set(Calendar.DAY_OF_MONTH,20);
+        thursday.set(Calendar.YEAR, 2018);
+        thursday.set(Calendar.DAY_OF_MONTH,5);
         thursday.set(Calendar.HOUR_OF_DAY,10);
         thursday.set(Calendar.MINUTE,0);
 
@@ -82,8 +82,8 @@ public class TimeManager {
         Calendar thursday = Calendar.getInstance();
 
         thursday.set(Calendar.MONTH, 3);
-        thursday.set(Calendar.YEAR, 2017);
-        thursday.set(Calendar.DAY_OF_MONTH,20);
+        thursday.set(Calendar.YEAR, 2018);
+        thursday.set(Calendar.DAY_OF_MONTH,5);
         thursday.set(Calendar.HOUR_OF_DAY,16);
         thursday.set(Calendar.MINUTE,0);
 

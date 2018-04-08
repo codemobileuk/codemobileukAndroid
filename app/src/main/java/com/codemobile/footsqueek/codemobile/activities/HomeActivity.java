@@ -216,8 +216,8 @@ public class HomeActivity extends BaseActivity {
         Calendar monday = Calendar.getInstance();
 
         monday.set(Calendar.MONTH, 3);
-        monday.set(Calendar.YEAR, 2017);
-        monday.set(Calendar.DAY_OF_MONTH,17);
+        monday.set(Calendar.YEAR, 2018);
+        monday.set(Calendar.DAY_OF_MONTH,2);
 
        // Date monday = calendar.getTime();
 
@@ -370,7 +370,7 @@ public class HomeActivity extends BaseActivity {
                 Calendar calendar = Calendar.getInstance();
 
                 calendar.set(Calendar.MONTH, 0);
-                calendar.set(Calendar.YEAR, 2017);
+                calendar.set(Calendar.YEAR, 2018);
                 calendar.set(Calendar.DAY_OF_MONTH, 25);
 
                 calendar.set(Calendar.HOUR_OF_DAY, 11);

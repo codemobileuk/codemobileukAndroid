@@ -85,7 +85,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         tealRecyclerView.setHasFixedSize(true);
 
         initFilter();
-        setupRecycler(createScheduleWithHeaders(18));
+        setupRecycler(createScheduleWithHeaders(3));
         daySelectorListener();
 
         if(AppDelegate.isTwoPane()){
@@ -102,7 +102,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             @Override
             public void dayOne() {
                 selectedDay = DAY_ONE;
-                setupRecycler(createScheduleWithHeaders(18));
+                setupRecycler(createScheduleWithHeaders(3));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
                 }
@@ -112,7 +112,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             @Override
             public void dayTwo() {
                 selectedDay = DAY_TWO;
-                setupRecycler(createScheduleWithHeaders(19));
+                setupRecycler(createScheduleWithHeaders(4));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
                 }
@@ -121,7 +121,7 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             @Override
             public void dayThree() {
                 selectedDay = DAY_THREE;
-                setupRecycler(createScheduleWithHeaders(20));
+                setupRecycler(createScheduleWithHeaders(5));
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
                 }
@@ -140,11 +140,11 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
             public void onItemsFiltered(List<String> tagNames) {
                 filterTagNames = tagNames;
                 if(selectedDay == DAY_ONE){
-                    setupRecycler(createScheduleWithHeaders(18));
+                    setupRecycler(createScheduleWithHeaders(3));
                 }else if(selectedDay == DAY_TWO){
-                    setupRecycler(createScheduleWithHeaders(19));
+                    setupRecycler(createScheduleWithHeaders(4));
                 }else if(selectedDay == DAY_THREE){
-                    setupRecycler(createScheduleWithHeaders(20));
+                    setupRecycler(createScheduleWithHeaders(5));
                 }
                 if(AppDelegate.isTwoPane()){
                     talkClicked(getFirstRowSessionId());
@@ -267,9 +267,9 @@ public class ScheduleRecyclerFragment extends Fragment implements ScheduleRecycl
         Realm realm = AppDelegate.getRealmInstance();
 
         Calendar cal = Calendar.getInstance();
-        cal.set(2017,3,day,0,0,0);
+        cal.set(2018,3,day,0,0,0);
         Date startOfDay = cal.getTime();
-        cal.set(2017,3,day,23,59,59);
+        cal.set(2018,3,day,23,59,59);
         Date endOfDay = cal.getTime();
         List <Session> allTalks = new ArrayList<>();
         sfd.clear();

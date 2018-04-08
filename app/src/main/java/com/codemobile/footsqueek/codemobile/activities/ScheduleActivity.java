@@ -97,11 +97,11 @@ public class ScheduleActivity extends BaseActivity {
 
     }
     public void setDay(int day){
-        if(day == 18){
+        if(day == 3){
            dayOneBtn.customClick();
-        }else if(day == 19){
+        }else if(day == 4){
             dayTwoBtn.customClick();
-        }else if(day == 20){
+        }else if(day == 5){
             dayThreeBtn.customClick();
           //  dayThreeBtn.updateViews();
         }
